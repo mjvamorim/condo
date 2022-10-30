@@ -28,4 +28,4 @@ sudo php-fpm7.4 -t
 sudo service php7.4-fpm restart
 sudo nginx restart
 
-
+#User 'www' senha sudo 'www'

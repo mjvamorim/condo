@@ -58,16 +58,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.240.4",
+            "version": "3.240.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "69c7fa97862694d8c0c03f2e905c7fe05683bee9"
+                "reference": "7fb4c933795c5908fe5e2cb32913eed608901195"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/69c7fa97862694d8c0c03f2e905c7fe05683bee9",
-                "reference": "69c7fa97862694d8c0c03f2e905c7fe05683bee9",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/7fb4c933795c5908fe5e2cb32913eed608901195",
+                "reference": "7fb4c933795c5908fe5e2cb32913eed608901195",
                 "shasum": ""
             },
             "require": {
@@ -146,9 +146,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.240.4"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.240.5"
             },
-            "time": "2022-10-27T19:19:40+00:00"
+            "time": "2022-10-28T18:17:24+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2050,11 +2050,11 @@
         },
         {
             "name": "mjvamorim/crud",
-            "version": "dev-master",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./packages/mjvamorim/crud",
-                "reference": "c7765bbf6c3c70c9bbc24e50743cd028702eb743"
+                "reference": "b8168bc7d1a80168abfa7f215eec64b51da15d35"
             },
             "require": {
                 "yajra/laravel-datatables-oracle": "^8.0"
@@ -2086,7 +2086,7 @@
             "dist": {
                 "type": "path",
                 "url": "./packages/mjvamorim/subscriptions",
-                "reference": "8d4f2dfa3040dcb94478b81830d644fb2e8d64f3"
+                "reference": "7517601c90243724ddf8d26c13bf6672a8be08b8"
             },
             "type": "library",
             "autoload": {
@@ -2122,7 +2122,7 @@
             "dist": {
                 "type": "path",
                 "url": "./packages/mjvamorim/tenant",
-                "reference": "bda07316124e88640a66e00a037b40d2f0a936bd"
+                "reference": "e91323ce9263c370f81f28f0d0d8360f0ea61d87"
             },
             "type": "library",
             "autoload": {
@@ -2152,7 +2152,7 @@
             "dist": {
                 "type": "path",
                 "url": "./packages/mjvamorim/upload",
-                "reference": "0d8fc891783a583836f56fb175433a6ca71c5357"
+                "reference": "6642bbfc6321f170527cff7ff514680e7ff93bbc"
             },
             "require": {
                 "intervention/image": "^2.0"
@@ -3559,16 +3559,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.4.47",
+            "version": "v4.4.48",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "4f40012db8d55c956406890b5720f686fee7f7b7"
+                "reference": "8e70c1cab07ac641b885ce80385b9824a293c623"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/4f40012db8d55c956406890b5720f686fee7f7b7",
-                "reference": "4f40012db8d55c956406890b5720f686fee7f7b7",
+                "url": "https://api.github.com/repos/symfony/console/zipball/8e70c1cab07ac641b885ce80385b9824a293c623",
+                "reference": "8e70c1cab07ac641b885ce80385b9824a293c623",
                 "shasum": ""
             },
             "require": {
@@ -3629,7 +3629,7 @@
             "description": "Eases the creation of beautiful and testable command line interfaces",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/console/tree/v4.4.47"
+                "source": "https://github.com/symfony/console/tree/v4.4.48"
             },
             "funding": [
                 {
@@ -3645,7 +3645,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-10-04T05:58:30+00:00"
+            "time": "2022-10-26T16:02:45+00:00"
         },
         {
             "name": "symfony/css-selector",
