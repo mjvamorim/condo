@@ -1,0 +1,593 @@
+<template>
+  <div>
+    <!--"Principal, não mudar"-->
+    <v-container>
+      <v-row justify="space-between">
+        <v-col>
+          <h3>Debitos</h3>
+        </v-col>
+        <v-col align="right">
+          <v-dialog v-model="dialog" max-width="700px">
+            <template v-slot:activator="form">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon v-bind="attrs" v-on="on">
+                <v-icon v-on="form.on" color="primary">mdi-plus-circle-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>Cadastrar novo Item</span>
+          </v-tooltip>
+            </template>
+            <v-card>
+              <v-card-title>
+                <span class="headline">{{ formTitle }}</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container grid-list-md>
+                  <v-layout wrap>
+                    <v-flex xs12>
+                      <v-select
+                        v-model="editedItem.unidade_id"
+                        :items="allUnidades"
+                        label="Unidade"
+                        item-text="descricao"
+                        item-value="id"
+                        outlined
+                        return-value
+                        :rules="[rules.required]"
+                      ></v-select>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-radio-group
+                        v-model="editedItem.tipo"
+                        label="Tipo"
+                        col
+                        dense
+                        :mandatory="true"
+                      >
+                        <v-radio label="Avulso" value="Avulso"></v-radio>
+                        <v-radio label="Mensalidade" value="Mensalidade"></v-radio>
+                        <v-radio label="Acordo" value="Acordo"></v-radio>
+                        <v-radio label="Multa" value="Multa"></v-radio>
+                      </v-radio-group>
+                    </v-flex>
+                    <v-flex xs12 v-if="editedItem.tipo=='Mensalidade'">
+                      <v-select
+                        v-model="editedItem.taxa_id"
+                        :items="allTaxas"
+                        label="Taxa*"
+                        item-text="anomes"
+                        item-value="id"
+                        outlined
+                        return-value
+                        :rules="[rules.required]"
+                      ></v-select>
+                    </v-flex>
+                    <v-flex xs12 v-if="editedItem.tipo=='Acordo'">
+                      <v-text-field
+                        v-model="editedItem.acordo_id"
+                        outlined
+                        label="Acordo"
+                        v-mask="['######']"
+                        :rules="[rules.required]"
+                      ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-textarea v-model="editedItem.on" label="Obs" outlined></v-textarea>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-menu
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        :nudge-right="40"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="290px"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="editedItem.dtvencto"
+                            label="Vencimento"
+                            outlined
+                            v-bind="attrs"
+                            v-on="on"
+                            :rules="[rules.required]"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker v-model="editedItem.dtvencto" @input="menu = false" no-title></v-date-picker>
+                      </v-menu>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-currency-field
+                        label="Valor"
+                        outlined
+                        v-model="editedItem.valor"
+                        :rules="[rules.required]"
+                      />
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-menu
+                        v-model="menu2"
+                        :close-on-content-click="false"
+                        :nudge-right="40"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="290px"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="editedItem.dtpagto"
+                            label="Pagamento"
+                            outlined
+                            v-bind="attrs"
+                            v-on="on"
+                            :rules="[rules.required]"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker v-model="editedItem.dtpagto" @input="menu2 = false" no-title></v-date-picker>
+                      </v-menu>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-currency-field
+                        label="Valor Pago"
+                        outlined
+                        v-model="editedItem.valorpago"
+                        :rules="[rules.required]"
+                      />
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-select
+                        v-model="editedItem.remessa"
+                        :items="allTiposRemessa"
+                        label="Remessa*"
+                        item-text="descricao"
+                        item-value="id"
+                        outlined
+                        return-value
+                        :rules="[rules.required]"
+                      ></v-select>
+                    </v-flex>
+                  </v-layout>
+                </v-container>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="danger" text @click="close">Retornar</v-btn>
+                <v-btn color="primary" text @click="save">Salvar</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-select
+            v-model="filtroItem.proprietario_id"
+            :items="allProprietarios"
+            label="Proprietários*"
+            item-text="nome"
+            item-value="id"
+            outlined
+            return-value
+            dense
+          ></v-select>
+        </v-col>
+        <v-col>
+          <v-select
+            v-model="filtroItem.unidade_id"
+            :items="allUnidades"
+            label="Unidades*"
+            item-text="descricao"
+            item-value="id"
+            outlined
+            return-value
+            dense
+          ></v-select>
+        </v-col>
+        <v-col>
+          <v-select
+            v-model="filtroItem.tipo_id"
+            :items="allTiposDebitos"
+            label="Tipo Débito*"
+            item-text="descricao"
+            item-value="id"
+            outlined
+            return-value
+            dense
+          ></v-select>
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col :cols="2">
+          <v-menu
+            v-model="menu3"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            transition="scale-transition"
+            offset-y
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="filtroItem.dtini"
+                label="Data Inicial*"
+                outlined
+                v-bind="attrs"
+                v-on="on"
+                dense
+              ></v-text-field>
+            </template>
+            <v-date-picker v-model="filtroItem.dtini" @input="menu3 = false" no-title></v-date-picker>
+          </v-menu>
+        </v-col>
+        <v-col :cols="2">
+          <v-menu
+            v-model="menu4"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            transition="scale-transition"
+            offset-y
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="filtroItem.dtfim"
+                label="Data Final*"
+                outlined
+                v-bind="attrs"
+                v-on="on"
+                dense
+              ></v-text-field>
+            </template>
+            <v-date-picker v-model="filtroItem.dtfim" @input="menu4 = false" no-title></v-date-picker>
+          </v-menu>
+        </v-col>
+        <v-col :cols="4">
+          <v-select
+            v-model="filtroItem.condicao"
+            :items="allCondicao"
+            label="Condição*"
+            item-text="descricao"
+            item-value="id"
+            outlined
+            return-value
+            dense
+          ></v-select>
+        </v-col>
+        <v-col :cols="2">
+          <v-spacer></v-spacer>
+          <v-select
+            v-model="filtroItem.envio_boleto"
+            :items="allTiposEnvio"
+            label="Tipo de Envio*"
+            item-text="descricao"
+            item-value="id"
+            outlined
+            return-value
+            dense
+          ></v-select>
+        </v-col>
+        <v-col :cols="2">
+          <v-select
+            v-model="filtroItem.ordem"
+            :items="allOrdenacao"
+            label="Ordenação da Listagem*"
+            item-text="descricao"
+            item-value="id"
+            outlined
+            return-value
+            dense
+          ></v-select>
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-btn color="primary" @click="buscaDebitos()">Filtra</v-btn>
+        <v-btn @click="boletosImpressos()">Boletos Impressos</v-btn>
+        <v-btn @click="boletosEmail()">Boletos Email</v-btn>
+        <v-btn @click="listagemDebitos()">Listagem</v-btn>
+        <v-spacer></v-spacer>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-row>
+    </v-container>
+    <v-data-table
+      :headers="headers"
+      :items="tableData"
+      :search="search"
+      fixed-header
+      dense
+      :items-per-page="15"
+      :must-sort="true"
+      sort-by="unidade_id"
+      class="elevation-1 debitos-table"
+      items-per-page="15"
+    >
+      <template v-slot:item.unidade_id="{ item }">
+        {{
+        unidadeDescricao(item.unidade_id)
+        }}
+      </template>
+      <template v-slot:item.action="{ item }">
+        <v-tooltip bottom> 
+          <template v-slot:activator="{on, attrs }">
+            <v-icon small class="mr-2" @click="editItem(item)" v-bind="attrs" v-on="on">edit</v-icon>
+          </template>
+          <span>Alterar</span>
+        </v-tooltip> 
+        <v-tooltip bottom> 
+          <template v-slot:activator="{on, attrs }">
+            <v-icon small @click="deleteItem(item)" v-bind="attrs" v-on="on">delete</v-icon>
+          </template>
+          <span>Apagar</span>
+        </v-tooltip>
+        <v-tooltip bottom> 
+          <template v-slot:activator="{on, attrs }">
+            <v-icon small @click="boletosImpressoUnico(item)" v-bind="attrs" v-on="on">email</v-icon>
+          </template>
+          <span>Boleto</span>
+        </v-tooltip>
+        <v-tooltip bottom> 
+          <template v-slot:activator="{on, attrs }">
+            <v-icon small @click="boletosEmailUnico(item)" v-bind="attrs" v-on="on">email</v-icon>
+          </template>
+          <span>Boleto por Email</span>
+        </v-tooltip>
+      </template>
+      <template v-slot:item.valor="{ item }">
+        <div class="text-right">R$ {{item.valor ? item.valor.toFixed(2) : '0,00'}}</div>
+      </template>
+      <template v-slot:item.valorpago="{ item }">
+        <div class="text-right">R$ {{item.valorpago ? item.valorpago.toFixed(2): '0.00'}}</div>
+      </template>
+      <template v-slot:item.valoratual="{ item }">
+        <div class="text-right">R$ {{item.valoratual.toFixed(2)}}</div>
+      </template>
+    </v-data-table>
+  </div>
+</template>
+
+<script>
+export default {
+  data: () => ({
+    menu: "",
+    menu2: "",
+    menu3: "",
+    menu4: "",
+    search: "",
+    naoLocalizado: false,
+    dialog: false,
+    headers: [
+      { text: "Unidade", value: "unidade_id" },
+      { text: "Tipo", value: "tipo" },
+      { text: "Dt.Vencto", value: "dtvencto" },
+      { text: "Valor", value: "valor" },
+      { text: "Dt.Pagto", value: "dtpagto" },
+      { text: "Vl.Pago", value: "valorpago" },
+      { text: "Boleto", value: "boleto" },
+      { text: "Vl.Devido", value: "valoratual" }, //confirmar se é esse valor msm
+      { text: "", value: "action", sortable: false },
+    ],
+    tableData: [],
+    editedIndex: -1,
+    allProprietarios: [{ id: "00", nome: "Todos" }],
+    allUnidades: [{ id: "00", descricao: "Todos" }],
+    allTiposDebitos: ["Todos", "Avulso", "Mensalidade", "Acordo", "Multa"],
+    allCondicao: ["Ambos", "Abertos", "Pagos"],
+    allTiposEnvio: ["Todos", "Impresso", "Email"],
+    allTiposRemessa: [
+      { id: "S", descricao: "Sim" },
+      { id: "N", descricao: "Não" },
+    ],
+    allOrdenacao: ["Proprietário", "Unidade", "Pagamento", "Vencimento"],
+    allTaxas: [{ id: "", anomes: "" }],
+    editedItem: {
+      unidade_id: "",
+      tipo: "",
+      obs: "",
+      taxa_id: "",
+      acordo_id: "",
+      dtvencto: "",
+      valor: "",
+      dtpagto: "",
+      valorpago: "",
+      remessa: "",
+      boleto: "",
+      acordo_quitacao_id: "",
+      valoratual: "",
+      created_at: "",
+    },
+    defaultItem: {
+      unidade_id: "",
+      tipo: "",
+      obs: "",
+      taxa_id: "",
+      acordo_id: "",
+      dtvencto: "",
+      valor: "",
+      dtpagto: "",
+      valorpago: "",
+      remessa: "",
+      boleto: "",
+      acordo_quitacao_id: "",
+      valoratual: "",
+      created_at: "",
+    },
+    filtroItem: {
+      proprietario_id: "",
+      unidade_id: "",
+      tipo_id: "",
+      dtini: "",
+      dtfim: "",
+      condicao: "",
+      envio_boleto: "",
+      ordem: "",
+    },
+    rules: {
+      required: (value) => !!value || "*Obrigatório",
+    },
+  }),
+
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1
+        ? "Novo Débito"
+        : "Alteração/Baixa de Débito";
+    },
+  },
+
+  watch: {
+    dialog(val) {
+      val || this.close();
+    },
+  },
+
+  created() {
+    this.initialize();
+  },
+
+  methods: {
+    cleanData() {
+      this.editedItem.dtvencto = "";
+    },
+    buscaDebitos() {
+      this.tableData = [];
+      axios
+        .get("/api/debitos", { params: this.filtroItem })
+        .then((response) => {
+          this.tableData = response.data;
+        })
+        .catch((error) => console.log(error));
+    },
+    initialize() {
+      axios
+        .get("/api/proprietarios")
+        .then((response) => {
+          this.allProprietarios = response.data;
+          this.allProprietarios.sort();
+          this.allProprietarios.unshift({ id: "00", nome: "Todos" });
+        })
+        .catch((error) => console.log(error));
+
+      axios
+        .get("/api/unidades")
+        .then((response) => {
+          this.allUnidades = response.data;
+          this.allUnidades.sort();
+          this.allUnidades.unshift({ id: "00", descricao: "Todos" });
+        })
+        .catch((error) => console.log(error));
+
+      axios
+        .get("/api/taxas")
+        .then((response) => {
+          this.allTaxas = response.data;
+        })
+        .catch((error) => console.log(error));
+      this.filtroItem.ordem = "Unidade";
+      this.filtroItem.condicao = "Abertos";
+      this.buscaDebitos();
+    },
+
+    editItem(item) {
+      this.editedIndex = this.tableData.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+
+    deleteItem(item) {
+      const index = this.tableData.indexOf(item);
+      confirm("Você deseja apagar este item?") &&
+        axios
+          .delete("/api/debitos/" + item.id)
+          .then((response) => {
+            console.log(response.data);
+            this.tableData.splice(index, 1);
+          })
+          .catch((error) => console.log(error));
+    },
+
+    close() {
+      this.dialog = false;
+      setTimeout(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      }, 300);
+    },
+
+    save() {
+      if (this.editedIndex > -1) {
+        axios
+          .put("/api/debitos/" + this.editedItem.id, this.editedItem)
+          .then((response) => {
+            console.log(response.data);
+            Object.assign(this.tableData[this.editedIndex], this.editedItem);
+            this.close();
+          })
+          .catch((error) => console.log(error));
+      } else {
+        console.log(this.editedItem);
+        axios
+          .post("/api/debitos/", this.editedItem)
+          .then((response) => {
+            console.log(response.data);
+            this.tableData.push(this.editedItem);
+            this.close();
+          })
+          .catch((error) => console.log(error));
+      }
+    },
+    unidadeDescricao(id) {
+      return this.allUnidades.find((x) => x.id == id)
+        ? this.allUnidades.find((x) => x.id == id).descricao
+        : "";
+    },
+    boletosImpressos() {
+      var url = "/financeiro/imprimirBoletos";
+      url = url + "?" + jQuery.param(this.filtroItem);
+      window.open(url, "_blank");
+    },
+    boletosImpressoUnico(item) {
+      var url = "/financeiro/imprimirBoletos";
+      url = url + "?debito_id" + item.id;
+      window.open(url, "_blank");
+    },
+    boletosEmail() {
+      axios
+        .get("/financeiro/emailBoletos", { params: this.filtroItem })
+        .then((response) => alert("Email enviado com sucesso."))
+        .catch((error) => console.log(error));
+    },
+    boletosEmailUnico(item) {
+      axios
+        .get("/financeiro/emailBoletos?debito_id=" + item.id)
+        .then((response) => alert("Email enviado com sucesso."))
+        .catch((error) => console.log(error));
+    },
+    listagemDebitos() {
+      var url = "/financeiro/listagemDebitos";
+      url = url + "?" + jQuery.param(this.filtroItem);
+      window.open(url, "_blank");
+    },
+  },
+};
+</script>
+
+<style scooped>
+.debitos-table table th {
+  background-color: gray !important;
+  font-size: 16px !important;
+}
+.col {
+  padding: 2px;
+}
+.v-btn {
+  text-transform: none;
+  margin-left: 10px;
+}
+</style>

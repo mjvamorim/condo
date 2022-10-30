@@ -1,0 +1,21 @@
+{
+    "name": "mjvamorim/tenant",
+    "description": "Package to Choise Database Based on Empresa field",
+    "type": "library",
+    "license": "MIT",
+    "version": "1.0.1",
+    "authors": [
+        {
+            "name": "Mauricio Amorim",
+            "email": "mjvamorim@gmail.com"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Amorim\\Tenant\\": "src/",
+            "Amorim\\Tenant\\Database\\Seeds\\": "src/database/seeds/"
+        }
+    }
+}

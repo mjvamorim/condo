@@ -1,0 +1,6 @@
+Ambiente Mac
+- brew php 7.2.11
+   - Xdebug v2.6.1
+   - Zend 7.2.11
+- brew mysql 5.7
+- Valet

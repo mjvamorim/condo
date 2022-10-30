@@ -1,0 +1,19 @@
+{
+    "name": "mjvamorim/subscriptions",
+    "description": "Package to control Subscriptions Plans and Payments",
+    "keywords": ["laravel", "subscriptions", "plan", "payment","invoice"],
+    "license": "MIT",
+    "version": "1.0.1",
+     "authors": [
+        {
+            "name": "Mauricio Amorim",
+            "email": "mjvamorim@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Amorim\\Subscriptions\\": "src/"
+        }
+    }
+}
