@@ -14,7 +14,9 @@ php artisan queue:retry 43
 php artisan queue:work
 
 ## Tarefas
-
+Proprietarios
+   - Conjuge
+   
 -   Debitos
     a) Botao boleto e email errados 
 -   Empresa ->
@@ -27,10 +29,6 @@ php artisan queue:work
 
 ## Rotas
 
-3 - verificar erro
-
-Tarefas a realizar Felipe
-#########################
 
 
 3. Criar uma página para cada opçao do menu

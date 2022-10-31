@@ -86,6 +86,27 @@
 
                 <v-flex xs12>
                   <v-text-field
+                    v-model="editedItem.conjuge_nome"
+                    outlined
+                    label="Nome Conjuge"
+                    :rules="[rules.required]"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field
+                    v-model="editedItem.conjuge_cpf"
+                    outlined
+                    label="Cpf Conjuge"
+                    :rules="[rules.required]"
+                    v-mask="[
+                                            '###.###.###-##',
+                                            '##.###.###/####-##'
+                                        ]"
+                  ></v-text-field>
+                </v-flex>
+
+                <v-flex xs12>
+                  <v-text-field
                     v-model="editedItem.cep"
                     outlined
                     label="Cep"
@@ -197,6 +218,7 @@ export default {
       { text: "Email", value: "email" },
       { text: "Celular", value: "celular" },
       { text: "Cpf", value: "cpf" },
+      // { text: "Conjuge", value: "conjuge_nome" },
       { text: "Actions", value: "action", sortable: false },
     ],
     tableData: [],
@@ -208,6 +230,8 @@ export default {
       celular: "",
       fixo: "",
       cpf: "",
+      conjuge_nome: "",
+      conjuge_cpf: "",
       cep: "",
       rua: "",
       numero: "",
@@ -224,6 +248,8 @@ export default {
       celular: "",
       fixo: "",
       cpf: "",
+      conjuge_nome: "",
+      conjuge_cpf: "",
       cep: "",
       rua: "",
       numero: "",

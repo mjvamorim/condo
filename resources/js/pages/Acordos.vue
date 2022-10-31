@@ -60,7 +60,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import AcordoDetalhes from "./AcordoDetalhes";
 export default {
   components: { AcordoDetalhes },
