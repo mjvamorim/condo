@@ -5,6 +5,7 @@ composer clearcache
 composer update
 php artisan config:cache
 php artisan serve
+npm install
 npm run watch
 
 # reiniciar a fila 

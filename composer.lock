@@ -2050,7 +2050,7 @@
         },
         {
             "name": "mjvamorim/crud",
-            "version": "dev-main",
+            "version": "dev-development",
             "dist": {
                 "type": "path",
                 "url": "./packages/mjvamorim/crud",
