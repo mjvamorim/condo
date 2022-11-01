@@ -87,7 +87,7 @@
       sort-by="anomes"
       sort-desc
       class="elevation-1"
-      items-per-page="15"
+      items-per-page=15
     >
       <template v-slot:item.action="{ item }">
         <v-tooltip bottom> 

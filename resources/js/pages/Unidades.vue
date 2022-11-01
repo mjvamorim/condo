@@ -121,7 +121,7 @@
       :headers="headers"
       :items="tableData"
       :search="search"
-      :items-per-page="15"
+      :items-per-page=15
       dense
       class="elevation-1"
       sort-by="descricao"
@@ -152,7 +152,7 @@ export default {
     dialog: false,
     headers: [
       { text: "Descrição", value: "descricao" },
-      { text: "Adicional", value: "adicional" },
+      // { text: "Adicional", value: "adicional" },
       { text: "Proprietários", value: "proprietario_id" },
       { text: "Moradores", value: "moradores" },
       { text: "Veículos", value: "veiculos" },

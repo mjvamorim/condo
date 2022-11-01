@@ -187,7 +187,7 @@
                     fixed-header
                     dense
                     disable-pagination
-                    :items-per-page="100"
+                    :items-per-page=100
                     :must-sort="true"
                     sort-by="dtvencto"
                     hide-default-footer

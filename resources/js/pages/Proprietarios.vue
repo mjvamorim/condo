@@ -182,7 +182,7 @@
       dense
       :headers="headers"
       :items="tableData"
-      :items-per-page="15"
+      :items-per-page=15
       :search="search"
       class="elevation-1"
       sort-by="nome"

@@ -302,11 +302,10 @@
       :search="search"
       fixed-header
       dense
-      :items-per-page="15"
+      :items-per-page=20
       :must-sort="true"
       sort-by="unidade_id"
-      class="elevation-1 debitos-table"
-      items-per-page="15"
+      class="elevation-1"
     >
       <template v-slot:item.unidade_id="{ item }">
         {{
@@ -328,7 +327,8 @@
         </v-tooltip>
         <v-tooltip bottom> 
           <template v-slot:activator="{on, attrs }">
-            <v-icon small @click="boletosImpressoUnico(item)" v-bind="attrs" v-on="on">email</v-icon>
+            <v-icon small @click="boletosImpressoUnico(item)" v-bind="attrs" v-on="on">{{mdiBarcode}}
+            </v-icon>
           </template>
           <span>Boleto</span>
         </v-tooltip>
@@ -353,8 +353,10 @@
 </template>
 
 <script>
+import { mdiBarcode } from '@mdi/js' 
 export default {
   data: () => ({
+    mdiBarcode,
     menu: "",
     menu2: "",
     menu3: "",
@@ -553,8 +555,7 @@ export default {
       window.open(url, "_blank");
     },
     boletosImpressoUnico(item) {
-      var url = "/financeiro/imprimirBoletos";
-      url = url + "?debito_id" + item.id;
+      let url = "/financeiro/imprimirBoletos?debito_id=" + item.id;
       window.open(url, "_blank");
     },
     boletosEmail() {
@@ -580,7 +581,6 @@ export default {
 
 <style scooped>
 .debitos-table table th {
-  background-color: gray !important;
   font-size: 16px !important;
 }
 .col {

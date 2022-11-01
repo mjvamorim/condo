@@ -40,7 +40,7 @@
       :headers="headers"
       :items="tableData"
       :search="search"
-      :items-per-page="15"
+      :items-per-page=15
       dense
       fixed-header
       :must-sort="true"
