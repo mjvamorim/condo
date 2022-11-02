@@ -24,7 +24,6 @@
 </head>
 <body>
     <div id="app">
-         oi 
         <Admin :user="{{auth()->user()}}"></Admin>
     </div>
 

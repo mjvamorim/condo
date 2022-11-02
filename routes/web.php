@@ -15,7 +15,12 @@ Route::middleware(['auth','tenant'])->group(function () {
 
 });
 
-Route::get('phpinfo', function(){ phpinfo();});
+Route::get('phpinfo', function(){ 
+    echo "test 4";
+    echo "test 2";
+    echo "test 3";
+    phpinfo();
+});
 Route::get('subscribe', 'UtilController@subscribe')->name('subscribe');
 Route::get('faleConosco', 'UtilController@faleConosco')->name('faleConosco');
 Route::get('manual', 'UtilController@manual')->name('manual');

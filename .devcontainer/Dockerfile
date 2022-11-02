@@ -1,8 +1,5 @@
 FROM php:7.2-fpm
 
-# Copy composer.lock and composer.json
-# COPY ../composer.lock ../composer.json /var/www/
-
 # Set working directory
 WORKDIR /var/www
 
@@ -24,6 +21,8 @@ RUN apt update && apt-get install -y \
     zlib1g-dev libicu-dev g++ \
     nodejs npm
 
+
+
 # # Clear cache
 RUN apt clean && rm -rf /var/lib/apt/lists/*
 
@@ -38,6 +37,10 @@ RUN docker-php-ext-install gd
 
 RUN docker-php-ext-configure intl
 RUN docker-php-ext-install intl
+
+# Install xdebug
+RUN pecl install xdebug
+RUN docker-php-ext-enable xdebug
 
 
 # Install composer
