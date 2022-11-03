@@ -20,6 +20,7 @@ public/boletos/itau.pdf
 /backup/gerais
 /backup/Backup*.sql
 
+/logs/*
 
 teste.php
 /dbdata
