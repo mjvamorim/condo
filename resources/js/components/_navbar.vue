@@ -90,7 +90,7 @@ export default {
 
   methods: {
     logout() {
-      axios.post("/logout").then(response => window.location.reload());
+      axios.post("/logout").then(response => window.location.href = '/login');
     },
     markAsRead() {
       // axios.get("/mark-all-read/" + this.user.id).then(response => {

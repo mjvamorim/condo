@@ -29,7 +29,7 @@ Route::get('/', 'HomeController@index')->name('index');
 
 Route::middleware(['auth','verified','tenant'])->group(function () {
 
-    Route::get('/home', 'HomeController@home')->name('home');
+    Route::get('/home', 'HomeController@index')->name('home');
 
     //Formulario de Débitos
     Route::get('debitos', 'DebitoController@index')->name('frmDebitos');
