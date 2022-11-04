@@ -50,7 +50,7 @@
       </v-list-item>
     </v-list-group>
 
-    <v-list-group no-action prepend-icon="apartment">
+    <!-- <v-list-group no-action prepend-icon="apartment">
       <template v-slot:activator>
         <v-list-item-title>Administração</v-list-item-title>
       </template>
@@ -61,8 +61,7 @@
         <v-list-item-content>
           <v-list-item-title>Usuários</v-list-item-title>
         </v-list-item-content>
-      </v-list-item>
-
+      </v-list-item> 
       <v-list-item to="/admin/empresas">
         <v-list-item-action>
           <v-icon>business_center</v-icon>
@@ -71,7 +70,7 @@
           <v-list-item-title>Empresas</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-    </v-list-group>
+    </v-list-group> -->
 
     <v-list-group no-action prepend-icon="request_quote">
       <template v-slot:activator>
