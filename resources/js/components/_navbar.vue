@@ -4,7 +4,7 @@
     <v-toolbar-title class="mr-12 align-center">Gestão de Condomínios</v-toolbar-title>
     <v-spacer></v-spacer>
 
-    <v-menu
+    <!-- <v-menu
       offset-y
       origin="center center"
       class="elelvation-1"
@@ -40,7 +40,7 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-    </v-menu>
+    </v-menu> -->
     <v-menu offset-y origin="center center" :nudge-bottom="10" transition="scale-transition">
       <template v-slot:activator="{ on }">
         <v-btn v-on="on" icon large text>

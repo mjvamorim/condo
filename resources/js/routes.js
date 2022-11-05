@@ -15,6 +15,8 @@ import Taxas from "./pages/Taxas";
 import Debitos from "./pages/Debitos";
 import Acordos from "./pages/Acordos";
 import AcordoNovo from "./pages/AcordoNovo";
+import GerarMensalidades from "./pages/GerarMensalidades";
+
 
 const routes = [
     {
@@ -64,6 +66,10 @@ const routes = [
     {
         path: "/admin/acordo_novo",
         component: AcordoNovo
+    },
+    {
+        path: "/admin/gerar_mensalidades",
+        component: GerarMensalidades
     }
 ];
 

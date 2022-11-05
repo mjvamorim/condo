@@ -76,7 +76,7 @@
       <template v-slot:activator>
         <v-list-item-title>Rotinas Financeiras</v-list-item-title>
       </template>
-      <v-list-item to="/admin/GerarMensalidades">
+      <v-list-item to="/admin/gerar_mensalidades">
         <v-list-item-action>
           <v-icon>credit_card</v-icon>
         </v-list-item-action>

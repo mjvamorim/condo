@@ -26,10 +26,11 @@ Route::get('faleConosco', 'UtilController@faleConosco')->name('faleConosco');
 Route::get('manual', 'UtilController@manual')->name('manual');
 Route::get('planilha', 'UtilController@planilha')->name('planilha');
 Route::get('/', 'HomeController@index')->name('index');
+Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware(['auth','verified','tenant'])->group(function () {
 
-    Route::get('/home', 'HomeController@index')->name('home');
+    // Route::get('/home', 'HomeController@index')->name('home');
 
     //Formulario de Débitos
     Route::get('debitos', 'DebitoController@index')->name('frmDebitos');

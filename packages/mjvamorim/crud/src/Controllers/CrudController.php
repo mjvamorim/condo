@@ -29,7 +29,7 @@ class CrudController extends Controller
             return view('crud::crudview',compact('showables','model','filtro'));
         }
   
-        return redirect('/home'); 
+        return redirect('/admin'); 
     }
 
     function getData($model,Request $request)
