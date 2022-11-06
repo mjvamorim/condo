@@ -5,7 +5,7 @@
 
     </v-card-title>
     <v-card-text>
-      <p> Para geração dos boletos é necessário:</p>
+      <p> Para geração dos boletos são necessários os seguintes passos:</p>
 
 		<ul>
 			<li>Clicar em Administração/Empresas/Alterar e fornecer os dados da sua conta de recebimento: (CNPJ, CEP, Banco, Agencia, Conta, Carteira e Convênio).  </li>

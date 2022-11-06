@@ -117,7 +117,7 @@
       <template v-slot:activator>
         <v-list-item-title>Utilidades</v-list-item-title>
       </template>
-      <v-list-item to="/admin/Manual">
+      <v-list-item href="/manual" >
         <v-list-item-action>
           <v-icon>menu_book</v-icon>
         </v-list-item-action>
