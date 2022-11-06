@@ -89,7 +89,6 @@
                     v-model="editedItem.conjuge_nome"
                     outlined
                     label="Nome Conjuge"
-                    :rules="[rules.required]"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
@@ -97,7 +96,6 @@
                     v-model="editedItem.conjuge_cpf"
                     outlined
                     label="Cpf Conjuge"
-                    :rules="[rules.required]"
                     v-mask="[
                                             '###.###.###-##',
                                             '##.###.###/####-##'
