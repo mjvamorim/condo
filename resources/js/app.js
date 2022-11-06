@@ -27,10 +27,10 @@ Vue.use(VCurrencyField, {
     defaultValue: 0
 })
 
-Vue.component(
-    "example-component",
-    require("./components/ExampleComponent.vue").default
-);
+// Vue.component(
+//     "example-component",
+//     require("./components/ExampleComponent.vue").default
+// );
 Vue.component("admin", require("./components/Admin.vue").default);
 
 const opts = {};
