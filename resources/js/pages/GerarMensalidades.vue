@@ -19,8 +19,8 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="blue darken-1" text to="/admin/">Cancel</v-btn>
-      <v-btn color="primary" text @click="gerarMensalidades">Save</v-btn>
+      <v-btn color="blue darken-1" text to="/admin/">Voltar</v-btn>
+      <v-btn color="primary" text @click="gerarMensalidades">Executar</v-btn>
     </v-card-actions>
   </v-card>
 </template>

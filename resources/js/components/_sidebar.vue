@@ -85,7 +85,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item to="/admin/GerarRemessa">
+      <v-list-item to="/admin/gerar_remessa">
         <v-list-item-action>
           <v-icon>save</v-icon>
         </v-list-item-action>
@@ -94,7 +94,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item to="/admin/BaixasBancarias">
+      <v-list-item to="/admin/baixas_bancarias">
         <v-list-item-action>
           <v-icon>compare_arrows</v-icon>
         </v-list-item-action>
@@ -126,7 +126,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item to="/admin/Log">
+      <v-list-item to="/admin/log">
         <v-list-item-action>
           <v-icon>speed</v-icon>
         </v-list-item-action>
@@ -135,7 +135,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item to="/admin/Emails">
+      <v-list-item to="/admin/emails_enviados">
         <v-list-item-action>
           <v-icon>email</v-icon>
         </v-list-item-action>

@@ -1,26 +1,18 @@
 <template>
     <v-card elevation="2" outlined shaped>
       <v-card-title>
-        Gerar Mensalidades
+        Gerar Remessa 03
   
       </v-card-title>
       <v-card-text>
-        <v-select
-        v-model="taxa_id"
-        :items="allTaxas"
-        label="Taxa"
-        item-text="anomes"
-        item-value="id"
-        outlined
-        return-value
-        :rules="[rules.required]"
-        ></v-select>
-  
+       
+
+
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text to="/admin/">Cancel</v-btn>
-        <v-btn color="primary" text @click="gerarMensalidades">Save</v-btn>
+        <v-btn color="blue " text to="/admin/">Voltar</v-btn>
+        <v-btn color="primary" text @click="gerarRemessa">Executar</v-btn>
       </v-card-actions>
     </v-card>
   </template>
@@ -28,37 +20,36 @@
   <script>
   export default {
     data: () => ({
-      allTaxas: [],
-      taxa_id: 0,
-      rules: {
-        required: (value) => !!value || "*Obrigatório",
-      },
+
+      
     }),
     created() {
-      this.initialize();
+      this.inicializa();
     },
     methods: {
-      initialize() {
-        axios
-        .get("/api/taxas")
-        .then((response) => {
-          this.allTaxas = response.data;
-        })
-        .catch((error) => console.log(error));
-        
+      inicializa() {
+      
       },
-      gerarMensalidades() {
-        console.log(this.taxa_id);
-        if(this.taxa_id && confirm("Confirma a geração das mensalidades para "+this.taxa_id+"?")){
+      gerarRemessa() {
+        if(confirm("Confirma a geração das Remessa?")){
           axios
-          .post("/financeiro/gerarMensalidades",this.taxa_id)
+          .post("/financeiro/gerarRemessa")
           .then((response) => {
             alert('Boletos Gerados!')
-            console.log(response)
+            console.log(response);
+            var fileName = xhr.getResponseHeader('content-disposition').split('filename=')[1].split(';')[0];
+            console.log(fileName);
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            if (error.response) {
+              // The request was made and the server responded with a status code
+              // that falls out of the range of 2xx
+              console.log(error.response);
+              alert(error.response.data.errors[0]);
+            } 
+            
+          });
         }
-        
       }
     },
   };

@@ -484,7 +484,7 @@ class FinanceiroController extends Controller
     //------------------------------------GerarRemessa-----------------------------------//
     public function gerarRemessa(Request $request) {
         if (!$this->empresaValida()) {
-            return redirect('/crud/empresa')->withError(['O banco, agencia ou numero da conta precisam ser configurados no cadastro da empresa']);
+            //return redirect('/crud/empresa')->withError(['O banco, agencia ou numero da conta precisam ser configurados no cadastro da empresa']);
         }
 
         $remessa = $this->montaRemessa();
@@ -495,7 +495,7 @@ class FinanceiroController extends Controller
             ->where($clausulaWhere)
             ->get();
         if($debitos->count() == 0) {
-            return redirect()->route('home')->withError(['Não existem remessas a serem enviadas!']);
+            //return redirect()->route('home')->withError(['Não existem remessas a serem enviadas!']);
         }
 
         foreach($debitos as $debito ){
