@@ -1,7 +1,7 @@
 <template>
     <v-card elevation="2" outlined shaped>
       <v-card-title>
-        Gerar Remessa 03
+        Gerar Remessa
   
       </v-card-title>
       <v-card-text>
@@ -31,24 +31,19 @@
       
       },
       gerarRemessa() {
+        const FileDownload = require('js-file-download');
         if(confirm("Confirma a geração das Remessa?")){
-          axios
-          .post("/financeiro/gerarRemessa")
-          .then((response) => {
-            alert('Boletos Gerados!')
-            console.log(response);
-            var fileName = xhr.getResponseHeader('content-disposition').split('filename=')[1].split(';')[0];
-            console.log(fileName);
+          axios({url: "/financeiro/gerarRemessa",
+            method: 'POST',
+            // responseType: 'blob', // important
           })
-          .catch((error) => {
-            if (error.response) {
-              // The request was made and the server responded with a status code
-              // that falls out of the range of 2xx
-              console.log(error.response);
-              alert(error.response.data.errors[0]);
-            } 
-            
-          });
+          .then((response) => {
+            console.log(response);
+            let fileName = response.headers["content-disposition"].split("filename=")[1];
+            console.log(fileName);
+            FileDownload(response.data, fileName);
+          })
+          .catch((error) => alert(error.response.data.error));
         }
       }
     },

@@ -28,6 +28,7 @@
         "@mdi/font": "^5.3.45",
         "@mdi/js": "^7.0.96",
         "inputmask": "^5.0.3",
+        "js-file-download": "^0.4.12",
         "laravel-echo": "^1.5.3",
         "mdi-vue": "^3.0.13",
         "pusher-js": "^4.4.0",

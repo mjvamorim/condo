@@ -34,6 +34,7 @@
 	// "remoteUser": "vscode"
 	"extensions": [
 		"xdebug.php-debug",
-		"Vue.volar"
+		"Vue.volar",
+		"ms-vscode.js-debug-nightly"
 	]
 }
