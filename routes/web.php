@@ -60,6 +60,7 @@ Route::middleware(['auth','verified','tenant'])->group(function () {
     Route::post('financeiro/gerarRemessa', 'FinanceiroController@gerarRemessa')->name('gerarRemessa');
 
     Route::get('log/get', 'UtilController@getlog')->name('getlog');
+    Route::get('log/file', 'UtilController@logfile')->name('logfile');
     Route::post('log/save', 'UtilController@savelog')->name('savelog');
 
     Route::get('importacao', 'ImportController@index')->name('get-importacao');

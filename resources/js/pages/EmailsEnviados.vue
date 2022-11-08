@@ -69,11 +69,11 @@
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field
+                  <v-textarea
                     v-model="editedItem.mensagem"
                     outlined
                     label="Mensagem"
-                  ></v-text-field>
+                  ></v-textarea>
                 </v-flex>
                 
               </v-layout>

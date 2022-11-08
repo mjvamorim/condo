@@ -13,17 +13,6 @@ sudo supervisorctl stop all
 php artisan queue:retry 43
 php artisan queue:work
 
-## Tarefas
-Proprietarios
-   - Conjuge
-   
-
-## Vue passo a passo
-Criar uma página para cada opçao do menu
-   a) Criar o arquivo na pasta pages, copiar do Dashboard.vue
-   b) Importar página
-   c) Criar rota
-   d) Alterar sidebar, link para rota
 
 
 # Tarefas

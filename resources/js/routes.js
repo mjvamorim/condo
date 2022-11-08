@@ -18,6 +18,7 @@ import AcordoNovo from "./pages/AcordoNovo";
 import GerarMensalidades from "./pages/GerarMensalidades";
 import GerarRemessa from "./pages/GerarRemessa";
 import EmailsEnviados from "./pages/EmailsEnviados";
+import LogBaixas from "./pages/LogBaixas";
 
 
 const routes = [
@@ -80,6 +81,10 @@ const routes = [
     {
         path: "/admin/emails_enviados",
         component: EmailsEnviados
+    },
+    {
+        path: "/admin/log_baixas",
+        component: LogBaixas
     }
 ];
 

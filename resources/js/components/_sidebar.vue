@@ -126,7 +126,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item to="/admin/log">
+      <v-list-item to="/admin/log_baixas">
         <v-list-item-action>
           <v-icon>speed</v-icon>
         </v-list-item-action>

@@ -51,6 +51,15 @@ class UtilController extends Controller
         return view('utils.FrmLogs',compact('logcontent'));
     }
 
+    function logfile() {
+        $file_name = 'Log-Retorno-'.auth()->user()->empresa->id .'.txt';
+        if (!Storage::exists($file_name)) {
+            Storage::put($file_name,'');
+        }
+        $logcontent = Storage::get($file_name);
+        return response()->json( $logcontent, 200);
+    }
+
     function savelog(Request $request) {
         $file_name = 'Log-Retorno-'.auth()->user()->empresa->id .'.txt';
         $logcontent = $request->input('log');
