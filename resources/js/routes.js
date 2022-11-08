@@ -17,6 +17,7 @@ import Acordos from "./pages/Acordos";
 import AcordoNovo from "./pages/AcordoNovo";
 import GerarMensalidades from "./pages/GerarMensalidades";
 import GerarRemessa from "./pages/GerarRemessa";
+import EmailsEnviados from "./pages/EmailsEnviados";
 
 
 const routes = [
@@ -75,6 +76,10 @@ const routes = [
     {
         path: "/admin/gerar_remessa",
         component: GerarRemessa
+    },    
+    {
+        path: "/admin/emails_enviados",
+        component: EmailsEnviados
     }
 ];
 

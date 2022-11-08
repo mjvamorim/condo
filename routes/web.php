@@ -80,6 +80,7 @@ Route::middleware(['auth','verified','tenant'])->group(function () {
     Route::apiResource('api/debitos', 'Api\DebitoController');
     Route::apiResource('api/estados', 'Api\EstadoController');
     Route::apiResource('api/acordos', 'Api\AcordoController');
+    Route::apiResource('api/emails', 'Api\EmailController');
     Route::post('api/gerarAcordo', 'Api\AcordoController@gerarAcordo');
 
 });

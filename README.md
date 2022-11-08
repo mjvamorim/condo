@@ -28,11 +28,13 @@ Criar uma página para cada opçao do menu
 
 # Tarefas
 - Diminuir fonte do menu
-- Gerar Remessa
 - Baixas Bancárias
-- Manual do Usuário (ok)
 - Log de Baixas
+
+# Tarefas concluidas
 - Emails enviados
+- Manual do Usuário 
+- Gerar Remessa 
 
 
 
