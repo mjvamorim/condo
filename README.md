@@ -17,7 +17,6 @@ php artisan queue:retry 43
 php artisan queue:work
 
 
-
 # Tarefas
 - Baixas Bancárias
 - Colocar ampulheta quando acessar axios

@@ -476,6 +476,67 @@ class FinanceiroController extends Controller
         return $saida;
     }
 
+    public function baixasBancariaApi(Request $request) {
+        //Pegar arquivo
+        $files = $request->file('files');
+
+        if (!is_array($files)) {
+            $files = [$files];
+        }
+        // $file = $files[0];
+        $saida = " ";
+        foreach($files as $file) {
+            //$name = sha1(date('YmdHis') . str_random(30)).'ret';
+            $name = $file->getClientOriginalName();
+            $file->move($this->baixas_path, $name);
+            $file_full_name = $this->baixas_path . DIRECTORY_SEPARATOR . $name;
+
+            $retorno = \Eduardokum\LaravelBoleto\Cnab\Retorno\Factory::make($file_full_name);
+            $retorno->processar();
+            $saida .= PHP_EOL .'***************** Data: '.date('d-m-Y').' Arquivo: ' . $name . '  ***************** ';
+            foreach($retorno->getDetalhes() as $detalhe){
+                // Ocorrencias
+                // 02-Entrada Confirmada
+                // 03-Entrada Rejeitada - Ver motivo
+                // 06-Baixa
+                $baixou = 'Não';
+                $unidade = '';
+                $dtvencto = '';
+                if($detalhe->ocorrencia=='06') { //Baixa
+                    $debito = Debito::where('boleto', $detalhe->numeroDocumento)->first();
+                    if ($debito){
+                        $debito->dtpagto   = Carbon::createFromFormat('d/m/Y', $detalhe->dataCredito)->format('Y-m-d');
+                        $debito->valorpago = $detalhe->valorRecebido + $detalhe->valorTarifa;
+                        $debito->save();
+                        $baixou = 'Sim';
+                        $unidade = $debito->unidade->descricao;
+                        $dtvencto = $debito->dtvencto;
+                    }
+                }
+                $saida .= PHP_EOL .'Boleto: '.sprintf('%08d', $detalhe->numeroDocumento)
+                   .'  '.$detalhe->ocorrencia
+                    .'-'.substr(str_pad($detalhe->ocorrenciaDescricao,45," "),0,45);
+                if($detalhe->ocorrencia=='06') {
+                    $saida .= ' Valor: '.@money_format('%(#10n',$detalhe->valorRecebido + $detalhe->valorTarifa)
+                   .' Dt.Pagto: '.$detalhe->dataCredito
+                   .' Baixou: '.$baixou
+                   .' Unidade: '.$unidade
+                   .' - '.$dtvencto;
+                }
+
+                $saida .= '  '.$detalhe->error;
+
+
+
+            }
+        }
+        $saida .= PHP_EOL .PHP_EOL;
+        $arq = 'Log-Retorno-'.auth()->user()->empresa->id .'.txt';
+        Storage::append($arq,$saida);
+        return response()->json($saida);
+        return $saida;
+    }
+
     //------------------------------------FrmGerarRemessa-----------------------------------//
     public function frmGerarRemessa() {
         return view('financeiro.FrmGerarRemessa');

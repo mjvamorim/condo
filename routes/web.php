@@ -55,21 +55,21 @@ Route::middleware(['auth','verified','tenant'])->group(function () {
 
     Route::get('financeiro/frmBaixasBancaria', 'FinanceiroController@frmBaixasBancaria')->name('frmBaixasBancaria');
     Route::post('financeiro/baixasBancaria', 'FinanceiroController@baixasBancaria')->name('baixasBancaria');
-
+    
     Route::get('financeiro/frmGerarRemessa', 'FinanceiroController@frmGerarRemessa')->name('frmGerarRemessa');
     Route::post('financeiro/gerarRemessa', 'FinanceiroController@gerarRemessa')->name('gerarRemessa');
-
+    
     Route::get('log/get', 'UtilController@getlog')->name('getlog');
     Route::get('log/file', 'UtilController@logfile')->name('logfile');
     Route::post('log/save', 'UtilController@savelog')->name('savelog');
-
+    
     Route::get('importacao', 'ImportController@index')->name('get-importacao');
     Route::post('importacao', 'ImportController@importacao')->name('importacao');
-
+    
     Route::get('acordos', 'AcordoController@index')->name('acordos');
     Route::get('acordos/getdata', 'AcordoController@getData');
     Route::post('acordos/getdata', 'AcordoController@getData');
-
+    
 });
 
 //Apis
@@ -83,7 +83,8 @@ Route::middleware(['auth','verified','tenant'])->group(function () {
     Route::apiResource('api/acordos', 'Api\AcordoController');
     Route::apiResource('api/emails', 'Api\EmailController');
     Route::post('api/gerarAcordo', 'Api\AcordoController@gerarAcordo');
-
+    Route::post('api/baixasBancaria', 'FinanceiroController@baixasBancariaApi')->name('baixasBancariaApi');
+    
 });
 Route::middleware(['auth','verified','tenant'])->group(function () {
     Route::apiResource('api/users', 'AdminApi\UserController');
