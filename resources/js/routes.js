@@ -19,6 +19,7 @@ import GerarMensalidades from "./pages/GerarMensalidades";
 import GerarRemessa from "./pages/GerarRemessa";
 import EmailsEnviados from "./pages/EmailsEnviados";
 import LogBaixas from "./pages/LogBaixas";
+import BaixasBancarias from "./pages/BaixasBancarias";
 
 
 const routes = [
@@ -85,6 +86,10 @@ const routes = [
     {
         path: "/admin/log_baixas",
         component: LogBaixas
+    },
+    {
+        path: "/admin/baixas_bancarias",
+        component: BaixasBancarias
     }
 ];
 

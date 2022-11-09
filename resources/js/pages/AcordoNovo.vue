@@ -230,7 +230,7 @@
 export default {
   name: "acordoNovo",
   props: ["unidade_id"],
-  data: () => ({
+  data: {
     tab: 0,
     menuDtInicial: null,
     menuData: null,
@@ -278,7 +278,7 @@ export default {
 
     totDebitos: 0,
     totPrestacoes: 0,
-  }),
+  },
 
   created() {
     this.initialize();
