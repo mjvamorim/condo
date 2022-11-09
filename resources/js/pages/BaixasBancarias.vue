@@ -1,13 +1,15 @@
 <template>   
   <v-card>
     <v-card-title>
-      <span class="headline">Baixas Bancárias</span>
+      <span class="headline">Baixas Bancárias API</span>
     </v-card-title>
     <v-card-text>
       <v-file-input v-model="files" small-chips  multiple
         accept=".txt"
         label="Clique aqui e selecione o(s) arquivos de baixa">
       </v-file-input>
+      <v-textarea v-model="log"  outlined label="Mensagem" >
+      </v-textarea>
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
@@ -21,20 +23,26 @@
 export default {
   data: () => ({
    files: null,
+   log: ""
   }),
   
   methods: {
     save() {
+      let header= {headers: {'Content-Type': 'multipart/form-data'}}
       if(this.files) {
+        let i=0;
         let formData = new FormData();
         for (let file of this.files) {
-            formData.append("file", file, file.name);
+            formData.append('files[' + i + ']', file, file.name);
+            i++;
         }
         axios
-        .post("/financeiro/baixasBancaria", formData)
+        .post("/api/baixasBancaria", formData,header)
         .then((response) => {
-            console.log(response);
-            self.$router.push('/admin');
+            console.log(response.data);
+            this.files = null;
+            this.log = response.data;
+            // self.$router.push('/admin');
             //alert('Log Salvo!')
         })
         .catch((error) => {
