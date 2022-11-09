@@ -19,11 +19,12 @@ php artisan queue:work
 
 
 # Tarefas
-- Diminuir fonte do menu
 - Baixas Bancárias
-- Log de Baixas
+- Colocar ampulheta quando acessar axios
 
 # Tarefas concluidas
+- Log de Baixas
+- Diminuir fonte do menu
 - Emails enviados
 - Manual do Usuário 
 - Gerar Remessa 

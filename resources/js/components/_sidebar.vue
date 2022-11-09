@@ -156,6 +156,10 @@ export default {};
   .v-list-group--no-action
   > .v-list-group__items
   > .v-list-item {
-  padding-left: 31px;
+  padding-left: 30px;
+  max-height: 30px;
+  text-decoration: none;
+
+
 }
 </style>
