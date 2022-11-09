@@ -8,6 +8,9 @@ php artisan serve
 npm install
 npm run watch
 
+# restaurar o backup dos banco de dados
+pasta backup/*.sql
+
 # reiniciar a fila 
 sudo supervisorctl stop all
 php artisan queue:retry 43
@@ -16,11 +19,10 @@ php artisan queue:work
 
 
 # Tarefas
-- Diminuir fonte do menu
 - Baixas Bancárias
+- Colocar ampulheta quando acessar axios
 
 # Tarefas concluidas
-- Log de Baixas
 - Emails enviados
 - Manual do Usuário 
 - Gerar Remessa 
