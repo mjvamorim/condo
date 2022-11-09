@@ -17,7 +17,7 @@
         </v-container>
       </v-main>
       <v-footer app fixed>
-        <span>&copy; 2019</span>
+        <span>&copy; 2022</span>
       </v-footer>
     </v-app>
   </div>
