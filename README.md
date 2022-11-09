@@ -18,9 +18,9 @@ php artisan queue:work
 # Tarefas
 - Diminuir fonte do menu
 - Baixas Bancárias
-- Log de Baixas
 
 # Tarefas concluidas
+- Log de Baixas
 - Emails enviados
 - Manual do Usuário 
 - Gerar Remessa 
