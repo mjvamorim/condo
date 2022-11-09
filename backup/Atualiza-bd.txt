@@ -1,0 +1,3 @@
+update condo.empresas set
+ db_host='mariadb'
+ where id > 0;

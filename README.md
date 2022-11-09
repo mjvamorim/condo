@@ -8,6 +8,9 @@ php artisan serve
 npm install
 npm run watch
 
+# restaurar o backup dos banco de dados
+pasta backup/*.sql
+
 # reiniciar a fila 
 sudo supervisorctl stop all
 php artisan queue:retry 43
