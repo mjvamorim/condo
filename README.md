@@ -18,6 +18,7 @@ php artisan queue:work
 
 
 # Tarefas
+- Proprietarios Remover mascara Telefone e Celular 
 - Baixas Bancárias
 - Colocar ampulheta quando acessar axios
 

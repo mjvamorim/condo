@@ -30,12 +30,10 @@ export default {
     save() {
       let header= {headers: {'Content-Type': 'multipart/form-data'}}
       if(this.files) {
-        let i=0;
         let formData = new FormData();
-        for (let file of this.files) {
-            formData.append('files[' + i + ']', file, file.name);
-            i++;
-        }
+        this.files.forEach((file,i)=>{
+          formData.append('files[' + i + ']', file, file.name)
+        });
         axios
         .post("/api/baixasBancaria", formData,header)
         .then((response) => {
