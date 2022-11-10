@@ -4,7 +4,8 @@ FROM php:7.2-fpm
 WORKDIR /var/www
 
 # Install dependencies
-RUN apt update && apt-get install -y \
+RUN apt update && apt upgrade -y
+RUN apt-get install -y \
     sudo \
     build-essential \
     default-mysql-client \
@@ -18,10 +19,7 @@ RUN apt update && apt-get install -y \
     unzip \
     git \
     curl \
-    zlib1g-dev libicu-dev g++ \
-    nodejs npm
-
-
+    zlib1g-dev libicu-dev g++
 
 # # Clear cache
 RUN apt clean && rm -rf /var/lib/apt/lists/*
@@ -29,7 +27,7 @@ RUN apt clean && rm -rf /var/lib/apt/lists/*
 # # Install extensions
 RUN docker-php-ext-install mbstring zip exif pcntl
 
-RUN docker-php-ext-install pdo pdo_mysql 
+RUN docker-php-ext-install pdo pdo_mysql
 RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
 
 RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
@@ -46,9 +44,20 @@ RUN docker-php-ext-enable xdebug
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# # Add user for laravel application
+ENV NODE_VERSION=16.13.0
+RUN apt install -y curl
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+ENV NVM_DIR=/root/.nvm
+RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
+RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
+RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
+ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
+RUN node --version
+RUN npm --version
+RUN chmod go+rwx /root -R
+# Add user for laravel application
 RUN groupadd -g 1000 www
-RUN useradd -u 1000 -ms /bin/bash -g www www 
+RUN useradd -u 1000 -ms /bin/bash -g www www
 RUN echo "www:www" | chpasswd && adduser www sudo
 
 # # Copy existing application directory contents
