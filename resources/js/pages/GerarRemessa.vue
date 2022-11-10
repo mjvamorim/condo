@@ -2,10 +2,9 @@
     <v-card elevation="2" outlined shaped>
       <v-card-title>
         Gerar Remessa
-  
-      </v-card-title>
+          </v-card-title>
       <v-card-text>
-       
+
 
 
       </v-card-text>
@@ -16,19 +15,19 @@
       </v-card-actions>
     </v-card>
   </template>
-    
+
   <script>
   export default {
     data: () => ({
 
-      
+
     }),
     created() {
       this.inicializa();
     },
     methods: {
       inicializa() {
-      
+
       },
       gerarRemessa() {
         const FileDownload = require('js-file-download');
@@ -54,4 +53,3 @@
     font-size: 18px;
   }
   </style>
-    

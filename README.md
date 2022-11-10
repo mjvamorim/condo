@@ -18,11 +18,16 @@ php artisan queue:work
 
 
 # Tarefas
-- Proprietarios Remover mascara Telefone e Celular 
-- Baixas Bancárias
+- Quando salvar acertar fonte
+   - Vue
+   - Php
+   - JS
+- Passar para Vite
 - Colocar ampulheta quando acessar axios
 
 # Tarefas concluidas
+- Baixas Bancárias
+- Proprietarios Remover mascara Telefone e Celular 
 - Emails enviados
 - Manual do Usuário 
 - Gerar Remessa 

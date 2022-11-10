@@ -35,6 +35,11 @@
 	"extensions": [
 		"xdebug.php-debug",
 		"Vue.volar",
-		"ms-vscode.js-debug-nightly"
+		"ms-vscode.js-debug-nightly",
+		"dariofuzinato.vue-peek",
+		"octref.vetur",
+		"sdras.vue-vscode-snippets",
+		"dbaeumer.vscode-eslint",
+        "EditorConfig.EditorConfig"
 	]
 }

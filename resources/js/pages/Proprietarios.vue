@@ -52,10 +52,6 @@
                     v-model="editedItem.celular"
                     outlined
                     label="Celular"
-                    v-mask="[
-                                            '(##)####-####',
-                                            '(##)#####-####'
-                                        ]"
                   ></v-text-field>
                 </v-flex>
 
@@ -64,10 +60,6 @@
                     v-model="editedItem.fixo"
                     outlined
                     label="Telefone Fixo"
-                    v-mask="[
-                                            '(##)####-####',
-                                            '(##)#####-####'
-                                        ]"
                   ></v-text-field>
                 </v-flex>
 
