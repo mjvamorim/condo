@@ -8,15 +8,17 @@
         </v-col>
         <v-col align="right">
           <v-dialog v-model="dialog" max-width="700px">
-            <template v-slot:activator="form">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn icon v-bind="attrs" v-on="on">
-                <v-icon v-on="form.on" color="primary">mdi-plus-circle-outline</v-icon>
-              </v-btn>
-            </template>
-            <span>Cadastrar novo Item</span>
-          </v-tooltip>
+            <template #activator="form">
+              <v-tooltip bottom>
+                <template #activator="{ on, attrs }">
+                  <v-btn icon v-bind="attrs" v-on="on">
+                    <v-icon color="primary" v-on="form.on"
+                      >mdi-plus-circle-outline</v-icon
+                    >
+                  </v-btn>
+                </template>
+                <span>Cadastrar novo Item</span>
+              </v-tooltip>
             </template>
             <v-card>
               <v-card-title>
@@ -46,12 +48,15 @@
                         :mandatory="true"
                       >
                         <v-radio label="Avulso" value="Avulso"></v-radio>
-                        <v-radio label="Mensalidade" value="Mensalidade"></v-radio>
+                        <v-radio
+                          label="Mensalidade"
+                          value="Mensalidade"
+                        ></v-radio>
                         <v-radio label="Acordo" value="Acordo"></v-radio>
                         <v-radio label="Multa" value="Multa"></v-radio>
                       </v-radio-group>
                     </v-flex>
-                    <v-flex xs12 v-if="editedItem.tipo=='Mensalidade'">
+                    <v-flex v-if="editedItem.tipo == 'Mensalidade'" xs12>
                       <v-select
                         v-model="editedItem.taxa_id"
                         :items="allTaxas"
@@ -63,17 +68,21 @@
                         :rules="[rules.required]"
                       ></v-select>
                     </v-flex>
-                    <v-flex xs12 v-if="editedItem.tipo=='Acordo'">
+                    <v-flex v-if="editedItem.tipo == 'Acordo'" xs12>
                       <v-text-field
                         v-model="editedItem.acordo_id"
+                        v-mask="['######']"
                         outlined
                         label="Acordo"
-                        v-mask="['######']"
                         :rules="[rules.required]"
                       ></v-text-field>
                     </v-flex>
                     <v-flex xs12>
-                      <v-textarea v-model="editedItem.on" label="Obs" outlined></v-textarea>
+                      <v-textarea
+                        v-model="editedItem.on"
+                        label="Obs"
+                        outlined
+                      ></v-textarea>
                     </v-flex>
                     <v-flex xs12>
                       <v-menu
@@ -84,24 +93,28 @@
                         offset-y
                         min-width="290px"
                       >
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                           <v-text-field
                             v-model="editedItem.dtvencto"
                             label="Vencimento"
                             outlined
                             v-bind="attrs"
-                            v-on="on"
                             :rules="[rules.required]"
+                            v-on="on"
                           ></v-text-field>
                         </template>
-                        <v-date-picker v-model="editedItem.dtvencto" @input="menu = false" no-title></v-date-picker>
+                        <v-date-picker
+                          v-model="editedItem.dtvencto"
+                          no-title
+                          @input="menu = false"
+                        ></v-date-picker>
                       </v-menu>
                     </v-flex>
                     <v-flex xs12>
                       <v-currency-field
+                        v-model="editedItem.valor"
                         label="Valor"
                         outlined
-                        v-model="editedItem.valor"
                         :rules="[rules.required]"
                       />
                     </v-flex>
@@ -114,24 +127,28 @@
                         offset-y
                         min-width="290px"
                       >
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                           <v-text-field
                             v-model="editedItem.dtpagto"
                             label="Pagamento"
                             outlined
                             v-bind="attrs"
-                            v-on="on"
                             :rules="[rules.required]"
+                            v-on="on"
                           ></v-text-field>
                         </template>
-                        <v-date-picker v-model="editedItem.dtpagto" @input="menu2 = false" no-title></v-date-picker>
+                        <v-date-picker
+                          v-model="editedItem.dtpagto"
+                          no-title
+                          @input="menu2 = false"
+                        ></v-date-picker>
                       </v-menu>
                     </v-flex>
                     <v-flex xs12>
                       <v-currency-field
+                        v-model="editedItem.valorpago"
                         label="Valor Pago"
                         outlined
-                        v-model="editedItem.valorpago"
                         :rules="[rules.required]"
                       />
                     </v-flex>
@@ -208,17 +225,21 @@
             transition="scale-transition"
             offset-y
           >
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-text-field
                 v-model="filtroItem.dtini"
                 label="Data Inicial*"
                 outlined
                 v-bind="attrs"
-                v-on="on"
                 dense
+                v-on="on"
               ></v-text-field>
             </template>
-            <v-date-picker v-model="filtroItem.dtini" @input="menu3 = false" no-title></v-date-picker>
+            <v-date-picker
+              v-model="filtroItem.dtini"
+              no-title
+              @input="menu3 = false"
+            ></v-date-picker>
           </v-menu>
         </v-col>
         <v-col :cols="2">
@@ -229,17 +250,21 @@
             transition="scale-transition"
             offset-y
           >
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-text-field
                 v-model="filtroItem.dtfim"
                 label="Data Final*"
                 outlined
                 v-bind="attrs"
-                v-on="on"
                 dense
+                v-on="on"
               ></v-text-field>
             </template>
-            <v-date-picker v-model="filtroItem.dtfim" @input="menu4 = false" no-title></v-date-picker>
+            <v-date-picker
+              v-model="filtroItem.dtfim"
+              no-title
+              @input="menu4 = false"
+            ></v-date-picker>
           </v-menu>
         </v-col>
         <v-col :cols="4">
@@ -302,58 +327,80 @@
       :search="search"
       fixed-header
       dense
-      :items-per-page=20
+      :items-per-page="20"
       :must-sort="true"
       sort-by="unidade_id"
       class="elevation-1"
     >
-      <template v-slot:item.unidade_id="{ item }">
-        {{
-        unidadeDescricao(item.unidade_id)
-        }}
+      <template #item.unidade_id="{ item }">
+        {{ unidadeDescricao(item.unidade_id) }}
       </template>
-      <template v-slot:item.action="{ item }">
-        <v-tooltip bottom> 
-          <template v-slot:activator="{on, attrs }">
-            <v-icon small class="mr-2" @click="editItem(item)" v-bind="attrs" v-on="on">edit</v-icon>
+      <template #item.action="{ item }">
+        <v-tooltip bottom>
+          <template #activator="{ on, attrs }">
+            <v-icon
+              small
+              class="mr-2"
+              v-bind="attrs"
+              @click="editItem(item)"
+              v-on="on"
+              >edit</v-icon
+            >
           </template>
           <span>Alterar</span>
-        </v-tooltip> 
-        <v-tooltip bottom> 
-          <template v-slot:activator="{on, attrs }">
-            <v-icon small @click="deleteItem(item)" v-bind="attrs" v-on="on">delete</v-icon>
+        </v-tooltip>
+        <v-tooltip bottom>
+          <template #activator="{ on, attrs }">
+            <v-icon small v-bind="attrs" @click="deleteItem(item)" v-on="on"
+              >delete</v-icon
+            >
           </template>
           <span>Apagar</span>
         </v-tooltip>
-        <v-tooltip bottom> 
-          <template v-slot:activator="{on, attrs }">
-            <v-icon small @click="boletosImpressoUnico(item)" v-bind="attrs" v-on="on">{{mdiBarcode}}
+        <v-tooltip bottom>
+          <template #activator="{ on, attrs }">
+            <v-icon
+              small
+              v-bind="attrs"
+              @click="boletosImpressoUnico(item)"
+              v-on="on"
+              >{{ mdiBarcode }}
             </v-icon>
           </template>
           <span>Boleto</span>
         </v-tooltip>
-        <v-tooltip bottom> 
-          <template v-slot:activator="{on, attrs }">
-            <v-icon small @click="boletosEmailUnico(item)" v-bind="attrs" v-on="on">email</v-icon>
+        <v-tooltip bottom>
+          <template #activator="{ on, attrs }">
+            <v-icon
+              small
+              v-bind="attrs"
+              @click="boletosEmailUnico(item)"
+              v-on="on"
+              >email</v-icon
+            >
           </template>
           <span>Boleto por Email</span>
         </v-tooltip>
       </template>
-      <template v-slot:item.valor="{ item }">
-        <div class="text-right">R$ {{item.valor ? item.valor.toFixed(2) : '0,00'}}</div>
+      <template #item.valor="{ item }">
+        <div class="text-right">
+          R$ {{ item.valor ? item.valor.toFixed(2) : "0,00" }}
+        </div>
       </template>
-      <template v-slot:item.valorpago="{ item }">
-        <div class="text-right">R$ {{item.valorpago ? item.valorpago.toFixed(2): '0.00'}}</div>
+      <template #item.valorpago="{ item }">
+        <div class="text-right">
+          R$ {{ item.valorpago ? item.valorpago.toFixed(2) : "0.00" }}
+        </div>
       </template>
-      <template v-slot:item.valoratual="{ item }">
-        <div class="text-right">R$ {{item.valoratual.toFixed(2)}}</div>
+      <template #item.valoratual="{ item }">
+        <div class="text-right">R$ {{ item.valoratual.toFixed(2) }}</div>
       </template>
     </v-data-table>
   </div>
 </template>
 
 <script>
-import { mdiBarcode } from '@mdi/js' 
+import { mdiBarcode } from "@mdi/js";
 export default {
   data: () => ({
     mdiBarcode,

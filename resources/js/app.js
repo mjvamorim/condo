@@ -31,7 +31,7 @@ Vue.use(VCurrencyField, {
 //     "example-component",
 //     require("./components/ExampleComponent.vue").default
 // );
-Vue.component("admin", require("./components/Admin.vue").default);
+Vue.component("Admin", require("./components/Admin.vue").default);
 
 const opts = {};
 const app = new Vue({

@@ -5,7 +5,7 @@
       <v-divider class="mx-2" inset vertical></v-divider>
       <v-spacer></v-spacer>
       <v-dialog v-model="dialog" max-width="700px">
-        <template v-slot:activator="{ on }">
+        <template #activator="{ on }">
           <v-icon v-on="on">mdi-plus</v-icon>
         </template>
         <v-card>
@@ -17,7 +17,10 @@
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-text-field v-model="editedItem.name" label="Name"></v-text-field>
+                  <v-text-field
+                    v-model="editedItem.name"
+                    label="Name"
+                  ></v-text-field>
                 </v-flex>
 
                 <v-flex xs12>
@@ -44,7 +47,7 @@
       </v-dialog>
     </v-app-bar>
     <v-data-table :headers="headers" :items="tableData" class="elevation-1">
-      <template slot="items" slot-scope="props">
+      <template #items="props">
         <td>{{ props.item.name }}</td>
 
         <td class="justify-center layout px-0">
@@ -52,20 +55,21 @@
           <v-icon small @click="deleteItem(props.item)">delete</v-icon>
         </td>
       </template>
-      <template v-slot:item.permissions="{ item }">
+      <template #item.permissions="{ item }">
         <v-chip
-          small
           v-for="(permission, index) in item.permissions"
+          :key="index"
+          small
           color="primary"
           text-color="white"
-          :key="index"
-        >{{ permission.name }}</v-chip>
+          >{{ permission.name }}</v-chip
+        >
       </template>
-      <template v-slot:item.action="{ item }">
+      <template #item.action="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">edit</v-icon>
         <v-icon small @click="deleteItem(item)">delete</v-icon>
       </template>
-      <template slot="no-data">
+      <template #no-data>
         <v-btn color="primary" @click="initialize">Reset</v-btn>
       </template>
     </v-data-table>
@@ -79,31 +83,31 @@ export default {
     headers: [
       { text: "Name", value: "name" },
       { text: "Permissions", value: "permissions" },
-      { text: "Actions", value: "action", sortable: false }
+      { text: "Actions", value: "action", sortable: false },
     ],
     tableData: [],
     editedIndex: -1,
     allPermissions: [],
     editedItem: {
       name: "",
-      created_at: ""
+      created_at: "",
     },
     defaultItem: {
       name: "",
-      created_at: ""
-    }
+      created_at: "",
+    },
   }),
 
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    }
+    },
   },
 
   watch: {
     dialog(val) {
       val || this.close();
-    }
+    },
   },
 
   created() {
@@ -112,13 +116,13 @@ export default {
 
   methods: {
     initialize() {
-      axios.get("/api/roles").then(response => {
+      axios.get("/api/roles").then((response) => {
         this.tableData = response.data;
       });
 
       axios
         .get("/api/permissions")
-        .then(response => (this.allPermissions = response.data));
+        .then((response) => (this.allPermissions = response.data));
     },
 
     editItem(item) {
@@ -134,7 +138,7 @@ export default {
 
       axios
         .delete("/api/roles/" + item.id)
-        .then(response => console.log(response.data));
+        .then((response) => console.log(response.data));
     },
 
     close() {
@@ -151,16 +155,16 @@ export default {
 
         axios
           .put("/api/roles/" + this.editedItem.id, this.editedItem)
-          .then(response => console.log(response.data));
+          .then((response) => console.log(response.data));
       } else {
         this.tableData.push(this.editedItem);
 
         axios
           .post("/api/roles", this.editedItem)
-          .then(response => console.log(response.data));
+          .then((response) => console.log(response.data));
       }
       this.close();
-    }
-  }
+    },
+  },
 };
 </script>

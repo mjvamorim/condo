@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app id="inspire" dark>
-      <v-navigation-drawer clipped fixed v-model="drawer" app dark :width="260">
+      <v-navigation-drawer v-model="drawer" clipped fixed app dark :width="260">
         <sidebar></sidebar>
       </v-navigation-drawer>
 
@@ -29,6 +29,7 @@ import Navbar from "./_navbar";
 
 export default {
   components: { Sidebar, Navbar },
+  props: ["user"],
   data: () => ({
     drawer: null,
   }),
@@ -37,6 +38,5 @@ export default {
       this.drawer = !this.drawer;
     },
   },
-  props: ["user"],
 };
 </script>

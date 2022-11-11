@@ -12,7 +12,7 @@
       ></v-text-field>
       <v-spacer></v-spacer>
       <v-dialog v-model="dialog" max-width="700px">
-        <template v-slot:activator="{ on }">
+        <template #activator="{ on }">
           <v-icon v-on="on">mdi-plus</v-icon>
         </template>
         <v-card>
@@ -34,9 +34,9 @@
                 <v-flex xs12>
                   <v-text-field
                     v-model="editedItem.adicional"
+                    v-mask="['####.###']"
                     label="Adicional"
                     outlined
-                    v-mask="['####.###']"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
@@ -121,22 +121,22 @@
       :headers="headers"
       :items="tableData"
       :search="search"
-      :items-per-page=15
+      :items-per-page="15"
       dense
       class="elevation-1"
       sort-by="descricao"
     >
-      <template v-slot:item.proprietario_id="{ item }">
+      <template #item.proprietario_id="{ item }">
         {{ proprietarioNome(item.proprietario_id) }}
       </template>
-      <template v-slot:item.adicional="{ item }">
-        <div class="text-left" v-if="item.tipo_adicional == 'Valor Fixo'">
+      <template #item.adicional="{ item }">
+        <div v-if="item.tipo_adicional == 'Valor Fixo'" class="text-left">
           R$ {{ item.adicional ? item.adicional.toFixed(2) : "0,00" }}
         </div>
-        <div class="text-right" v-else>{{ item.adicional }}%</div>
+        <div v-else class="text-right">{{ item.adicional }}%</div>
       </template>
 
-      <template v-slot:item.action="{ item }">
+      <template #item.action="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">edit</v-icon>
         <v-icon small @click="deleteItem(item)">delete</v-icon>
       </template>

@@ -12,9 +12,9 @@
       ></v-text-field>
       <v-spacer></v-spacer>
       <v-dialog v-model="dialog" max-width="700px">
-        <template v-slot:activator="form">
+        <template #activator="form">
           <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-btn icon v-bind="attrs" v-on="on">
                 <v-icon v-on="form.on">mdi-plus</v-icon>
               </v-btn>
@@ -75,7 +75,6 @@
                     label="Mensagem"
                   ></v-textarea>
                 </v-flex>
-                
               </v-layout>
             </v-container>
           </v-card-text>
@@ -92,21 +91,30 @@
       dense
       :headers="headers"
       :items="tableData"
-      :items-per-page=15
+      :items-per-page="15"
       :search="search"
       class="elevation-1"
       sort-by="nome"
     >
-      <template v-slot:item.action="{ item }">
+      <template #item.action="{ item }">
         <v-tooltip bottom>
-          <template v-slot:activator="{on, attrs }">
-            <v-icon small class="mr-2" @click="editItem(item)" v-bind="attrs" v-on="on">edit</v-icon>
+          <template #activator="{ on, attrs }">
+            <v-icon
+              small
+              class="mr-2"
+              v-bind="attrs"
+              @click="editItem(item)"
+              v-on="on"
+              >edit</v-icon
+            >
           </template>
           <span>Alterar</span>
         </v-tooltip>
         <v-tooltip bottom>
-          <template v-slot:activator="{on, attrs }">
-            <v-icon small @click="deleteItem(item)" v-bind="attrs" v-on="on">delete</v-icon>
+          <template #activator="{ on, attrs }">
+            <v-icon small v-bind="attrs" @click="deleteItem(item)" v-on="on"
+              >delete</v-icon
+            >
           </template>
           <span>Apagar</span>
         </v-tooltip>
@@ -135,24 +143,25 @@ export default {
     editedItem: {
       created_at: "",
       de: "",
-      para:"",
-      assunto:"",
-      anexo:"",
-      mensagem:""
+      para: "",
+      assunto: "",
+      anexo: "",
+      mensagem: "",
     },
     defaultItem: {
       created_at: "",
       de: "",
-      para:"",
-      assunto:"",
-      anexo:"",
-      mensagem:""
+      para: "",
+      assunto: "",
+      anexo: "",
+      mensagem: "",
     },
     rules: {
       required: (value) => !!value || "*Obrigatório",
       counter: (value) => value.length <= 20 || "Max 20 characters",
       email: (value) => {
-        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const pattern =
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return pattern.test(value) || "Invalid e-mail.";
       },
     },

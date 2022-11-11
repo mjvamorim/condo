@@ -12,9 +12,9 @@
       ></v-text-field>
       <v-spacer></v-spacer>
       <v-dialog v-model="dialog" max-width="700px">
-        <template v-slot:activator="form">
+        <template #activator="form">
           <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-btn icon v-bind="attrs" v-on="on">
                 <v-icon v-on="form.on">mdi-plus</v-icon>
               </v-btn>
@@ -66,13 +66,10 @@
                 <v-flex xs12>
                   <v-text-field
                     v-model="editedItem.cpf"
+                    v-mask="['###.###.###-##', '##.###.###/####-##']"
                     outlined
                     label="CPF/CNPJ"
                     :rules="[rules.required]"
-                    v-mask="[
-                                            '###.###.###-##',
-                                            '##.###.###/####-##'
-                                        ]"
                   ></v-text-field>
                 </v-flex>
 
@@ -86,22 +83,19 @@
                 <v-flex xs12>
                   <v-text-field
                     v-model="editedItem.conjuge_cpf"
+                    v-mask="['###.###.###-##', '##.###.###/####-##']"
                     outlined
                     label="Cpf Conjuge"
-                    v-mask="[
-                                            '###.###.###-##',
-                                            '##.###.###/####-##'
-                                        ]"
                   ></v-text-field>
                 </v-flex>
 
                 <v-flex xs12>
                   <v-text-field
                     v-model="editedItem.cep"
+                    v-mask="['#####-###']"
                     outlined
                     label="Cep"
                     :rules="[rules.required]"
-                    v-mask="['#####-###']"
                     @blur="buscar_cep"
                   ></v-text-field>
                 </v-flex>
@@ -116,11 +110,19 @@
                 </v-flex>
 
                 <v-flex xs12>
-                  <v-text-field v-model="editedItem.numero" outlined label="Número"></v-text-field>
+                  <v-text-field
+                    v-model="editedItem.numero"
+                    outlined
+                    label="Número"
+                  ></v-text-field>
                 </v-flex>
 
                 <v-flex xs12>
-                  <v-text-field v-model="editedItem.complemento" outlined label="Complemento"></v-text-field>
+                  <v-text-field
+                    v-model="editedItem.complemento"
+                    outlined
+                    label="Complemento"
+                  ></v-text-field>
                 </v-flex>
 
                 <v-flex xs12>
@@ -154,7 +156,11 @@
                 </v-flex>
 
                 <v-flex xs12>
-                  <v-text-field v-model="editedItem.pais" outlined label="pais"></v-text-field>
+                  <v-text-field
+                    v-model="editedItem.pais"
+                    outlined
+                    label="pais"
+                  ></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -172,21 +178,30 @@
       dense
       :headers="headers"
       :items="tableData"
-      :items-per-page=15
+      :items-per-page="15"
       :search="search"
       class="elevation-1"
       sort-by="nome"
     >
-      <template v-slot:item.action="{ item }">
+      <template #item.action="{ item }">
         <v-tooltip bottom>
-          <template v-slot:activator="{on, attrs }">
-            <v-icon small class="mr-2" @click="editItem(item)" v-bind="attrs" v-on="on">edit</v-icon>
+          <template #activator="{ on, attrs }">
+            <v-icon
+              small
+              class="mr-2"
+              v-bind="attrs"
+              @click="editItem(item)"
+              v-on="on"
+              >edit</v-icon
+            >
           </template>
           <span>Alterar</span>
         </v-tooltip>
         <v-tooltip bottom>
-          <template v-slot:activator="{on, attrs }">
-            <v-icon small @click="deleteItem(item)" v-bind="attrs" v-on="on">delete</v-icon>
+          <template #activator="{ on, attrs }">
+            <v-icon small v-bind="attrs" @click="deleteItem(item)" v-on="on"
+              >delete</v-icon
+            >
           </template>
           <span>Apagar</span>
         </v-tooltip>
@@ -254,7 +269,8 @@ export default {
       required: (value) => !!value || "*Obrigatório",
       counter: (value) => value.length <= 20 || "Max 20 characters",
       email: (value) => {
-        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const pattern =
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return pattern.test(value) || "Invalid e-mail.";
       },
     },

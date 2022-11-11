@@ -18,17 +18,37 @@
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-text-field v-model="acordo.id" label="Acordo" outlined disabled></v-text-field>
+                  <v-text-field
+                    v-model="acordo.id"
+                    label="Acordo"
+                    outlined
+                    disabled
+                  ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field v-model="acordo.data" label="Data " outlined disabled></v-text-field>
+                  <v-text-field
+                    v-model="acordo.data"
+                    label="Data "
+                    outlined
+                    disabled
+                  ></v-text-field>
                 </v-flex>
 
                 <v-flex xs12>
-                  <v-textarea v-model="acordo.termos" disabled label="Termos" outlined></v-textarea>
+                  <v-textarea
+                    v-model="acordo.termos"
+                    disabled
+                    label="Termos"
+                    outlined
+                  ></v-textarea>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field v-model="acordo.situacao" disabled label="Situacao" outlined></v-text-field>
+                  <v-text-field
+                    v-model="acordo.situacao"
+                    disabled
+                    label="Situacao"
+                    outlined
+                  ></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -44,26 +64,28 @@
             fixed-header
             dense
             disable-pagination
-            :items-per-page=15
+            :items-per-page="15"
             :must-sort="true"
             sort-by="dtvencto"
             hide-default-footer
             class="elevation-1"
           >
-            <template v-slot:item.unidade_id="{ item }">
-              {{
-              unidadeDescricao(item.unidade_id)
-              }}
+            <template #item.unidade_id="{ item }">
+              {{ unidadeDescricao(item.unidade_id) }}
             </template>
 
-            <template v-slot:item.valor="{ item }">
-              <div class="text-right">R$ {{item.valor ? item.valor.toFixed(2) : '0,00'}}</div>
+            <template #item.valor="{ item }">
+              <div class="text-right">
+                R$ {{ item.valor ? item.valor.toFixed(2) : "0,00" }}
+              </div>
             </template>
-            <template v-slot:item.valorpago="{ item }">
-              <div class="text-right">R$ {{item.valorpago ? item.valorpago.toFixed(2): '0.00'}}</div>
+            <template #item.valorpago="{ item }">
+              <div class="text-right">
+                R$ {{ item.valorpago ? item.valorpago.toFixed(2) : "0.00" }}
+              </div>
             </template>
-            <template v-slot:item.valoratual="{ item }">
-              <div class="text-right">R$ {{item.valoratual.toFixed(2)}}</div>
+            <template #item.valoratual="{ item }">
+              <div class="text-right">R$ {{ item.valoratual.toFixed(2) }}</div>
             </template>
           </v-data-table>
         </v-card>
@@ -78,26 +100,28 @@
             fixed-header
             dense
             disable-pagination
-            :items-per-page=100
+            :items-per-page="100"
             :must-sort="true"
             sort-by="dtvencto"
             hide-default-footer
             class="elevation-1"
           >
-            <template v-slot:item.unidade_id="{ item }">
-              {{
-              unidadeDescricao(item.unidade_id)
-              }}
+            <template #item.unidade_id="{ item }">
+              {{ unidadeDescricao(item.unidade_id) }}
             </template>
 
-            <template v-slot:item.valor="{ item }">
-              <div class="text-right">R$ {{item.valor ? item.valor.toFixed(2) : '0,00'}}</div>
+            <template #item.valor="{ item }">
+              <div class="text-right">
+                R$ {{ item.valor ? item.valor.toFixed(2) : "0,00" }}
+              </div>
             </template>
-            <template v-slot:item.valorpago="{ item }">
-              <div class="text-right">R$ {{item.valorpago ? item.valorpago.toFixed(2): '0.00'}}</div>
+            <template #item.valorpago="{ item }">
+              <div class="text-right">
+                R$ {{ item.valorpago ? item.valorpago.toFixed(2) : "0.00" }}
+              </div>
             </template>
-            <template v-slot:item.valoratual="{ item }">
-              <div class="text-right">R$ {{item.valoratual.toFixed(2)}}</div>
+            <template #item.valoratual="{ item }">
+              <div class="text-right">R$ {{ item.valoratual.toFixed(2) }}</div>
             </template>
           </v-data-table>
         </v-card>
@@ -106,10 +130,9 @@
   </v-card>
 </template>
 
-
 <script>
 export default {
-  name: "acordoDetalhes",
+  name: "AcordoDetalhes",
   props: ["acordo", "allUnidades"],
   data: () => ({
     tab: null,
@@ -194,4 +217,3 @@ export default {
   padding: 20px;
 }
 </style>
-

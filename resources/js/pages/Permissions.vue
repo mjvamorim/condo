@@ -5,7 +5,7 @@
       <v-divider class="mx-2" inset vertical></v-divider>
       <v-spacer></v-spacer>
       <v-dialog v-model="dialog" max-width="700px">
-        <template v-slot:activator="{ on }">
+        <template #activator="{ on }">
           <v-icon v-on="on">mdi-plus</v-icon>
         </template>
         <v-card>
@@ -17,7 +17,10 @@
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-text-field v-model="editedItem.name" label="Name"></v-text-field>
+                  <v-text-field
+                    v-model="editedItem.name"
+                    label="Name"
+                  ></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -32,7 +35,7 @@
       </v-dialog>
     </v-app-bar>
     <v-data-table :headers="headers" :items="tableData" class="elevation-1">
-      <template v-slot:item.action="{ item }">
+      <template #item.action="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">edit</v-icon>
         <v-icon small @click="deleteItem(item)">delete</v-icon>
       </template>
@@ -46,31 +49,31 @@ export default {
     dialog: false,
     headers: [
       { text: "Username", value: "name" },
-      { text: "Actions", value: "action", sortable: false }
+      { text: "Actions", value: "action", sortable: false },
     ],
     tableData: [],
     editedIndex: -1,
     allPermissions: [],
     editedItem: {
       name: "",
-      created_at: ""
+      created_at: "",
     },
     defaultItem: {
       name: "",
-      created_at: ""
-    }
+      created_at: "",
+    },
   }),
 
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    }
+    },
   },
 
   watch: {
     dialog(val) {
       val || this.close();
-    }
+    },
   },
 
   created() {
@@ -79,7 +82,7 @@ export default {
 
   methods: {
     initialize() {
-      axios.get("/api/permissions").then(response => {
+      axios.get("/api/permissions").then((response) => {
         this.tableData = response.data;
         this.allPermissions = this.tableData;
       });
@@ -98,7 +101,7 @@ export default {
 
       axios
         .delete("/api/permissions/" + item.id)
-        .then(response => console.log(response.data));
+        .then((response) => console.log(response.data));
     },
 
     close() {
@@ -115,16 +118,16 @@ export default {
 
         axios
           .put("/api/permissions/" + this.editedItem.id, this.editedItem)
-          .then(response => console.log(response.data));
+          .then((response) => console.log(response.data));
       } else {
         this.tableData.push(this.editedItem);
 
         axios
           .post("/api/permissions/", this.editedItem)
-          .then(response => console.log(response.data));
+          .then((response) => console.log(response.data));
       }
       this.close();
-    }
-  }
+    },
+  },
 };
 </script>

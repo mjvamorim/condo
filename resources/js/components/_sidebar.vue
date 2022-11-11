@@ -1,7 +1,7 @@
 <template>
   <v-list dense>
     <v-list-group no-action prepend-icon="insert_drive_files">
-      <template v-slot:activator>
+      <template #activator>
         <v-list-item-title>Cadastros</v-list-item-title>
       </template>
       <v-list-item to="/admin/proprietarios">
@@ -61,7 +61,7 @@
         <v-list-item-content>
           <v-list-item-title>Usuários</v-list-item-title>
         </v-list-item-content>
-      </v-list-item> 
+      </v-list-item>
       <v-list-item to="/admin/empresas">
         <v-list-item-action>
           <v-icon>business_center</v-icon>
@@ -73,7 +73,7 @@
     </v-list-group> -->
 
     <v-list-group no-action prepend-icon="request_quote">
-      <template v-slot:activator>
+      <template #activator>
         <v-list-item-title>Rotinas Financeiras</v-list-item-title>
       </template>
       <v-list-item to="/admin/gerar_mensalidades">
@@ -114,10 +114,10 @@
     </v-list-group>
 
     <v-list-group no-action prepend-icon="settings">
-      <template v-slot:activator>
+      <template #activator>
         <v-list-item-title>Utilidades</v-list-item-title>
       </template>
-      <v-list-item href="/manual" >
+      <v-list-item href="/manual">
         <v-list-item-action>
           <v-icon>menu_book</v-icon>
         </v-list-item-action>
@@ -159,7 +159,5 @@ export default {};
   padding-left: 30px;
   max-height: 30px;
   text-decoration: none;
-
-
 }
 </style>

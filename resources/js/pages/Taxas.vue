@@ -12,9 +12,9 @@
       ></v-text-field>
       <v-spacer></v-spacer>
       <v-dialog v-model="dialog" max-width="700px">
-        <template v-slot:activator="form">
+        <template #activator="form">
           <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-btn icon v-bind="attrs" v-on="on">
                 <v-icon v-on="form.on">mdi-plus</v-icon>
               </v-btn>
@@ -32,9 +32,9 @@
                 <v-flex xs12>
                   <v-text-field
                     v-model="editedItem.anomes"
+                    v-mask="['####-##']"
                     label="Ano/Mês"
                     outlined
-                    v-mask="['####-##']"
                     :rules="[rules.required]"
                   ></v-text-field>
                 </v-flex>
@@ -47,24 +47,28 @@
                     offset-y
                     min-width="290px"
                   >
-                    <template v-slot:activator="{ on, attrs }">
+                    <template #activator="{ on, attrs }">
                       <v-text-field
                         v-model="editedItem.dtvencto"
                         label="Vencimento"
                         outlined
                         v-bind="attrs"
-                        v-on="on"
                         :rules="[rules.required]"
+                        v-on="on"
                       ></v-text-field>
                     </template>
-                    <v-date-picker v-model="editedItem.dtvencto" @input="menu = false" no-title></v-date-picker>
+                    <v-date-picker
+                      v-model="editedItem.dtvencto"
+                      no-title
+                      @input="menu = false"
+                    ></v-date-picker>
                   </v-menu>
                 </v-flex>
                 <v-flex xs12>
                   <v-currency-field
+                    v-model="editedItem.valor"
                     label="Valor"
                     outlined
-                    v-model="editedItem.valor"
                     :rules="[rules.required]"
                   />
                 </v-flex>
@@ -87,26 +91,33 @@
       sort-by="anomes"
       sort-desc
       class="elevation-1"
-      items-per-page=15
+      items-per-page="15"
     >
-      <template v-slot:item.action="{ item }">
-        <v-tooltip bottom> 
-          <template v-slot:activator="{on, attrs }">
-            <v-icon small class="mr-2" @click="editItem(item)" v-bind="attrs" v-on="on">edit</v-icon>
+      <template #item.action="{ item }">
+        <v-tooltip bottom>
+          <template #activator="{ on, attrs }">
+            <v-icon
+              small
+              class="mr-2"
+              v-bind="attrs"
+              @click="editItem(item)"
+              v-on="on"
+              >edit</v-icon
+            >
           </template>
           <span>Alterar</span>
-        </v-tooltip> 
-        <v-tooltip bottom> 
-          <template v-slot:activator="{on, attrs }">
-            <v-icon small @click="deleteItem(item)" v-bind="attrs" v-on="on">delete</v-icon>
+        </v-tooltip>
+        <v-tooltip bottom>
+          <template #activator="{ on, attrs }">
+            <v-icon small v-bind="attrs" @click="deleteItem(item)" v-on="on"
+              >delete</v-icon
+            >
           </template>
           <span>Apagar</span>
         </v-tooltip>
       </template>
-      <template v-slot:item.valor="{ item }">
-        <div class="text-right">
-          R$ {{item.valor.toFixed(2)}}
-        </div>
+      <template #item.valor="{ item }">
+        <div class="text-right">R$ {{ item.valor.toFixed(2) }}</div>
       </template>
     </v-data-table>
   </div>
@@ -123,7 +134,7 @@ export default {
       { text: "Ano/Mês", value: "anomes" },
       { text: "Vencimento", value: "dtvencto" },
       { text: "Valor", value: "valor" },
-      { text: "", value: "action", sortable: false }
+      { text: "", value: "action", sortable: false },
     ],
     tableData: [],
     editedIndex: -1,
@@ -131,29 +142,29 @@ export default {
       anomes: "",
       dtvencto: "",
       valor: "",
-      created_at: ""
+      created_at: "",
     },
     defaultItem: {
       anomes: "",
       dtvencto: "",
       valor: "",
-      created_at: ""
+      created_at: "",
     },
     rules: {
-      required: value => !!value || "*Obrigatório"
-    }
+      required: (value) => !!value || "*Obrigatório",
+    },
   }),
 
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    }
+    },
   },
 
   watch: {
     dialog(val) {
       val || this.close();
-    }
+    },
   },
 
   created() {
@@ -167,10 +178,10 @@ export default {
     initialize() {
       axios
         .get("/api/taxas")
-        .then(response => {
+        .then((response) => {
           this.tableData = response.data;
         })
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
     },
 
     editItem(item) {
@@ -184,11 +195,11 @@ export default {
       confirm("Você deseja apagar este item?") &&
         axios
           .delete("/api/taxas/" + item.id)
-          .then(response => {
+          .then((response) => {
             console.log(response.data);
             this.tableData.splice(index, 1);
           })
-          .catch(error => console.log(error));
+          .catch((error) => console.log(error));
     },
 
     close() {
@@ -203,30 +214,30 @@ export default {
       if (this.editedIndex > -1) {
         axios
           .put("/api/taxas/" + this.editedItem.id, this.editedItem)
-          .then(response => {
+          .then((response) => {
             console.log(response.data);
             Object.assign(this.tableData[this.editedIndex], this.editedItem);
             this.close();
           })
-          .catch(error => console.log(error));
+          .catch((error) => console.log(error));
       } else {
         console.log(this.editedItem);
         axios
           .post("/api/taxas/", this.editedItem)
-          .then(response => {
+          .then((response) => {
             console.log(response.data);
             this.tableData.push(this.editedItem);
             this.close();
           })
-          .catch(error => console.log(error));
+          .catch((error) => console.log(error));
       }
     },
     proprietarioNome(id) {
-      return this.allProprietarios.find(x => x.id == id)
-        ? this.allProprietarios.find(x => x.id == id).nome
+      return this.allProprietarios.find((x) => x.id == id)
+        ? this.allProprietarios.find((x) => x.id == id).nome
         : "";
-    } //Preciso desse campo aqui???
-  }
+    }, //Preciso desse campo aqui???
+  },
 };
 </script>
 

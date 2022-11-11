@@ -7,15 +7,17 @@
           <h3>Acordos</h3>
         </v-col>
         <v-col align="right">
-
           <a :href="'/admin/acordo_novo'">
-              <v-icon color="primary">mdi-plus-circle-outline</v-icon>
+            <v-icon color="primary">mdi-plus-circle-outline</v-icon>
           </a>
 
-            
           <v-dialog v-model="dialog" max-width="1200px">
             <!--Formulario-->
-            <AcordoDetalhes ref="AcordoDetalhes" :acordo="item" :allUnidades="allUnidades"></AcordoDetalhes>
+            <AcordoDetalhes
+              ref="AcordoDetalhes"
+              :acordo="item"
+              :all-unidades="allUnidades"
+            ></AcordoDetalhes>
           </v-dialog>
         </v-col>
       </v-row>
@@ -40,19 +42,17 @@
       :headers="headers"
       :items="tableData"
       :search="search"
-      :items-per-page=15
+      :items-per-page="15"
       dense
       fixed-header
       :must-sort="true"
       sort-by="unidade_id"
       class="elevation-1 acordos-table"
     >
-      <template v-slot:item.unidade_id="{ item }">
-        {{
-        unidadeDescricao(item.unidade_id)
-        }}
+      <template #item.unidade_id="{ item }">
+        {{ unidadeDescricao(item.unidade_id) }}
       </template>
-      <template v-slot:item.action="{ item }">
+      <template #item.action="{ item }">
         <v-icon small @click="show(item)">pageview_outline</v-icon>
         <!-- <v-icon small @click="deleteItem(item)">delete</v-icon> -->
       </template>
