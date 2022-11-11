@@ -3,16 +3,14 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Auth;
 
-use App\Models\Debito;
-
-class SendMailBoleto extends Mailable //implements ShouldQueue
+class SendMailBoleto extends Mailable // implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public $tries = 1;
     public $nome;
@@ -40,31 +38,32 @@ class SendMailBoleto extends Mailable //implements ShouldQueue
         $this->remail = $remail;
         $this->assunto = $assunto;
         $this->anexo = $anexo;
-
     }
 
     public function build()
     {
         $emailFrom = $this->remail;
 
-        //$emailFrom = 'systems.pegasus@gmail.com';
-        if(!filter_var($emailFrom, FILTER_VALIDATE_EMAIL)) {
+        // $emailFrom = 'systems.pegasus@gmail.com';
+        if (!filter_var($emailFrom, FILTER_VALIDATE_EMAIL)) {
             $emailFrom = 'econdominio.net@gmail.com';
         }
+
         return $this->from($emailFrom)
-                ->view('emails.Boleto')
-                ->subject($this->assunto)
-                ->attach($this->anexo)
-                ->with([
-                    'nome'      => $this->nome,
-                    'tipo'      => $this->tipo,
-                    'anomes'    => $this->anomes,
-                    'acordo_id' => $this->acordo_id,
-                    'id'        => $this->id,
-                    'valor'     => $this->valor,
-                    'dtvencto'  => $this->dtvencto,
-                    'rnome'     => $this->rnome,
-                    'remail'    => $this->remail,
-                ]);
+            ->view('emails.Boleto')
+            ->subject($this->assunto)
+            ->attach($this->anexo)
+            ->with([
+                'nome' => $this->nome,
+                'tipo' => $this->tipo,
+                'anomes' => $this->anomes,
+                'acordo_id' => $this->acordo_id,
+                'id' => $this->id,
+                'valor' => $this->valor,
+                'dtvencto' => $this->dtvencto,
+                'rnome' => $this->rnome,
+                'remail' => $this->remail,
+            ])
+        ;
     }
 }

@@ -39,6 +39,8 @@
     "sdras.vue-vscode-snippets",
     "dbaeumer.vscode-eslint",
     "EditorConfig.EditorConfig",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "bmewburn.vscode-intelephense-client",
+    "junstyle.php-cs-fixer"
   ]
 }
