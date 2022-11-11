@@ -59,6 +59,7 @@ RUN chmod go+rwx /root -R
 RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
 RUN echo "www:www" | chpasswd && adduser www sudo
+RUN  npm install -g npm@9.1.1
 
 # # Copy existing application directory contents
 COPY .. /var/www
