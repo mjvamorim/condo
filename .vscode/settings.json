@@ -14,9 +14,12 @@
     "**/CVS/**",
     "**/.DS_Store/**",
     "**/node_modules/**",
-    "**/bower_components/**",
-    "**/vendor/**/{Test,test,Tests,tests}/**/*Test.php"
+    "**/bower_components/**"
+    // "**/vendor/**/{Test,test,Tests,tests}/**/*Test.php"
   ],
+  "intelephense.diagnostics.undefinedTypes": false,
+  "intelephense.diagnostics.undefinedFunctions": false,
+  "intelephense.diagnostics.undefinedMethods": false,
   "php-cs-fixer.rules": "@PhpCsFixer",
   "[php]": {
     "editor.defaultFormatter": "junstyle.php-cs-fixer",

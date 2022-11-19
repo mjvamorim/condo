@@ -2,22 +2,15 @@
 
 namespace App\Http\Controllers;
 
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
-use App\Http\Controllers\Controller;
 use App\Models\Debito;
-use App\Models\Unidade;
 use App\Models\Proprietario;
-use Validator;
-use Response;
-use DataTables;
-use \DB;
-
+use App\Models\Unidade;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\DataTables;
 
 class DebitoController extends Controller
 {
-
     private $actions;
 
     public function __construct()
@@ -25,65 +18,70 @@ class DebitoController extends Controller
         $this->middleware('tenant');
     }
 
-    function index(Request $request)
+    public function index(Request $request)
     {
         $proprietario_id = $request->query('proprietario_id');
         $unidade_id = $request->query('unidade_id');
-        $showables  = Debito::getShowableFields();
+        $showables = Debito::getShowableFields();
         $unidades = Unidade::all();
         $proprietarios = Proprietario::all()->sortBy('nome');
-        return view('FrmDebitos',compact('showables','unidade_id','unidades','proprietario_id','proprietarios'));
+
+        return view('FrmDebitos', compact('showables', 'unidade_id', 'unidades', 'proprietario_id', 'proprietarios'));
     }
 
-     //-------------------------clausulaWhere-------------------------------//
-     public static function clausulaWhere(Request $request) {
-        $clausulaWhere = [];
-        if ($request->input('taxa_id') && $request->input('taxa_id')!='00') {
-            $clausulaWhere[] = ['taxa_id','=',$request->input('taxa_id')];
-        }
-        if ($request->input('unidade_id') && $request->input('unidade_id')!='00') {
-            $clausulaWhere[] = ['unidade_id',$request->input('unidade_id')];
-        }
-        if ($request->input('debito_id') && $request->input('debito_id')!='0') {
-            $clausulaWhere[] = ['id',$request->input('debito_id')];
-        }
+     // -------------------------clausulaWhere-------------------------------//
+     public static function clausulaWhere(Request $request)
+     {
+         $clausulaWhere = [];
+         if ($request->input('taxa_id') && '00' != $request->input('taxa_id')) {
+             $clausulaWhere[] = ['taxa_id', '=', $request->input('taxa_id')];
+         }
+         if ($request->input('unidade_id') && '00' != $request->input('unidade_id')) {
+             $clausulaWhere[] = ['unidade_id', $request->input('unidade_id')];
+         }
+         if ($request->input('debito_id') && '0' != $request->input('debito_id')) {
+             $clausulaWhere[] = ['id', $request->input('debito_id')];
+         }
 
-        if ($request->input('tipo_id') && $request->input('tipo_id')!='Todos') {
-            $clausulaWhere[] = ['tipo',$request->input('tipo_id')];
-        }
+         if ($request->input('tipo_id') && 'Todos' != $request->input('tipo_id')) {
+             $clausulaWhere[] = ['tipo', $request->input('tipo_id')];
+         }
 
-        switch($request->input('condicao')) {
-            case 'Pagos':
-                if ($request->input('dtini') && $request->input('dtini')!='') {
-                    $clausulaWhere[] = ['dtpagto','>=',$request->input('dtini')];
-                }
-                if ($request->input('dtfim') && $request->input('dtfim')!='') {
-                    $clausulaWhere[] = ['dtpagto','<=',$request->input('dtfim')];
-                }
-                $clausulaWhere[] = ['dtpagto', '<>',NULL];
-                break;
-            case 'Abertos':
-                if ($request->input('dtini') && $request->input('dtini')!='') {
-                    $clausulaWhere[] = ['dtvencto','>=',$request->input('dtini')];
-                }
-                if ($request->input('dtfim') && $request->input('dtfim')!='') {
-                    $clausulaWhere[] = ['dtvencto','<=',$request->input('dtfim')];
-                }
-                $clausulaWhere[] = ['dtpagto', NULL];
+         switch ($request->input('condicao')) {
+             case 'Pagos':
+                 if ($request->input('dtini') && '' != $request->input('dtini')) {
+                     $clausulaWhere[] = ['dtpagto', '>=', $request->input('dtini')];
+                 }
+                 if ($request->input('dtfim') && '' != $request->input('dtfim')) {
+                     $clausulaWhere[] = ['dtpagto', '<=', $request->input('dtfim')];
+                 }
+                 $clausulaWhere[] = ['dtpagto', '<>', null];
 
-            default:
-                if ($request->input('dtini') && $request->input('dtini')!='') {
-                    $clausulaWhere[] = ['dtvencto','>=',$request->input('dtini')];
-                }
-                if ($request->input('dtfim') && $request->input('dtfim')!='') {
-                    $clausulaWhere[] = ['dtvencto','<=',$request->input('dtfim')];
-                }
-        }
-       return $clausulaWhere;
+                 break;
 
-    }
+             case 'Abertos':
+                 if ($request->input('dtini') && '' != $request->input('dtini')) {
+                     $clausulaWhere[] = ['dtvencto', '>=', $request->input('dtini')];
+                 }
+                 if ($request->input('dtfim') && '' != $request->input('dtfim')) {
+                     $clausulaWhere[] = ['dtvencto', '<=', $request->input('dtfim')];
+                 }
+                 $clausulaWhere[] = ['dtpagto', null];
 
-    function getData(Request $request)
+                 // no break
+             default:
+                 if ($request->input('dtini') && '' != $request->input('dtini')) {
+                     $clausulaWhere[] = ['dtvencto', '>=', $request->input('dtini')];
+                 }
+                 if ($request->input('dtfim') && '' != $request->input('dtfim')) {
+                     $clausulaWhere[] = ['dtvencto', '<=', $request->input('dtfim')];
+                 }
+         }
+
+         return $clausulaWhere;
+     }
+
+    public function getData(Request $request)
     {
         $model = 'debito';
         $clausulaWhere = $this->clausulaWhere($request);
@@ -97,42 +95,41 @@ class DebitoController extends Controller
         //     ->orderBy('dtvencto','desc')
         // ->get();
 
-
         $class = config('crud.'.$model);
-        $showables  = $class::getShowableFields();
-        $this->actions    = $class::getActions();
+        $showables = $class::getShowableFields();
+        $this->actions = $class::getActions();
         $clausulaWith = [];
         foreach ($showables as $field) {
-            if (($field['type']=='fk') && ($field['datatable']=='true')) {
+            if (('fk' == $field['type']) && ('true' == $field['datatable'])) {
                 $clausulaWith[] = $field['options']['model'];
             }
         }
 
-        if (count($clausulaWith)>0) {
+        if (count($clausulaWith) > 0) {
             $debitos = $class::select()
-            ->with($clausulaWith)
-            ->where($clausulaWhere)
-            ->orderBy('dtvencto','desc')
-            ->get();
-        }
-        else {
-            $debitos = $class::select()->where($clausulaWhere)->orderBy('dtvencto','desc');
+                ->with($clausulaWith)
+                ->where($clausulaWhere)
+                ->orderBy('dtvencto', 'desc')
+                ->get()
+            ;
+        } else {
+            $debitos = $class::select()->where($clausulaWhere)->orderBy('dtvencto', 'desc');
         }
 
-        if ($request->input('proprietario_id') && $request->input('proprietario_id')!='00') {
+        if ($request->input('proprietario_id') && '00' != $request->input('proprietario_id')) {
             $filtered = [];
-            foreach($debitos as $debito){
-                if($debito->unidade->proprietario_id == $request->input('proprietario_id') ){
+            foreach ($debitos as $debito) {
+                if ($debito->unidade->proprietario_id == $request->input('proprietario_id')) {
                     $filtered[] = $debito;
                 }
             }
             $debitos = collect($filtered);
         }
 
-        if ($request->input('envio_boleto') && $request->input('envio_boleto')!='Todos') {
+        if ($request->input('envio_boleto') && 'Todos' != $request->input('envio_boleto')) {
             $filtered = [];
-            foreach($debitos as $debito){
-                if($debito->unidade->envio_boleto == $request->input('envio_boleto') or $debito->unidade->envio_boleto == 'Ambos'){
+            foreach ($debitos as $debito) {
+                if ($debito->unidade->envio_boleto == $request->input('envio_boleto') or 'Ambos' == $debito->unidade->envio_boleto) {
                     $filtered[] = $debito;
                 }
             }
@@ -140,42 +137,41 @@ class DebitoController extends Controller
         }
 
         return DataTables::of($debitos)
-            ->addColumn('valor_atualizado', function($model){
+            ->addColumn('valor_atualizado', function ($model) {
                 return $model->valoratual;
             })
-            ->addColumn('action', function($model){
-                if($this->actions == NULL) {
+            ->addColumn('action', function ($model) {
+                if (null == $this->actions) {
                     $btedit = '<button class="btn edit" id="'.$model->id.'" title="Alterar" data-toggle="tooltip" ><i class="glyphicon glyphicon-edit"></i> </button>';
                     $btdelt = '<button class="btn delt" id="'.$model->id.'" title="Apagar" data-toggle="tooltip" ><i class="glyphicon glyphicon-trash"></i> </button>';
+
                     return '<div align="center">'.$btedit.'<span> </span>'.$btdelt.'</div>';
                 }
-                else {
-                    $text = '<div align="center">';
-                    foreach($this->actions as $action){
-                        $text .= $action['ini'].$model->id.$action['fim'];
-                    }
-                    $text .= '</div>';
-                    return $text;
+
+                $text = '<div align="center">';
+                foreach ($this->actions as $action) {
+                    $text .= $action['ini'].$model->id.$action['fim'];
                 }
+                $text .= '</div>';
+
+                return $text;
             })
-            ->make(true);
+            ->make(true)
+        ;
     }
 
-    function fetchData(Request $request, $model )
+    public function fetchData(Request $request, $model)
     {
-
         $class = config('crud.'.$model);
         $id = $request->input('id');
         $item = $class::find($id);
         echo json_encode($item);
     }
 
-
-    function postData(Request $request, $model)
+    public function postData(Request $request, $model)
     {
         $class = config('crud.'.$model);
-        if($request->get('button_action') == 'delete')
-        {
+        if ('delete' == $request->get('button_action')) {
             $id = $request->input('id');
 
             $deleted = $class::destroy($id);
@@ -186,36 +182,27 @@ class DebitoController extends Controller
                 $success_output = '<div class="alert alert-danger">Data Deleted</div>';
                 $error_array = [];
             }
-
-        }
-        else {
-
+        } else {
             $rules = $class::getRules();
             $validation = Validator::make($request->all(), $class::getRules());
-            $error_array = array();
+            $error_array = [];
             $success_output = '';
-            if ($validation->fails())
-            {
-                foreach ($validation->messages()->getMessages() as $field_name => $messages)
-                {
+            if ($validation->fails()) {
+                foreach ($validation->errors()->getMessages() as $field_name => $messages) {
                     $error_array[] = $messages;
                 }
-            }
-            else
-            {
-                if($request->get('button_action') == 'insert')
-                {
-                    $item = new $class;
-                    $input =  $request->only($item->fillable);
+            } else {
+                if ('insert' == $request->get('button_action')) {
+                    $item = new $class();
+                    $input = $request->only($item->fillable);
                     $item->fill($input);
                     $item->save();
                     $success_output = '<div class="alert alert-success">Data Inserted</div>';
                 }
 
-                if($request->get('button_action') == 'update')
-                {
+                if ('update' == $request->get('button_action')) {
                     $item = $class::find($request->get('id'));
-                    $input =  $request->only($item->fillable);
+                    $input = $request->only($item->fillable);
                     $item->fill($input);
                     $item->save();
                     $success_output = '<div class="alert alert-success">Data Updated</div>';
@@ -223,11 +210,11 @@ class DebitoController extends Controller
             }
         }
 
-        $output = array(
-            'error'     =>  $error_array,
-            'success'   =>  $success_output,
-            'eu'        => 'Mauricio Amorim',
-        );
+        $output = [
+            'error' => $error_array,
+            'success' => $success_output,
+            'eu' => 'Mauricio Amorim',
+        ];
         echo json_encode($output);
     }
 }
