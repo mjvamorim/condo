@@ -225,7 +225,7 @@ export default {
       { text: "Celular", value: "celular" },
       { text: "Cpf", value: "cpf" },
       // { text: "Conjuge", value: "conjuge_nome" },
-      { text: "Actions", value: "action", sortable: false },
+      { text: "Actions", value: "action", sortable: false }
     ],
     tableData: [],
     editedIndex: -1,
@@ -246,7 +246,7 @@ export default {
       cidade: "",
       uf: "",
       pais: "",
-      created_at: "",
+      created_at: ""
     },
     defaultItem: {
       nome: "",
@@ -264,29 +264,28 @@ export default {
       cidade: "",
       uf: "",
       pais: "Brasil",
-      created_at: "",
+      created_at: ""
     },
     rules: {
-      required: (value) => !!value || "*Obrigatório",
-      counter: (value) => value.length <= 20 || "Max 20 characters",
-      email: (value) => {
-        const pattern =
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      required: value => !!value || "*Obrigatório",
+      counter: value => value.length <= 20 || "Max 20 characters",
+      email: value => {
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return pattern.test(value) || "Invalid e-mail.";
-      },
-    },
+      }
+    }
   }),
 
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    },
+    }
   },
 
   watch: {
     dialog(val) {
       val || this.close();
-    },
+    }
   },
 
   created() {
@@ -297,17 +296,17 @@ export default {
     initialize() {
       axios
         .get("/api/proprietarios")
-        .then((response) => {
+        .then(response => {
           this.tableData = response.data;
         })
-        .catch((error) => console.log(error));
+        .catch(error => console.log(error));
 
       axios
         .get("/api/estados")
-        .then((response) => {
+        .then(response => {
           this.allEstados = response.data;
         })
-        .catch((error) => console.log(error));
+        .catch(error => console.log(error));
     },
 
     editItem(item) {
@@ -321,11 +320,11 @@ export default {
       confirm("Você deseja apagar este item?") &&
         axios
           .delete("/api/proprietarios/" + item.id)
-          .then((response) => {
+          .then(response => {
             console.log(response.data);
             this.tableData.splice(index, 1);
           })
-          .catch((error) => console.log(error));
+          .catch(error => console.log(error));
     },
 
     close() {
@@ -340,21 +339,21 @@ export default {
       if (this.editedIndex > -1) {
         axios
           .put("/api/proprietarios/" + this.editedItem.id, this.editedItem)
-          .then((response) => {
+          .then(response => {
             console.log(response.data);
             Object.assign(this.tableData[this.editedIndex], this.editedItem);
             this.close();
           })
-          .catch((error) => console.log(error));
+          .catch(error => console.log(error));
       } else {
         axios
           .post("/api/proprietarios/", this.editedItem)
-          .then((response) => {
+          .then(response => {
             console.log(response.data);
             this.tableData.push(this.editedItem);
             this.close();
           })
-          .catch((error) => console.log(error));
+          .catch(error => console.log(error));
       }
     },
     buscar_cep() {
@@ -363,7 +362,7 @@ export default {
       if (/^[0-9]{5}-[0-9]{3}$/.test(this.editedItem.cep)) {
         let axios_instance = axios.create();
         delete axios_instance.defaults.headers.common["X-CSRF-TOKEN"];
-        axios_instance.get(url).then((response) => {
+        axios_instance.get(url).then(response => {
           let endereco = response.data;
           if (!this.editedItem.rua) {
             this.editedItem.rua = endereco.logradouro;
@@ -373,8 +372,8 @@ export default {
           }
         });
       }
-    },
-  },
+    }
+  }
 };
 
 // $.getJSON(

@@ -138,7 +138,8 @@
 
       <template #item.action="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">edit</v-icon>
-        <v-icon small @click="deleteItem(item)">delete</v-icon>
+        <v-icon small class="mr-2" @click="deleteItem(item)">delete</v-icon>
+        <v-icon small class="mr-2" @click="details(item)">print</v-icon>
       </template>
     </v-data-table>
   </div>
@@ -158,7 +159,7 @@ export default {
       { text: "Moradores", value: "moradores" },
       { text: "Veículos", value: "veiculos" },
       { text: "Ramal", value: "ramal" },
-      { text: "Actions", value: "action", sortable: false },
+      { text: "Actions", value: "action", sortable: false }
     ],
     tableData: [],
     editedIndex: -1,
@@ -170,7 +171,7 @@ export default {
       proprietario_id: "",
       obs: "",
       envio_boleto: "",
-      created_at: "",
+      created_at: ""
     },
     defaultItem: {
       descricao: "",
@@ -179,23 +180,23 @@ export default {
       proprietario_id: "",
       obs: "",
       envio_boleto: "Impresso",
-      created_at: "",
+      created_at: ""
     },
     rules: {
-      required: (value) => !!value || "*Obrigatório",
-    },
+      required: value => !!value || "*Obrigatório"
+    }
   }),
 
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    },
+    }
   },
 
   watch: {
     dialog(val) {
       val || this.close();
-    },
+    }
   },
 
   created() {
@@ -206,17 +207,17 @@ export default {
     initialize() {
       axios
         .get("/api/unidades")
-        .then((response) => {
+        .then(response => {
           this.tableData = response.data;
         })
-        .catch((error) => console.log(error));
+        .catch(error => console.log(error));
 
       axios
         .get("/api/proprietarios")
-        .then((response) => {
+        .then(response => {
           this.allProprietarios = response.data;
         })
-        .catch((error) => console.log(error));
+        .catch(error => console.log(error));
     },
 
     editItem(item) {
@@ -225,16 +226,23 @@ export default {
       this.dialog = true;
     },
 
+    details(item) {
+      this.$router.push({
+        path: "/admin/unidades_detalhes/",
+        query: { id: item.id }
+      });
+    },
+
     deleteItem(item) {
       const index = this.tableData.indexOf(item);
       confirm("Você deseja apagar este item?") &&
         axios
           .delete("/api/unidades/" + item.id)
-          .then((response) => {
+          .then(response => {
             console.log(response.data);
             this.tableData.splice(index, 1);
           })
-          .catch((error) => console.log(error));
+          .catch(error => console.log(error));
     },
 
     close() {
@@ -249,29 +257,29 @@ export default {
       if (this.editedIndex > -1) {
         axios
           .put("/api/unidades/" + this.editedItem.id, this.editedItem)
-          .then((response) => {
+          .then(response => {
             console.log(response.data);
             Object.assign(this.tableData[this.editedIndex], this.editedItem);
             this.close();
           })
-          .catch((error) => console.log(error));
+          .catch(error => console.log(error));
       } else {
         axios
           .post("/api/unidades/", this.editedItem)
-          .then((response) => {
+          .then(response => {
             console.log(response.data);
             this.tableData.push(this.editedItem);
             this.close();
           })
-          .catch((error) => console.log(error));
+          .catch(error => console.log(error));
       }
     },
     proprietarioNome(id) {
-      return this.allProprietarios.find((x) => x.id == id)
-        ? this.allProprietarios.find((x) => x.id == id).nome
+      return this.allProprietarios.find(x => x.id == id)
+        ? this.allProprietarios.find(x => x.id == id).nome
         : "";
-    },
-  },
+    }
+  }
 };
 </script>
 
