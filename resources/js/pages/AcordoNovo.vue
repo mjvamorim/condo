@@ -71,7 +71,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="danger" outlined text @click>Retornar</v-btn>
+            <v-btn color="danger" outlined text>Retornar</v-btn>
             <v-btn color="primary" outlined text @click="tab = 1"
               >Próximo</v-btn
             >
@@ -269,6 +269,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "AcordoNovo",
   props: ["unidade_id"],

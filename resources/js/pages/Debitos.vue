@@ -400,7 +400,9 @@
 </template>
 
 <script>
+import axios from "axios";
 import { mdiBarcode } from "@mdi/js";
+import jQuery from "jquery";
 export default {
   data: () => ({
     mdiBarcode,
@@ -608,13 +610,13 @@ export default {
     boletosEmail() {
       axios
         .get("/financeiro/emailBoletos", { params: this.filtroItem })
-        .then((response) => alert("Email enviado com sucesso."))
+        .then(() => alert("Email enviado com sucesso."))
         .catch((error) => console.log(error));
     },
     boletosEmailUnico(item) {
       axios
         .get("/financeiro/emailBoletos?debito_id=" + item.id)
-        .then((response) => alert("Email enviado com sucesso."))
+        .then(() => alert("Email enviado com sucesso."))
         .catch((error) => console.log(error));
     },
     listagemDebitos() {

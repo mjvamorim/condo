@@ -61,6 +61,7 @@
 </template>
 
 <script lang="js">
+import axios from "axios";
 import AcordoDetalhes from "./AcordoDetalhes";
 export default {
   components: { AcordoDetalhes },

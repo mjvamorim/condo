@@ -13,5 +13,6 @@ module.exports = {
         allowModifiers: true,
       },
     ],
+    "vue/require-prop-types": 0,
   },
 };
