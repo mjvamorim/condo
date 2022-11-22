@@ -31,7 +31,7 @@ RUN docker-php-ext-install  exif pcntl
 RUN docker-php-ext-install pdo pdo_mysql
 RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
 
-RUN docker-php-ext-configure gd 
+RUN docker-php-ext-configure gd
 # --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
 RUN docker-php-ext-install gd
 
@@ -46,10 +46,6 @@ RUN docker-php-ext-enable xdebug
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Install php-cs-fixer
-RUN composer global require friendsofphp/php-cs-fixer
-RUN export PATH=”$PATH:$HOME/.composer/vendor/bin”
-
 # Install Node
 ENV NODE_VERSION=16.13.0
 RUN apt install -y curl
@@ -62,6 +58,11 @@ ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 RUN node --version
 RUN npm --version
 RUN chmod go+rwx /root -R
+
+# Install php-cs-fixer
+RUN composer global require friendsofphp/php-cs-fixer
+RUN export PATH="$PATH:/root/.composer/vendor/bin"
+
 # Add user for laravel application
 RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www

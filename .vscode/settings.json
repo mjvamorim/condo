@@ -23,6 +23,7 @@
   "php-cs-fixer.rules": "@PhpCsFixer",
   "[php]": {
     "editor.defaultFormatter": "junstyle.php-cs-fixer",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2
   }
 }
