@@ -1,6 +1,6 @@
 <template>
   <v-card elevation="2" outlined shaped>
-    <v-card-title> Gerar Mensalidades </v-card-title>
+    <v-card-title> Gerar Mensalidades 02</v-card-title>
     <v-card-text>
       <v-select
         v-model="taxa_id"
@@ -28,8 +28,8 @@ export default {
     allTaxas: [],
     taxa_id: 0,
     rules: {
-      required: (value) => !!value || "*Obrigatório",
-    },
+      required: value => !!value || "*Obrigatório"
+    }
   }),
   created() {
     this.initialize();
@@ -38,29 +38,29 @@ export default {
     initialize() {
       axios
         .get("/api/taxas")
-        .then((response) => {
+        .then(response => {
           this.allTaxas = response.data;
+          this.allTaxas.sort((a, b) =>
+            a.anomes < b.anomes ? 1 : b.anomes < a.anomes ? -1 : 0
+          );
         })
-        .catch((error) => console.log(error));
+        .catch(error => console.log(error));
     },
     gerarMensalidades() {
       console.log(this.taxa_id);
-      if (
-        this.taxa_id &&
-        confirm(
-          "Confirma a geração das mensalidades para " + this.taxa_id + "?"
-        )
-      ) {
+      if (this.taxa_id && confirm("Confirma a geração das mensalidades ?")) {
+        let formData = new FormData();
+        formData.append("taxa_id", this.taxa_id);
         axios
-          .post("/financeiro/gerarMensalidades", this.taxa_id)
-          .then((response) => {
+          .post("/financeiro/gerarMensalidades", formData)
+          .then(response => {
             alert("Boletos Gerados!");
             console.log(response);
           })
-          .catch((error) => console.log(error));
+          .catch(error => console.log(error));
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scooped>
