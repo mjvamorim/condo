@@ -10,7 +10,6 @@ use App\Models\Taxa;
 use App\Models\Unidade;
 use Auth;
 use Carbon\Carbon;
-use EduardoKum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -132,7 +131,7 @@ class FinanceiroController extends Controller
             return redirect()->route('home')->withError(['Não existem boletos a serem impressos!']);
         }
 
-        $pdf = new Eduardokum\LaravelBoleto\Boleto\Render\Pdf();
+        $pdf = new \Eduardokum\LaravelBoleto\Boleto\Render\Pdf();
         foreach ($debitos as $debito) {
             if (empty($debito->boleto)) {
                 $debito->boleto = $debito->id;
@@ -191,7 +190,7 @@ class FinanceiroController extends Controller
         foreach ($debitos as $debito) {
             $emailTo = $debito->unidade->proprietario->email;
             if (filter_var($emailTo, FILTER_VALIDATE_EMAIL)) {
-                $pdf = new Eduardokum\LaravelBoleto\Boleto\Render\Pdf();
+                $pdf = new \Eduardokum\LaravelBoleto\Boleto\Render\Pdf();
                 if (empty($debito->boleto)) { // Coloca o id como numero do boleto se for vazio
                     $debito->boleto = $debito->id;
                     $debito->save();
@@ -291,7 +290,7 @@ class FinanceiroController extends Controller
         $file->move($this->baixas_path, $name);
         $file_full_name = $this->baixas_path.DIRECTORY_SEPARATOR.$name;
 
-        $retorno = Eduardokum\LaravelBoleto\Cnab\Retorno\Factory::make($file_full_name);
+        $retorno = \Eduardokum\LaravelBoleto\Cnab\Retorno\Factory::make($file_full_name);
         $retorno->processar();
         $saida = PHP_EOL.'***************** Data: '.date('d-m-Y').' Arquivo: '.$name.'  ***************** ';
         foreach ($retorno->getDetalhes() as $detalhe) {
@@ -351,7 +350,7 @@ class FinanceiroController extends Controller
             $file->move($this->baixas_path, $name);
             $file_full_name = $this->baixas_path.DIRECTORY_SEPARATOR.$name;
 
-            $retorno = Eduardokum\LaravelBoleto\Cnab\Retorno\Factory::make($file_full_name);
+            $retorno = \Eduardokum\LaravelBoleto\Cnab\Retorno\Factory::make($file_full_name);
             $retorno->processar();
             $saida .= PHP_EOL.'***************** Data: '.date('d-m-Y').' Arquivo: '.$name.'  ***************** ';
             foreach ($retorno->getDetalhes() as $detalhe) {
@@ -579,7 +578,7 @@ class FinanceiroController extends Controller
     // -------------------------Beneficiario-------------------------------//
     private function beneficiario()
     {
-        return new Eduardokum\LaravelBoleto\Pessoa(
+        return new \Eduardokum\LaravelBoleto\Pessoa(
             [
                 'nome' => Auth::user()->empresa->nome,
                 'endereco' => Auth::user()->empresa->rua.','.Auth::user()->empresa->numero,
