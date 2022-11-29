@@ -25,82 +25,82 @@ import BaixasBancarias from "./pages/BaixasBancarias";
 const routes = [
   {
     path: "/admin/",
-    component: Dashboard
+    component: Dashboard,
   },
   {
     path: "/admin/users",
-    component: Users
+    component: Users,
   },
   {
     path: "/admin/roles",
-    component: Roles
+    component: Roles,
   },
   {
     path: "/admin/permissions",
-    component: Permissions
+    component: Permissions,
   },
   {
     path: "/admin/settings",
-    component: Settings
+    component: Settings,
   },
   {
     path: "/admin/activities",
-    component: Activities
+    component: Activities,
   },
   {
     path: "/admin/unidades",
-    component: Unidades
+    component: Unidades,
   },
   {
-    path: "/admin/unidades_detalhes/id=:id",
+    path: "/admin/unidades_detalhes",
     name: "UnidadesDetalhes",
-    component: UnidadesDetalhes
+    component: UnidadesDetalhes,
   },
   {
     path: "/admin/proprietarios",
-    component: Proprietarios
+    component: Proprietarios,
   },
   {
     path: "/admin/taxas",
-    component: Taxas
+    component: Taxas,
   },
   {
     path: "/admin/debitos",
-    component: Debitos
+    component: Debitos,
   },
   {
     path: "/admin/acordos",
-    component: Acordos
+    component: Acordos,
   },
   {
     path: "/admin/acordo_novo",
-    component: AcordoNovo
+    component: AcordoNovo,
   },
   {
     path: "/admin/gerar_mensalidades",
-    component: GerarMensalidades
+    component: GerarMensalidades,
   },
   {
     path: "/admin/gerar_remessa",
-    component: GerarRemessa
+    component: GerarRemessa,
   },
   {
     path: "/admin/emails_enviados",
-    component: EmailsEnviados
+    component: EmailsEnviados,
   },
   {
     path: "/admin/log_baixas",
-    component: LogBaixas
+    component: LogBaixas,
   },
   {
     path: "/admin/baixas_bancarias",
-    component: BaixasBancarias
-  }
+    component: BaixasBancarias,
+  },
 ];
 
 const router = new VueRouter({
   mode: "history",
-  routes
+  routes,
 });
 
 export default router;
