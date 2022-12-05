@@ -139,7 +139,7 @@
       <template #item.action="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">edit</v-icon>
         <v-icon small class="mr-2" @click="deleteItem(item)">delete</v-icon>
-        <v-icon small class="mr-2" @click="details(item)">print</v-icon>
+        <v-icon small class="mr-2" @click="details(item)">apps</v-icon>
       </template>
     </v-data-table>
   </div>

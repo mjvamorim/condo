@@ -29,7 +29,7 @@
                   <v-layout wrap>
                     <v-flex xs12>
                       <v-select
-                        v-model="editedItem.unidade_id"
+                        v-model="debito.unidade_id"
                         :items="allUnidades"
                         label="Unidade"
                         item-text="descricao"
@@ -41,7 +41,7 @@
                     </v-flex>
                     <v-flex xs12>
                       <v-radio-group
-                        v-model="editedItem.tipo"
+                        v-model="debito.tipo"
                         label="Tipo"
                         col
                         dense
@@ -56,9 +56,9 @@
                         <v-radio label="Multa" value="Multa"></v-radio>
                       </v-radio-group>
                     </v-flex>
-                    <v-flex v-if="editedItem.tipo == 'Mensalidade'" xs12>
+                    <v-flex v-if="debito.tipo == 'Mensalidade'" xs12>
                       <v-select
-                        v-model="editedItem.taxa_id"
+                        v-model="debito.taxa_id"
                         :items="allTaxas"
                         label="Taxa*"
                         item-text="anomes"
@@ -68,9 +68,9 @@
                         :rules="[rules.required]"
                       ></v-select>
                     </v-flex>
-                    <v-flex v-if="editedItem.tipo == 'Acordo'" xs12>
+                    <v-flex v-if="debito.tipo == 'Acordo'" xs12>
                       <v-text-field
-                        v-model="editedItem.acordo_id"
+                        v-model="debito.acordo_id"
                         v-mask="['######']"
                         outlined
                         label="Acordo"
@@ -79,7 +79,7 @@
                     </v-flex>
                     <v-flex xs12>
                       <v-textarea
-                        v-model="editedItem.on"
+                        v-model="debito.on"
                         label="Obs"
                         outlined
                       ></v-textarea>
@@ -95,7 +95,7 @@
                       >
                         <template #activator="{ on, attrs }">
                           <v-text-field
-                            v-model="editedItem.dtvencto"
+                            v-model="debito.dtvencto"
                             label="Vencimento"
                             outlined
                             v-bind="attrs"
@@ -104,7 +104,7 @@
                           ></v-text-field>
                         </template>
                         <v-date-picker
-                          v-model="editedItem.dtvencto"
+                          v-model="debito.dtvencto"
                           no-title
                           @input="menu = false"
                         ></v-date-picker>
@@ -112,7 +112,7 @@
                     </v-flex>
                     <v-flex xs12>
                       <v-currency-field
-                        v-model="editedItem.valor"
+                        v-model="debito.valor"
                         label="Valor"
                         outlined
                         :rules="[rules.required]"
@@ -129,7 +129,7 @@
                       >
                         <template #activator="{ on, attrs }">
                           <v-text-field
-                            v-model="editedItem.dtpagto"
+                            v-model="debito.dtpagto"
                             label="Pagamento"
                             outlined
                             v-bind="attrs"
@@ -138,7 +138,7 @@
                           ></v-text-field>
                         </template>
                         <v-date-picker
-                          v-model="editedItem.dtpagto"
+                          v-model="debito.dtpagto"
                           no-title
                           @input="menu2 = false"
                         ></v-date-picker>
@@ -146,7 +146,7 @@
                     </v-flex>
                     <v-flex xs12>
                       <v-currency-field
-                        v-model="editedItem.valorpago"
+                        v-model="debito.valorpago"
                         label="Valor Pago"
                         outlined
                         :rules="[rules.required]"
@@ -154,7 +154,7 @@
                     </v-flex>
                     <v-flex xs12>
                       <v-select
-                        v-model="editedItem.remessa"
+                        v-model="debito.remessa"
                         :items="allTiposRemessa"
                         label="Remessa*"
                         item-text="descricao"
@@ -437,7 +437,7 @@ export default {
     ],
     allOrdenacao: ["Proprietário", "Unidade", "Pagamento", "Vencimento"],
     allTaxas: [{ id: "", anomes: "" }],
-    editedItem: {
+    debito: {
       unidade_id: "",
       tipo: "",
       obs: "",
@@ -504,7 +504,7 @@ export default {
 
   methods: {
     cleanData() {
-      this.editedItem.dtvencto = "";
+      this.debito.dtvencto = "";
     },
     buscaDebitos() {
       this.tableData = [];
@@ -547,7 +547,7 @@ export default {
 
     editItem(item) {
       this.editedIndex = this.tableData.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+      this.debito = Object.assign({}, item);
       this.dialog = true;
     },
 
@@ -566,7 +566,7 @@ export default {
     close() {
       this.dialog = false;
       setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
+        this.debito = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       }, 300);
     },
@@ -574,20 +574,20 @@ export default {
     save() {
       if (this.editedIndex > -1) {
         axios
-          .put("/api/debitos/" + this.editedItem.id, this.editedItem)
+          .put("/api/debitos/" + this.debito.id, this.debito)
           .then((response) => {
             console.log(response.data);
-            Object.assign(this.tableData[this.editedIndex], this.editedItem);
+            Object.assign(this.tableData[this.editedIndex], this.debito);
             this.close();
           })
           .catch((error) => console.log(error));
       } else {
-        console.log(this.editedItem);
+        console.log(this.debito);
         axios
-          .post("/api/debitos/", this.editedItem)
+          .post("/api/debitos/", this.debito)
           .then((response) => {
             console.log(response.data);
-            this.tableData.push(this.editedItem);
+            this.tableData.push(this.debito);
             this.close();
           })
           .catch((error) => console.log(error));

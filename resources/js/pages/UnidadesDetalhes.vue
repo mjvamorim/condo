@@ -13,91 +13,7 @@
       </v-tabs>
       <v-tabs-items v-model="tab">
         <v-tab-item>
-          <v-card flat>
-            <v-card-text>
-              <v-data-table
-                :headers="headers"
-                :items="debitos"
-                :search="search"
-                fixed-header
-                dense
-                :items-per-page="20"
-                :must-sort="true"
-                sort-by="unidade_id"
-                class="elevation-1"
-              >
-                <template #item.unidade_id="{ item }">
-                  {{ unidadeDescricao(item.unidade_id) }}
-                </template>
-                <template #item.action="{ item }">
-                  <v-tooltip bottom>
-                    <template #activator="{ on, attrs }">
-                      <v-icon
-                        small
-                        class="mr-2"
-                        v-bind="attrs"
-                        @click="editItem(item)"
-                        v-on="on"
-                        >edit</v-icon
-                      >
-                    </template>
-                    <span>Alterar</span>
-                  </v-tooltip>
-                  <v-tooltip bottom>
-                    <template #activator="{ on, attrs }">
-                      <v-icon
-                        small
-                        v-bind="attrs"
-                        @click="deleteItem(item)"
-                        v-on="on"
-                        >delete</v-icon
-                      >
-                    </template>
-                    <span>Apagar</span>
-                  </v-tooltip>
-                  <v-tooltip bottom>
-                    <template #activator="{ on, attrs }">
-                      <v-icon
-                        small
-                        v-bind="attrs"
-                        @click="boletosImpressoUnico(item)"
-                        v-on="on"
-                        >{{ mdiBarcode }}
-                      </v-icon>
-                    </template>
-                    <span>Boleto</span>
-                  </v-tooltip>
-                  <v-tooltip bottom>
-                    <template #activator="{ on, attrs }">
-                      <v-icon
-                        small
-                        v-bind="attrs"
-                        @click="boletosEmailUnico(item)"
-                        v-on="on"
-                        >email</v-icon
-                      >
-                    </template>
-                    <span>Boleto por Email</span>
-                  </v-tooltip>
-                </template>
-                <template #item.valor="{ item }">
-                  <div class="text-right">
-                    R$ {{ item.valor ? item.valor.toFixed(2) : "0,00" }}
-                  </div>
-                </template>
-                <template #item.valorpago="{ item }">
-                  <div class="text-right">
-                    R$ {{ item.valorpago ? item.valorpago.toFixed(2) : "0.00" }}
-                  </div>
-                </template>
-                <template #item.valoratual="{ item }">
-                  <div class="text-right">
-                    R$ {{ item.valoratual.toFixed(2) }}
-                  </div>
-                </template>
-              </v-data-table>
-            </v-card-text>
-          </v-card>
+          <DebitosTable :unidade_id="unidade_id" />
         </v-tab-item>
         <v-tab-item>
           <v-card flat>
@@ -214,7 +130,9 @@
 
 <script>
 import axios from "axios";
+import DebitosTable from "../components/DebitosTable.vue";
 export default {
+  components: { DebitosTable },
   data: () => ({
     unidade_id: 0,
     tab: null,
@@ -227,23 +145,10 @@ export default {
       envio_boleto: "",
       created_at: "",
     },
+    allProprietarios: [{ id: "", nome: "" }],
     rules: {
       required: (value) => !!value || "*Obrigatório",
     },
-
-    //Debitos
-    debitos: [],
-    headers: [
-      { text: "Unidade", value: "unidade_id" },
-      { text: "Tipo", value: "tipo" },
-      { text: "Dt.Vencto", value: "dtvencto" },
-      { text: "Valor", value: "valor" },
-      { text: "Dt.Pagto", value: "dtpagto" },
-      { text: "Vl.Pago", value: "valorpago" },
-      { text: "Boleto", value: "boleto" },
-      { text: "Vl.Devido", value: "valoratual" }, //confirmar se é esse valor msm
-      { text: "", value: "action", sortable: false },
-    ],
   }),
   created() {
     this.unidade_id = this.$route.query.id;
@@ -256,6 +161,12 @@ export default {
       })
       .catch((error) => console.log(error));
     this.buscaDebitos();
+    axios
+      .get("/api/proprietarios")
+      .then((response) => {
+        this.allProprietarios = response.data;
+      })
+      .catch((error) => console.log(error));
   },
   methods: {
     buscaDebitos() {
