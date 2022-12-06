@@ -1,15 +1,25 @@
 <template>
   <v-card flat>
-    <div align="right">
-      <v-tooltip bottom>
-        <template #activator="{ on, attrs }">
-          <v-btn icon large outlined color="primary" v-bind="attrs" v-on="on">
+    <v-tooltip bottom>
+      <template #activator="{ on, attrs }">
+        <v-fab-transition>
+          <v-btn
+            fab
+            top
+            absolute
+            right
+            outlined
+            small
+            color="primary"
+            v-bind="attrs"
+            v-on="on"
+          >
             <v-icon>mdi-plus</v-icon>
           </v-btn>
-        </template>
-        <span>Cadastrar novo débito avulso</span>
-      </v-tooltip>
-    </div>
+        </v-fab-transition>
+      </template>
+      <span>Cadastrar novo débito avulso</span>
+    </v-tooltip>
 
     <v-dialog v-model="showForm" max-width="600">
       <DebitosForm :debito="debito" @on-close="closeForm" @on-save="saveForm" />
@@ -21,7 +31,7 @@
         :search="search"
         fixed-header
         dense
-        :items-per-page="20"
+        :items-per-page="15"
         :must-sort="true"
         sort-by="unidade_id"
         class="elevation-1"
