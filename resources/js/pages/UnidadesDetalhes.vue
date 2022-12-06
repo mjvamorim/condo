@@ -143,42 +143,42 @@ export default {
       proprietario_id: "",
       obs: "",
       envio_boleto: "",
-      created_at: "",
+      created_at: ""
     },
     allProprietarios: [{ id: "", nome: "" }],
     rules: {
-      required: (value) => !!value || "*Obrigatório",
-    },
+      required: value => !!value || "*Obrigatório"
+    }
   }),
   created() {
     this.unidade_id = this.$route.query.id;
-    console.log(this.unidade_id);
+    // console.log(this.unidade_id);
     axios
       .get("/api/unidades/" + this.unidade_id)
-      .then((response) => {
+      .then(response => {
         this.unidade = response.data;
-        console.log(response.data);
+        // console.log(response.data);
       })
-      .catch((error) => console.log(error));
+      .catch(error => console.log(error));
     this.buscaDebitos();
     axios
       .get("/api/proprietarios")
-      .then((response) => {
+      .then(response => {
         this.allProprietarios = response.data;
       })
-      .catch((error) => console.log(error));
+      .catch(error => console.log(error));
   },
   methods: {
     buscaDebitos() {
       this.debitos = [];
       axios
         .get("/api/debitos", { params: this.filtroItem })
-        .then((response) => {
+        .then(response => {
           this.tableData = response.data;
         })
-        .catch((error) => console.log(error));
-    },
-  },
+        .catch(error => console.log(error));
+    }
+  }
 };
 </script>
 <style scooped></style>
