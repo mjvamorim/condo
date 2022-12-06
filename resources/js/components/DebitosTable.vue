@@ -1,7 +1,18 @@
 <template>
   <v-card flat>
+    <div align="right">
+      <v-tooltip bottom>
+        <template #activator="{ on, attrs }">
+          <v-btn icon large outlined color="primary" v-bind="attrs" v-on="on">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </template>
+        <span>Cadastrar novo débito avulso</span>
+      </v-tooltip>
+    </div>
+
     <v-dialog v-model="showForm" max-width="600">
-      <DebitosForm :debito="debito" />
+      <DebitosForm :debito="debito" @on-close="closeForm" @on-save="saveForm" />
     </v-dialog>
     <v-card-text>
       <v-data-table
@@ -150,6 +161,17 @@ export default {
     this.buscaDebitos();
   },
   methods: {
+    closeForm() {
+      this.showForm = false;
+    },
+    saveForm(debito) {
+      if (debito.id > 0) {
+        Object.assign(this.debitos[this.index], debito);
+      } else {
+        this.debitos.push(debito);
+      }
+      this.showForm = false;
+    },
     buscaDebitos() {
       this.filtroItem.unidade_id = this.unidade_id;
       console.log(this.filtroItem);

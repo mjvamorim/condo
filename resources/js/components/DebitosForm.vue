@@ -171,6 +171,7 @@ export default {
       created_at: "",
     },
   },
+  emits: ["on-close", "on-save"],
   data: () => ({
     //Variavel menu controla a exibição da data no Datapicker
     menu: "",
@@ -236,10 +237,7 @@ export default {
 
   methods: {
     close() {
-      this.dialog = false;
-      // setTimeout(() => {
-      //   this.debito = Object.assign({}, this.defaultItem);
-      // }, 300);
+      this.$emit("on-close");
     },
 
     save() {
@@ -248,8 +246,7 @@ export default {
           .put("/api/debitos/" + this.debito.id, this.debito)
           .then((response) => {
             console.log(response.data);
-            // ******* comunicar a alteracao a tabela do componente DebitosTable
-            // Object.assign(this.tableData[this.index], this.debito);
+            this.$emit("on-save", this.debito);
             this.close();
           })
           .catch((error) => console.log(error));
@@ -259,8 +256,7 @@ export default {
           .post("/api/debitos/", this.debito)
           .then((response) => {
             console.log(response.data);
-            // ******* comunicar a alteracao a tabela do componente DebitosTable
-            // this.tableData.push(this.debito);
+            this.$emit("on-save", this.debito);
             this.close();
           })
           .catch((error) => console.log(error));
@@ -270,15 +266,4 @@ export default {
 };
 </script>
 
-<style scooped>
-.debitos-table table th {
-  font-size: 16px !important;
-}
-.col {
-  padding: 2px;
-}
-.v-btn {
-  text-transform: none;
-  margin-left: 10px;
-}
-</style>
+<style scooped></style>
