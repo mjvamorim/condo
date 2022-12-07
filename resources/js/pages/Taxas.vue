@@ -1,21 +1,22 @@
 <template>
-  <div>
-    <v-app-bar dark text color="grey-lighten" dense>
-      <v-toolbar dense>Taxa</v-toolbar>
+  <v-card elevation="2" outlined shaped>
+    <v-card-title>
+      Unidades
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
-        label="Search"
+        label="Buscar"
         single-line
         hide-details
       ></v-text-field>
-      <v-spacer></v-spacer>
+    </v-card-title>
+    <v-card-text>
       <v-dialog v-model="dialog" max-width="700px">
         <template #activator="form">
           <v-tooltip bottom>
             <template #activator="{ on, attrs }">
-              <v-btn icon v-bind="attrs" v-on="on">
+              <v-btn icon v-bind="attrs" v-on="on" outlined color="primary">
                 <v-icon v-on="form.on">mdi-plus</v-icon>
               </v-btn>
             </template>
@@ -83,44 +84,46 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-app-bar>
-    <v-data-table
-      :headers="headers"
-      :items="tableData"
-      :search="search"
-      sort-by="anomes"
-      sort-desc
-      class="elevation-1"
-      items-per-page="15"
-    >
-      <template #item.action="{ item }">
-        <v-tooltip bottom>
-          <template #activator="{ on, attrs }">
-            <v-icon
-              small
-              class="mr-2"
-              v-bind="attrs"
-              @click="editItem(item)"
-              v-on="on"
-              >edit</v-icon
-            >
-          </template>
-          <span>Alterar</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template #activator="{ on, attrs }">
-            <v-icon small v-bind="attrs" @click="deleteItem(item)" v-on="on"
-              >delete</v-icon
-            >
-          </template>
-          <span>Apagar</span>
-        </v-tooltip>
-      </template>
-      <template #item.valor="{ item }">
-        <div class="text-right">R$ {{ item.valor.toFixed(2) }}</div>
-      </template>
-    </v-data-table>
-  </div>
+
+      <v-data-table
+        :headers="headers"
+        :items="tableData"
+        :search="search"
+        sort-by="anomes"
+        sort-desc
+        class="elevation-1"
+        :items-per-page="-1"
+        :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, -1] }"
+      >
+        <template #item.action="{ item }">
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <v-icon
+                small
+                class="mr-2"
+                v-bind="attrs"
+                @click="editItem(item)"
+                v-on="on"
+                >edit</v-icon
+              >
+            </template>
+            <span>Alterar</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <v-icon small v-bind="attrs" @click="deleteItem(item)" v-on="on"
+                >delete</v-icon
+              >
+            </template>
+            <span>Apagar</span>
+          </v-tooltip>
+        </template>
+        <template #item.valor="{ item }">
+          <div class="text-right">R$ {{ item.valor.toFixed(2) }}</div>
+        </template>
+      </v-data-table>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -135,7 +138,7 @@ export default {
       { text: "Ano/Mês", value: "anomes" },
       { text: "Vencimento", value: "dtvencto" },
       { text: "Valor", value: "valor" },
-      { text: "", value: "action", sortable: false },
+      { text: "", value: "action", sortable: false }
     ],
     tableData: [],
     editedIndex: -1,
@@ -143,29 +146,29 @@ export default {
       anomes: "",
       dtvencto: "",
       valor: "",
-      created_at: "",
+      created_at: ""
     },
     defaultItem: {
       anomes: "",
       dtvencto: "",
       valor: "",
-      created_at: "",
+      created_at: ""
     },
     rules: {
-      required: (value) => !!value || "*Obrigatório",
-    },
+      required: value => !!value || "*Obrigatório"
+    }
   }),
 
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    },
+    }
   },
 
   watch: {
     dialog(val) {
       val || this.close();
-    },
+    }
   },
 
   created() {
@@ -179,10 +182,10 @@ export default {
     initialize() {
       axios
         .get("/api/taxas")
-        .then((response) => {
+        .then(response => {
           this.tableData = response.data;
         })
-        .catch((error) => console.log(error));
+        .catch(error => console.log(error));
     },
 
     editItem(item) {
@@ -196,11 +199,11 @@ export default {
       confirm("Você deseja apagar este item?") &&
         axios
           .delete("/api/taxas/" + item.id)
-          .then((response) => {
+          .then(response => {
             console.log(response.data);
             this.tableData.splice(index, 1);
           })
-          .catch((error) => console.log(error));
+          .catch(error => console.log(error));
     },
 
     close() {
@@ -215,30 +218,30 @@ export default {
       if (this.editedIndex > -1) {
         axios
           .put("/api/taxas/" + this.editedItem.id, this.editedItem)
-          .then((response) => {
+          .then(response => {
             console.log(response.data);
             Object.assign(this.tableData[this.editedIndex], this.editedItem);
             this.close();
           })
-          .catch((error) => console.log(error));
+          .catch(error => console.log(error));
       } else {
         console.log(this.editedItem);
         axios
           .post("/api/taxas/", this.editedItem)
-          .then((response) => {
+          .then(response => {
             console.log(response.data);
             this.tableData.push(this.editedItem);
             this.close();
           })
-          .catch((error) => console.log(error));
+          .catch(error => console.log(error));
       }
     },
     proprietarioNome(id) {
-      return this.allProprietarios.find((x) => x.id == id)
-        ? this.allProprietarios.find((x) => x.id == id).nome
+      return this.allProprietarios.find(x => x.id == id)
+        ? this.allProprietarios.find(x => x.id == id).nome
         : "";
-    }, //Preciso desse campo aqui???
-  },
+    } //Preciso desse campo aqui???
+  }
 };
 </script>
 
@@ -250,6 +253,9 @@ legend {
   background: white;
   width: fit-content;
   font-size: small;
+}
+.v-data-table {
+  margin-top: 10px;
 }
 .v-input {
   font-size: 13px;

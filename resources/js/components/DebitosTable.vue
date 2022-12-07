@@ -40,8 +40,8 @@
         fixed-header
         dense
         :must-sort="true"
-        :sort-by.sync="sortBy"
-        :sort-desc.sync="sortDesc"
+        sort-by="dtvencto"
+        sort-desc
         class="elevation-1"
         :items-per-page="20"
         :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, -1] }"
@@ -138,8 +138,6 @@ export default {
       { text: "", value: "action", sortable: false }
     ],
     search: "",
-    sortBy: "dtvencto",
-    sortDesc: true,
     filtroItem: {
       proprietario_id: "",
       unidade_id: "",

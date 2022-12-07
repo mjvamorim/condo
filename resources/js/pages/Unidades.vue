@@ -1,19 +1,28 @@
 <template>
-  <div>
-    <v-app-bar dark text color="grey-lighten" dense>
-      <v-toolbar dense>Unidades</v-toolbar>
+  <v-card elevation="2" outlined shaped>
+    <v-card-title>
+      Unidades
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
-        label="Search"
+        label="Buscar"
         single-line
         hide-details
       ></v-text-field>
-      <v-spacer></v-spacer>
+    </v-card-title>
+    <v-card-text>
       <v-dialog v-model="dialog" max-width="700px">
-        <template #activator="{ on }">
-          <v-icon v-on="on">mdi-plus</v-icon>
+        <v-spacer></v-spacer>
+        <template #activator="form">
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <v-btn icon v-bind="attrs" v-on="on" outlined color="primary">
+                <v-icon v-on="form.on">mdi-plus</v-icon>
+              </v-btn>
+            </template>
+            <span>Cadastrar novo Item</span>
+          </v-tooltip>
         </template>
         <v-card>
           <v-card-title>
@@ -116,34 +125,35 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-app-bar>
-    <v-data-table
-      :headers="headers"
-      :items="tableData"
-      :search="search"
-      dense
-      class="elevation-1"
-      sort-by="descricao"
-      :items-per-page="-1"
-      :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, -1] }"
-    >
-      <template #item.proprietario_id="{ item }">
-        {{ proprietarioNome(item.proprietario_id) }}
-      </template>
-      <template #item.adicional="{ item }">
-        <div v-if="item.tipo_adicional == 'Valor Fixo'" class="text-left">
-          R$ {{ item.adicional ? item.adicional.toFixed(2) : "0,00" }}
-        </div>
-        <div v-else class="text-right">{{ item.adicional }}%</div>
-      </template>
 
-      <template #item.action="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)">edit</v-icon>
-        <v-icon small class="mr-2" @click="deleteItem(item)">delete</v-icon>
-        <v-icon small class="mr-2" @click="details(item)">apps</v-icon>
-      </template>
-    </v-data-table>
-  </div>
+      <v-data-table
+        :headers="headers"
+        :items="tableData"
+        :search="search"
+        dense
+        class="elevation-1"
+        sort-by="descricao"
+        :items-per-page="-1"
+        :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, -1] }"
+      >
+        <template #item.proprietario_id="{ item }">
+          {{ proprietarioNome(item.proprietario_id) }}
+        </template>
+        <template #item.adicional="{ item }">
+          <div v-if="item.tipo_adicional == 'Valor Fixo'" class="text-left">
+            R$ {{ item.adicional ? item.adicional.toFixed(2) : "0,00" }}
+          </div>
+          <div v-else class="text-right">{{ item.adicional }}%</div>
+        </template>
+
+        <template #item.action="{ item }">
+          <v-icon small class="mr-2" @click="editItem(item)">edit</v-icon>
+          <v-icon small class="mr-2" @click="deleteItem(item)">delete</v-icon>
+          <v-icon small class="mr-2" @click="details(item)">apps</v-icon>
+        </template>
+      </v-data-table>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -292,6 +302,9 @@ legend {
   background: white;
   width: fit-content;
   font-size: small;
+}
+.v-data-table {
+  margin-top: 10px;
 }
 .v-input {
   font-size: 13px;

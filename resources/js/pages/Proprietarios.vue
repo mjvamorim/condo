@@ -1,21 +1,22 @@
 <template>
-  <div>
-    <v-app-bar dark text color="grey-lighten" dense>
-      <v-toolbar dense>Proprietarios</v-toolbar>
+  <v-card elevation="2" outlined shaped>
+    <v-card-title>
+      Proprietários
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
-        label="Search"
+        label="Buscar"
         single-line
         hide-details
       ></v-text-field>
-      <v-spacer></v-spacer>
+    </v-card-title>
+    <v-card-text>
       <v-dialog v-model="dialog" max-width="700px">
         <template #activator="form">
           <v-tooltip bottom>
             <template #activator="{ on, attrs }">
-              <v-btn icon v-bind="attrs" v-on="on">
+              <v-btn icon v-bind="attrs" v-on="on" outlined color="primary">
                 <v-icon v-on="form.on">mdi-plus</v-icon>
               </v-btn>
             </template>
@@ -173,41 +174,43 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-app-bar>
-    <v-data-table
-      dense
-      :headers="headers"
-      :items="tableData"
-      :items-per-page="15"
-      :search="search"
-      class="elevation-1"
-      sort-by="nome"
-    >
-      <template #item.action="{ item }">
-        <v-tooltip bottom>
-          <template #activator="{ on, attrs }">
-            <v-icon
-              small
-              class="mr-2"
-              v-bind="attrs"
-              @click="editItem(item)"
-              v-on="on"
-              >edit</v-icon
-            >
-          </template>
-          <span>Alterar</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template #activator="{ on, attrs }">
-            <v-icon small v-bind="attrs" @click="deleteItem(item)" v-on="on"
-              >delete</v-icon
-            >
-          </template>
-          <span>Apagar</span>
-        </v-tooltip>
-      </template>
-    </v-data-table>
-  </div>
+
+      <v-data-table
+        dense
+        :headers="headers"
+        :items="tableData"
+        :search="search"
+        class="elevation-1"
+        sort-by="nome"
+        :items-per-page="-1"
+        :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, -1] }"
+      >
+        <template #item.action="{ item }">
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <v-icon
+                small
+                class="mr-2"
+                v-bind="attrs"
+                @click="editItem(item)"
+                v-on="on"
+                >edit</v-icon
+              >
+            </template>
+            <span>Alterar</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <v-icon small v-bind="attrs" @click="deleteItem(item)" v-on="on"
+                >delete</v-icon
+              >
+            </template>
+            <span>Apagar</span>
+          </v-tooltip>
+        </template>
+      </v-data-table>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -391,3 +394,9 @@ export default {
 //     }
 // );
 </script>
+
+<style>
+.v-data-table {
+  margin-top: 10px;
+}
+</style>
