@@ -327,10 +327,11 @@
       :search="search"
       fixed-header
       dense
-      :items-per-page="20"
       :must-sort="true"
       sort-by="unidade_id"
       class="elevation-1"
+      :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
+      :items-per-page="30"
     >
       <template #item.unidade_id="{ item }">
         {{ unidadeDescricao(item.unidade_id) }}
@@ -411,6 +412,8 @@ export default {
     menu3: "",
     menu4: "",
     search: "",
+    sortBy: "dtvencto",
+    sortDesc: true,
     naoLocalizado: false,
     dialog: false,
     headers: [

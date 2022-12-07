@@ -26,16 +26,25 @@
       <DebitosForm :debito="debito" @on-close="closeForm" @on-save="saveForm" />
     </v-dialog>
     <v-card-text>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
       <v-data-table
         :headers="headers"
         :items="debitos"
         :search="search"
         fixed-header
         dense
-        :items-per-page="15"
         :must-sort="true"
-        sort-by="unidade_id"
+        :sort-by.sync="sortBy"
+        :sort-desc.sync="sortDesc"
         class="elevation-1"
+        :items-per-page="20"
+        :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, -1] }"
       >
         <template #item.unidade_id="{ item }">
           {{ unidadeDescricao(item.unidade_id) }}
@@ -129,6 +138,8 @@ export default {
       { text: "", value: "action", sortable: false }
     ],
     search: "",
+    sortBy: "dtvencto",
+    sortDesc: true,
     filtroItem: {
       proprietario_id: "",
       unidade_id: "",
