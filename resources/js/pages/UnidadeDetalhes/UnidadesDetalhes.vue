@@ -45,8 +45,8 @@
 
 <script>
 import axios from "axios";
-import DebitosTable from "../components/DebitosTable.vue";
-import UnidadeForm from "../components/UnidadeForm.vue";
+import DebitosTable from "./DebitosTable.vue";
+import UnidadeForm from "./UnidadeForm.vue";
 export default {
   components: { DebitosTable, UnidadeForm },
   data: () => ({
