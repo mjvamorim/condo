@@ -168,8 +168,8 @@ export default {
       boleto: "",
       acordo_quitacao_id: "",
       valoratual: "",
-      created_at: ""
-    }
+      created_at: "",
+    },
   },
   emits: ["on-close", "on-save"],
   data: () => ({
@@ -180,42 +180,42 @@ export default {
     allTiposDebitos: ["Todos", "Avulso", "Mensalidade", "Acordo", "Multa"],
     allTiposRemessa: [
       { id: "S", descricao: "Sim" },
-      { id: "N", descricao: "Não" }
+      { id: "N", descricao: "Não" },
     ],
     allTaxas: [{ id: "", anomes: "" }],
     //debito: {},
 
     rules: {
-      required: value => !!value || "*Obrigatório"
-    }
+      required: (value) => !!value || "*Obrigatório",
+    },
   }),
 
   created() {
     // this.debito = Object.assign({}, this.debito);
     axios
       .get("/api/proprietarios")
-      .then(response => {
+      .then((response) => {
         this.allProprietarios = response.data;
         this.allProprietarios.sort();
         this.allProprietarios.unshift({ id: "00", nome: "Todos" });
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
 
     axios
       .get("/api/unidades")
-      .then(response => {
+      .then((response) => {
         this.allUnidades = response.data;
         this.allUnidades.sort();
         this.allUnidades.unshift({ id: "00", descricao: "Todos" });
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
 
     axios
       .get("/api/taxas")
-      .then(response => {
+      .then((response) => {
         this.allTaxas = response.data;
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   },
 
   methods: {
@@ -227,26 +227,24 @@ export default {
       if (this.debito.id > 0) {
         axios
           .put("/api/debitos/" + this.debito.id, this.debito)
-          .then(response => {
+          .then((response) => {
             console.log(response.data);
             this.$emit("on-save", this.debito);
-            this.close();
           })
-          .catch(error => console.log(error));
+          .catch((error) => console.log(error));
       } else {
         //console.log(this.debito);
         axios
           .post("/api/debitos/", this.debito)
-          .then(response => {
+          .then((response) => {
             console.log(response.data);
             console.log(this.debito);
             this.$emit("on-save", this.debito);
-            this.close();
           })
-          .catch(error => console.log(error));
+          .catch((error) => console.log(error));
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

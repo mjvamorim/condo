@@ -1,38 +1,45 @@
 <template>
   <v-card flat>
-    <v-tooltip bottom>
-      <template #activator="{ on, attrs }">
-        <v-fab-transition>
-          <v-btn
-            fab
-            top
-            absolute
-            right
-            outlined
-            small
-            color="primary"
-            v-bind="attrs"
-            v-on="on"
-            @click="newItem(debito)"
-          >
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
-        </v-fab-transition>
-      </template>
-      <span>Cadastrar novo débito avulso</span>
-    </v-tooltip>
-
-    <v-dialog v-model="showForm" max-width="600">
-      <DebitosForm :debito="debito" @on-close="closeForm" @on-save="saveForm" />
-    </v-dialog>
-    <v-card-text>
+    <v-card-title>
+      <v-tooltip bottom>
+        <template #activator="{ on, attrs }">
+          <v-fab-transition>
+            <v-btn
+              fab
+              top
+              right
+              outlined
+              small
+              color="primary"
+              v-bind="attrs"
+              v-on="on"
+              @click="newItem(debito)"
+            >
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </v-fab-transition>
+        </template>
+        <span>Cadastrar novo débito avulso</span>
+      </v-tooltip>
+      <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
-        label="Search"
+        label="Buscar"
         single-line
         hide-details
       ></v-text-field>
+    </v-card-title>
+
+    <v-card-text>
+      <v-dialog v-model="showForm" max-width="600">
+        <DebitosForm
+          :debito="debito"
+          @on-close="closeForm"
+          @on-save="saveForm"
+        />
+      </v-dialog>
+
       <v-data-table
         :headers="headers"
         :items="debitos"
@@ -117,7 +124,7 @@
 <script>
 import axios from "axios";
 import { mdiBarcode } from "@mdi/js";
-import DebitosForm from "./DebitosForm.vue";
+import DebitosForm from "./DebitoForm.vue";
 export default {
   components: { DebitosForm },
   // eslint-disable-next-line vue/prop-name-casing
@@ -135,7 +142,7 @@ export default {
       { text: "Vl.Pago", value: "valorpago" },
       { text: "Boleto", value: "boleto" },
       { text: "Vl.Devido", value: "valoratual" },
-      { text: "", value: "action", sortable: false }
+      { text: "", value: "action", sortable: false },
     ],
     search: "",
     filtroItem: {
@@ -146,7 +153,7 @@ export default {
       dtfim: "",
       condicao: "",
       envio_boleto: "",
-      ordem: ""
+      ordem: "",
     },
     allUnidades: [{ id: "00", descricao: "Todos" }],
     showForm: false,
@@ -165,20 +172,20 @@ export default {
       boleto: "",
       acordo_quitacao_id: "",
       valoratual: 0,
-      created_at: ""
+      created_at: "",
     },
-    index: 0
+    index: 0,
   }),
   created() {
     //console.log(this.unidade_id);
     axios
       .get("/api/unidades")
-      .then(response => {
+      .then((response) => {
         this.allUnidades = response.data;
         this.allUnidades.sort();
         this.allUnidades.unshift({ id: "00", descricao: "Todos" });
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
     this.buscaDebitos();
   },
   methods: {
@@ -187,14 +194,14 @@ export default {
       //console.log(this.filtroItem);
       axios
         .get("/api/debitos", { params: this.filtroItem })
-        .then(response => {
+        .then((response) => {
           this.debitos = response.data;
         })
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
     },
     unidadeDescricao(id) {
-      return this.allUnidades.find(x => x.id == id)
-        ? this.allUnidades.find(x => x.id == id).descricao
+      return this.allUnidades.find((x) => x.id == id)
+        ? this.allUnidades.find((x) => x.id == id).descricao
         : "";
     },
     closeForm() {
@@ -238,11 +245,11 @@ export default {
       confirm("Você deseja apagar este item?") &&
         axios
           .delete("/api/debitos/" + item.id)
-          .then(response => {
+          .then((response) => {
             console.log(response.data);
             this.debitos.splice(index, 1);
           })
-          .catch(error => console.log(error));
+          .catch((error) => console.log(error));
     },
     boletosImpressoUnico(item) {
       let url = "/financeiro/imprimirBoletos?debito_id=" + item.id;
@@ -252,9 +259,9 @@ export default {
       axios
         .get("/financeiro/emailBoletos?debito_id=" + item.id)
         .then(() => alert("Email enviado com sucesso."))
-        .catch(error => console.log(error));
-    }
-  }
+        .catch((error) => console.log(error));
+    },
+  },
 };
 </script>
 <style scooped></style>
