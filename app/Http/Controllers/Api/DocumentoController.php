@@ -15,6 +15,7 @@ class DocumentoController extends Controller
 
     public function index(Request $request)
     {
+        $clausulaWhere = [];
         if ($request->input('unidade_id') && '00' != $request->input('unidade_id')) {
             $clausulaWhere[] = ['unidade_id', $request->input('unidade_id')];
         }
@@ -25,6 +26,9 @@ class DocumentoController extends Controller
     public function store(Request $request)
     {
         $documento = new Documento();
+        $arquivo = $request->file('arquivo');
+        echo $arquivo;
+
         $input = $request->only($documento->fillable);
         $documento->fill($input);
         $documento->save();

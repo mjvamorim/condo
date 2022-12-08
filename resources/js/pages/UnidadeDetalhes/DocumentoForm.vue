@@ -84,6 +84,10 @@ export default {
     },
 
     save() {
+      // let formData = new FormData();
+      //   this.documento.arquivo.forEach((file, i) => {
+      //     formData.append("files[" + i + "]", file, file.name);
+      //   });
       if (this.documento.id > 0) {
         axios
           .put("/api/documentos/" + this.documento.id, this.documento)
