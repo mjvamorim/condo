@@ -15,7 +15,11 @@ class DocumentoController extends Controller
 
     public function index(Request $request)
     {
-        return Documento::all();
+        if ($request->input('unidade_id') && '00' != $request->input('unidade_id')) {
+            $clausulaWhere[] = ['unidade_id', $request->input('unidade_id')];
+        }
+
+        return Documento::select()->where($clausulaWhere)->orderBy('id')->get();
     }
 
     public function store(Request $request)

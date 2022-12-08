@@ -24,9 +24,7 @@
         </v-tab-item>
 
         <v-tab-item>
-          <v-card flat>
-            <v-card-text>Documentos</v-card-text>
-          </v-card>
+          <DocumentosTable :unidade_id="unidade_id" />
         </v-tab-item>
         <v-tab-item>
           <v-card flat>
@@ -46,12 +44,13 @@
 <script>
 import axios from "axios";
 import DebitosTable from "./DebitosTable.vue";
+import DocumentosTable from "./DocumentosTable.vue";
 import UnidadeForm from "./UnidadeForm.vue";
 export default {
-  components: { DebitosTable, UnidadeForm },
+  components: { DebitosTable, UnidadeForm, DocumentosTable },
   data: () => ({
-    unidade_id: 0,
     tab: null,
+    unidade_id: 0,
     unidade: {
       descricao: "",
       adicional: "",
@@ -69,27 +68,10 @@ export default {
       .get("/api/unidades/" + this.unidade_id)
       .then((response) => {
         this.unidade = response.data;
-        // console.log(response.data);
-      })
-      .catch((error) => console.log(error));
-    this.buscaDebitos();
-    axios
-      .get("/api/proprietarios")
-      .then((response) => {
-        this.allProprietarios = response.data;
       })
       .catch((error) => console.log(error));
   },
   methods: {
-    buscaDebitos() {
-      this.debitos = [];
-      axios
-        .get("/api/debitos", { params: this.filtroItem })
-        .then((response) => {
-          this.tableData = response.data;
-        })
-        .catch((error) => console.log(error));
-    },
     closeForm() {
       this.tab = 0;
       console.log("Close Form");

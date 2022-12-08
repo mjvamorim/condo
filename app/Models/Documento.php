@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Amorim\Tenant\Models\BaseModelTenant;
 
-class Debito extends BaseModelTenant
+class Documento extends BaseModelTenant
 {
     protected $fillable = [
         'id', 'unidade_id', 'descricao', 'arquivo',
