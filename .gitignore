@@ -5,6 +5,7 @@
 /public/baixas
 /public/boletos
 /storage/*.key
+/storage/documentos
 /vendor
 /.idea
 /nbproject

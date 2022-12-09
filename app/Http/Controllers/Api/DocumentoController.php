@@ -4,13 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Documento;
+use Auth;
 use Illuminate\Http\Request;
 
 class DocumentoController extends Controller
 {
+    private $documentos_path;
+
     public function __construct()
     {
         $this->middleware('tenant');
+        $this->documentos_path = storage_path('documentos');
+        if (!is_dir($this->documentos_path)) {
+            mkdir($this->documentos_path, 0777);
+        }
     }
 
     public function index(Request $request)
@@ -25,13 +32,26 @@ class DocumentoController extends Controller
 
     public function store(Request $request)
     {
+        // Insere documento para obter o id
         $documento = new Documento();
-        $arquivo = $request->file('arquivo');
-        echo $arquivo;
-
         $input = $request->only($documento->fillable);
         $documento->fill($input);
+        $documento->arquivo = 'arquivo.pdf';
         $documento->save();
+
+        // Faz upload do arquivo
+        $arquivo = $request->file('arquivo');
+        $arquivo_extensao = $arquivo->getClientOriginalExtension();
+        $arquivo_nome =
+            str_pad(Auth::user()->empresa->id, 3, '0', STR_PAD_LEFT)
+            .'-'.str_pad($documento->id, 5, '0', STR_PAD_LEFT)
+            .'.'.$arquivo_extensao;
+        $arquivo_nome_completo = $this->documentos_path.DIRECTORY_SEPARATOR.$arquivo_nome;
+        $arquivo->move($this->documentos_path, $arquivo_nome);
+
+        // Regrava documento com o nome do arquivo atualizado
+        $documento->arquivo = $arquivo_nome_completo;
+        $documento->update();
 
         return $documento;
     }

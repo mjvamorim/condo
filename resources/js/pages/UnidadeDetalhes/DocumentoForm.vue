@@ -84,13 +84,18 @@ export default {
     },
 
     save() {
-      // let formData = new FormData();
-      //   this.documento.arquivo.forEach((file, i) => {
-      //     formData.append("files[" + i + "]", file, file.name);
-      //   });
+      let formData = new FormData();
+      formData.append("id", this.documento.id);
+      formData.append("unidade_id", this.documento.unidade_id);
+      formData.append("descricao", this.documento.descricao);
+      formData.append(
+        "arquivo",
+        this.documento.arquivo,
+        this.documento.arquivo.name
+      );
       if (this.documento.id > 0) {
         axios
-          .put("/api/documentos/" + this.documento.id, this.documento)
+          .put("/api/documentos/" + this.documento.id, formData)
           .then((response) => {
             console.log(response.data);
             this.$emit("on-save", this.documento);
@@ -99,7 +104,7 @@ export default {
       } else {
         //console.log(this.documento);
         axios
-          .post("/api/documentos/", this.documento)
+          .post("/api/documentos/", formData)
           .then((response) => {
             console.log(response.data);
             console.log(this.documento);
