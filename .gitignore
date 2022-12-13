@@ -19,6 +19,7 @@ public/boletos/itau.pdf
 .env
 /backup/gerais
 /backup/Backup*.sql
+/storage/documentos
 
 /logs/*
 /logs/nginx/*
