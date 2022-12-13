@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      <span class="headline">Documento</span>
+      <span class="headline">Documento x</span>
     </v-card-title>
     <v-card-text>
       <v-container grid-list-md>
@@ -107,6 +107,8 @@ export default {
           .post("/api/documentos/", formData)
           .then((response) => {
             console.log(response.data);
+            console.log(this.documento);
+            Object.assign(this.documento, response.data);
             console.log(this.documento);
             this.$emit("on-save", this.documento);
           })

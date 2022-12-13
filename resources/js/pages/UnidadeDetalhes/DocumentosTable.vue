@@ -47,7 +47,7 @@
         fixed-header
         dense
         :must-sort="true"
-        sort-by="descricao"
+        sort-by="id"
         class="elevation-1"
         :items-per-page="20"
         :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, -1] }"
@@ -62,12 +62,12 @@
                 small
                 class="mr-2"
                 v-bind="attrs"
-                @click="editItem(item)"
+                @click="download(item)"
                 v-on="on"
-                >edit</v-icon
+                >download</v-icon
               >
             </template>
-            <span>Alterar</span>
+            <span>Download</span>
           </v-tooltip>
           <v-tooltip bottom>
             <template #activator="{ on, attrs }">
@@ -145,11 +145,7 @@ export default {
       this.showForm = false;
     },
     saveForm(documento) {
-      if (documento.id > 0) {
-        Object.assign(this.documentos[this.index], documento);
-      } else {
-        this.documentos.push(documento);
-      }
+      this.documentos.push(documento);
       this.showForm = false;
     },
     newItem() {
@@ -159,10 +155,9 @@ export default {
       this.documento.arquivo = [];
       this.showForm = true;
     },
-    editItem(item) {
-      this.index = this.documentos.indexOf(item);
-      this.documento = Object.assign({}, item);
-      this.showForm = true;
+    download(item) {
+      let url = "/api/documentoDownload/" + item.id;
+      window.open(url, "_blank");
     },
     deleteItem(item) {
       const index = this.documentos.indexOf(item);

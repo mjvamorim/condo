@@ -9,9 +9,11 @@
         <v-tab> Dados </v-tab>
 
         <v-tab> Documentos </v-tab>
-        <v-tab> Acordos </v-tab>
       </v-tabs>
-      <v-tabs-items v-model="tab">
+      <v-tabs-items
+        v-model="tab"
+        style="border: 1px solid gray; border-radius: 5px"
+      >
         <v-tab-item>
           <DebitosTable :unidade_id="unidade_id" />
         </v-tab-item>
@@ -25,11 +27,6 @@
 
         <v-tab-item>
           <DocumentosTable :unidade_id="unidade_id" />
-        </v-tab-item>
-        <v-tab-item>
-          <v-card flat>
-            <v-card-text>Acordos</v-card-text>
-          </v-card>
         </v-tab-item>
       </v-tabs-items>
     </v-card-text>

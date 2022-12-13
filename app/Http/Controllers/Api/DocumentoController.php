@@ -46,11 +46,10 @@ class DocumentoController extends Controller
             str_pad(Auth::user()->empresa->id, 3, '0', STR_PAD_LEFT)
             .'-'.str_pad($documento->id, 5, '0', STR_PAD_LEFT)
             .'.'.$arquivo_extensao;
-        $arquivo_nome_completo = $this->documentos_path.DIRECTORY_SEPARATOR.$arquivo_nome;
         $arquivo->move($this->documentos_path, $arquivo_nome);
 
         // Regrava documento com o nome do arquivo atualizado
-        $documento->arquivo = $arquivo_nome_completo;
+        $documento->arquivo = $arquivo_nome;
         $documento->update();
 
         return $documento;
@@ -75,5 +74,13 @@ class DocumentoController extends Controller
         $documento->delete();
 
         return response(['message' => 'Deleted']);
+    }
+
+    public function download($id)
+    {
+        $documento = Documento::find($id);
+        $arquivo_nome_completo = $this->documentos_path.DIRECTORY_SEPARATOR.$documento->arquivo;
+
+        return response()->download($arquivo_nome_completo);
     }
 }
