@@ -176,7 +176,7 @@ export default {
     //Variavel menu controla a exibição da data no Datapicker
     menu: "",
     menu2: "",
-    allUnidades: [{ id: "00", descricao: "Todos" }],
+    allUnidades: [],
     allTiposDebitos: ["Todos", "Avulso", "Mensalidade", "Acordo", "Multa"],
     allTiposRemessa: [
       { id: "S", descricao: "Sim" },
@@ -197,7 +197,6 @@ export default {
       .then((response) => {
         this.allProprietarios = response.data;
         this.allProprietarios.sort();
-        this.allProprietarios.unshift({ id: "00", nome: "Todos" });
       })
       .catch((error) => console.log(error));
 
@@ -206,7 +205,6 @@ export default {
       .then((response) => {
         this.allUnidades = response.data;
         this.allUnidades.sort();
-        this.allUnidades.unshift({ id: "00", descricao: "Todos" });
       })
       .catch((error) => console.log(error));
 

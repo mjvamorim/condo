@@ -11,7 +11,7 @@ import Permissions from "./pages/Permissions";
 import Activities from "./pages/Activities";
 import Proprietarios from "./pages/Proprietarios";
 import Unidades from "./pages/Unidades";
-import UnidadesDetalhes from "./pages/UnidadesDetalhes";
+import UnidadesDetalhes from "./pages/UnidadeDetalhes/UnidadesDetalhes";
 import Taxas from "./pages/Taxas";
 import Debitos from "./pages/Debitos";
 import Acordos from "./pages/Acordos";

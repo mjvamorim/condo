@@ -74,11 +74,13 @@ Route::middleware(['auth', 'verified', 'tenant'])->group(function () {
     Route::apiResource('api/unidades', 'Api\UnidadeController');
     Route::apiResource('api/taxas', 'Api\TaxaController');
     Route::apiResource('api/debitos', 'Api\DebitoController');
+    Route::apiResource('api/documentos', 'Api\DocumentoController');
     Route::apiResource('api/estados', 'Api\EstadoController');
     Route::apiResource('api/acordos', 'Api\AcordoController');
     Route::apiResource('api/emails', 'Api\EmailController');
     Route::post('api/gerarAcordo', 'Api\AcordoController@gerarAcordo');
     Route::post('api/baixasBancaria', 'FinanceiroController@baixasBancariaApi')->name('baixasBancariaApi');
+    Route::get('/api/documentoDownload/{id}', 'Api\DocumentoController@download');
 });
 Route::middleware(['auth', 'verified', 'tenant'])->group(function () {
     Route::apiResource('api/users', 'AdminApi\UserController');

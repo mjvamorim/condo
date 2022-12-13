@@ -9,9 +9,11 @@
         <v-tab> Dados </v-tab>
 
         <v-tab> Documentos </v-tab>
-        <v-tab> Acordos </v-tab>
       </v-tabs>
-      <v-tabs-items v-model="tab">
+      <v-tabs-items
+        v-model="tab"
+        style="border: 1px solid gray; border-radius: 5px"
+      >
         <v-tab-item>
           <DebitosTable :unidade_id="unidade_id" />
         </v-tab-item>
@@ -24,14 +26,7 @@
         </v-tab-item>
 
         <v-tab-item>
-          <v-card flat>
-            <v-card-text>Documentos</v-card-text>
-          </v-card>
-        </v-tab-item>
-        <v-tab-item>
-          <v-card flat>
-            <v-card-text>Acordos</v-card-text>
-          </v-card>
+          <DocumentosTable :unidade_id="unidade_id" />
         </v-tab-item>
       </v-tabs-items>
     </v-card-text>
@@ -45,13 +40,14 @@
 
 <script>
 import axios from "axios";
-import DebitosTable from "../components/DebitosTable.vue";
-import UnidadeForm from "../components/UnidadeForm.vue";
+import DebitosTable from "./DebitosTable.vue";
+import DocumentosTable from "./DocumentosTable.vue";
+import UnidadeForm from "./UnidadeForm.vue";
 export default {
-  components: { DebitosTable, UnidadeForm },
+  components: { DebitosTable, UnidadeForm, DocumentosTable },
   data: () => ({
-    unidade_id: 0,
     tab: null,
+    unidade_id: 0,
     unidade: {
       descricao: "",
       adicional: "",
@@ -69,27 +65,10 @@ export default {
       .get("/api/unidades/" + this.unidade_id)
       .then((response) => {
         this.unidade = response.data;
-        // console.log(response.data);
-      })
-      .catch((error) => console.log(error));
-    this.buscaDebitos();
-    axios
-      .get("/api/proprietarios")
-      .then((response) => {
-        this.allProprietarios = response.data;
       })
       .catch((error) => console.log(error));
   },
   methods: {
-    buscaDebitos() {
-      this.debitos = [];
-      axios
-        .get("/api/debitos", { params: this.filtroItem })
-        .then((response) => {
-          this.tableData = response.data;
-        })
-        .catch((error) => console.log(error));
-    },
     closeForm() {
       this.tab = 0;
       console.log("Close Form");

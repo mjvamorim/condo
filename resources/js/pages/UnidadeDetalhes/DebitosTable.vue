@@ -155,7 +155,7 @@ export default {
       envio_boleto: "",
       ordem: "",
     },
-    allUnidades: [{ id: "00", descricao: "Todos" }],
+    allUnidades: [],
     showForm: false,
     debito: {
       id: 0,
@@ -183,7 +183,6 @@ export default {
       .then((response) => {
         this.allUnidades = response.data;
         this.allUnidades.sort();
-        this.allUnidades.unshift({ id: "00", descricao: "Todos" });
       })
       .catch((error) => console.log(error));
     this.buscaDebitos();
