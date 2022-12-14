@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      <span class="headline">Documento x</span>
+      <span class="headline">Documento</span>
     </v-card-title>
     <v-card-text>
       <v-container grid-list-md>
@@ -57,25 +57,25 @@ export default {
       id: 0,
       unidade_id: "",
       descricao: "",
-      arquivo: [],
-    },
+      arquivo: []
+    }
   },
   emits: ["on-close", "on-save"],
   data: () => ({
     allUnidades: [],
     rules: {
-      required: (value) => !!value || "*Obrigatório",
-    },
+      required: value => !!value || "*Obrigatório"
+    }
   }),
 
   created() {
     axios
       .get("/api/unidades")
-      .then((response) => {
+      .then(response => {
         this.allUnidades = response.data;
         this.allUnidades.sort();
       })
-      .catch((error) => console.log(error));
+      .catch(error => console.log(error));
   },
 
   methods: {
@@ -96,26 +96,27 @@ export default {
       if (this.documento.id > 0) {
         axios
           .put("/api/documentos/" + this.documento.id, formData)
-          .then((response) => {
+          .then(response => {
             console.log(response.data);
             this.$emit("on-save", this.documento);
           })
-          .catch((error) => console.log(error));
+          .catch(error => console.log(error));
       } else {
         //console.log(this.documento);
         axios
           .post("/api/documentos/", formData)
-          .then((response) => {
+          .then(response => {
             console.log(response.data);
             console.log(this.documento);
             Object.assign(this.documento, response.data);
             console.log(this.documento);
+            this.documento.arquivo = [];
             this.$emit("on-save", this.documento);
           })
-          .catch((error) => console.log(error));
+          .catch(error => console.log(error));
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

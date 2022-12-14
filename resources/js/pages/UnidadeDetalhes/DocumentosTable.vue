@@ -13,7 +13,7 @@
               color="primary"
               v-bind="attrs"
               v-on="on"
-              @click="newItem(documento)"
+              @click="newItem()"
             >
               <v-icon>mdi-plus</v-icon>
             </v-btn>
@@ -100,11 +100,11 @@ export default {
       { text: "Unidade", value: "unidade_id" },
       { text: "Descricao", value: "descricao" },
       { text: "Arquivo", value: "arquivo" },
-      { text: "", value: "action", sortable: false },
+      { text: "", value: "action", sortable: false }
     ],
     search: "",
     filtroItem: {
-      unidade_id: "",
+      unidade_id: ""
     },
     allUnidades: [],
     showForm: false,
@@ -112,18 +112,18 @@ export default {
       id: 0,
       unidade_id: "",
       descricao: "",
-      arquivo: [],
+      arquivo: []
     },
-    index: 0,
+    index: 0
   }),
   created() {
     axios
       .get("/api/unidades")
-      .then((response) => {
+      .then(response => {
         this.allUnidades = response.data;
         this.allUnidades.sort();
       })
-      .catch((error) => console.log(error));
+      .catch(error => console.log(error));
     this.buscaDocumentos();
   },
   methods: {
@@ -131,21 +131,22 @@ export default {
       this.filtroItem.unidade_id = this.unidade_id;
       axios
         .get("/api/documentos", { params: this.filtroItem })
-        .then((response) => {
+        .then(response => {
           this.documentos = response.data;
         })
-        .catch((error) => console.log(error));
+        .catch(error => console.log(error));
     },
     unidadeDescricao(id) {
-      return this.allUnidades.find((x) => x.id == id)
-        ? this.allUnidades.find((x) => x.id == id).descricao
+      return this.allUnidades.find(x => x.id == id)
+        ? this.allUnidades.find(x => x.id == id).descricao
         : "";
     },
     closeForm() {
       this.showForm = false;
+      this.buscaDocumentos();
     },
     saveForm(documento) {
-      this.documentos.push(documento);
+      this.buscaDocumentos();
       this.showForm = false;
     },
     newItem() {
@@ -164,13 +165,13 @@ export default {
       confirm("Você deseja apagar este item?") &&
         axios
           .delete("/api/documentos/" + item.id)
-          .then((response) => {
+          .then(response => {
             console.log(response.data);
             this.documentos.splice(index, 1);
           })
-          .catch((error) => console.log(error));
-    },
-  },
+          .catch(error => console.log(error));
+    }
+  }
 };
 </script>
 <style scooped></style>
