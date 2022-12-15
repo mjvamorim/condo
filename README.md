@@ -23,13 +23,12 @@ php artisan queue:work
 
 # Tarefas
 
+- Unidades -> click -> UnidadesDetalhes
+- UnidadesDetalhes: obs, proprietario e salvar na tela inicial, fechar também
+- Verificar possibilidade de colocar no débito automático os boletos
+-
 - Listagem Unidades com (unidade, proprietario, telefone e ramal)
-- Quando salvar acertar fonte
-  - Vue
-  - Php
-  - JS
 - Passar para Vite
-- Colocar ampulheta quando acessar axios
 
 # Tarefas concluidas
 
