@@ -15,5 +15,6 @@ module.exports = {
     ],
     "vue/require-prop-types": 0,
     "vue/no-mutating-props": 0,
+    "vue/no-template-shadow": 0,
   },
 };

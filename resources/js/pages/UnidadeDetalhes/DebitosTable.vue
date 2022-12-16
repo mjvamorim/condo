@@ -52,6 +52,7 @@
         class="elevation-1"
         :items-per-page="20"
         :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, -1] }"
+        @click:row="editItem"
       >
         <template #item.unidade_id="{ item }">
           {{ unidadeDescricao(item.unidade_id) }}
@@ -114,7 +115,12 @@
           </div>
         </template>
         <template #item.valoratual="{ item }">
-          <div class="text-right">R$ {{ item.valoratual.toFixed(2) }}</div>
+          <div v-if="item.valoratual" style="color: red" class="text-right">
+            R$ {{ item.valoratual.toFixed(2) }}
+          </div>
+          <div v-else class="text-right">
+            R$ {{ item.valoratual.toFixed(2) }}
+          </div>
         </template>
       </v-data-table>
     </v-card-text>
@@ -263,4 +269,8 @@ export default {
   },
 };
 </script>
-<style scooped></style>
+<style scooped>
+valoratual {
+  color: red;
+}
+</style>

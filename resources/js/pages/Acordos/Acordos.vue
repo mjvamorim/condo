@@ -1,63 +1,52 @@
 <template>
-  <div>
-    <!--"Principal, não mudar"-->
-    <v-container>
-      <v-row justify="space-between">
-        <v-col>
-          <h3>Acordos</h3>
-        </v-col>
-        <v-col align="right">
-          <a :href="'/admin/acordo_novo'">
-            <v-icon color="primary">mdi-plus-circle-outline</v-icon>
-          </a>
+  <v-card elevation="2" outlined shaped>
+    <v-card-title>
+      Proprietários
+      <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Buscar"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-card-title>
+    <v-card-text>
+      <a :href="'/admin/acordo_novo'">
+        <v-icon color="primary">mdi-plus-circle-outline</v-icon>
+      </a>
 
-          <v-dialog v-model="dialog" max-width="1200px">
-            <!--Formulario-->
-            <AcordoDetalhes
-              ref="AcordoDetalhes"
-              :acordo="item"
-              :all-unidades="allUnidades"
-            ></AcordoDetalhes>
-          </v-dialog>
-        </v-col>
-      </v-row>
-
-      <v-row>
-        <v-col>
-          <v-select
-            v-model="filtroItem.unidade_id"
-            :items="allUnidades"
-            label="Unidades*"
-            item-text="descricao"
-            item-value="id"
-            outlined
-            return-value
-            dense
-            @change="buscaAcordos()"
-          ></v-select>
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-data-table
-      :headers="headers"
-      :items="tableData"
-      :search="search"
-      :items-per-page="15"
-      dense
-      fixed-header
-      :must-sort="true"
-      sort-by="unidade_id"
-      class="elevation-1 acordos-table"
-    >
-      <template #item.unidade_id="{ item }">
-        {{ unidadeDescricao(item.unidade_id) }}
-      </template>
-      <template #item.action="{ item }">
-        <v-icon small @click="show(item)">pageview_outline</v-icon>
-        <!-- <v-icon small @click="deleteItem(item)">delete</v-icon> -->
-      </template>
-    </v-data-table>
-  </div>
+      <v-dialog v-model="dialog" max-width="1200px">
+        <!--Formulario-->
+        <AcordoDetalhes
+          ref="AcordoDetalhes"
+          :acordo="item"
+          :all-unidades="allUnidades"
+        ></AcordoDetalhes>
+      </v-dialog>
+      <v-data-table
+        :headers="headers"
+        :items="tableData"
+        :search="search"
+        :items-per-page="-1"
+        dense
+        fixed-header
+        :must-sort="true"
+        sort-by="id"
+        class="elevation-1"
+        sort-desc
+        @click:row="show"
+      >
+        <template #item.unidade_id="{ item }">
+          {{ unidadeDescricao(item.unidade_id) }}
+        </template>
+        <template #item.action="{ item }">
+          <v-icon small @click="show(item)">pageview_outline</v-icon>
+          <!-- <v-icon small @click="deleteItem(item)">delete</v-icon> -->
+        </template>
+      </v-data-table>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script lang="js">
@@ -147,16 +136,4 @@ export default {
 };
 </script>
 
-<style scooped>
-.acordos-table table th {
-  background-color: gray !important;
-  font-size: 13px !important;
-}
-.col {
-  padding: 2px;
-}
-.v-btn {
-  text-transform: none;
-  margin-left: 10px;
-}
-</style>
+<style scooped></style>

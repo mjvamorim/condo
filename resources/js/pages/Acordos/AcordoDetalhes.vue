@@ -19,7 +19,7 @@
               <v-layout wrap>
                 <v-flex xs12>
                   <v-text-field
-                    v-model.acordo="id"
+                    v-model="acordo.id"
                     label="Acordo"
                     outlined
                     disabled
@@ -27,7 +27,7 @@
                 </v-flex>
                 <v-flex xs12>
                   <v-text-field
-                    v-model.acordo="data"
+                    v-model="acordo.data"
                     label="Data "
                     outlined
                     disabled
@@ -36,7 +36,7 @@
 
                 <v-flex xs12>
                   <v-textarea
-                    v-model.acordo="termos"
+                    v-model="acordo.termos"
                     disabled
                     label="Termos"
                     outlined
@@ -44,7 +44,7 @@
                 </v-flex>
                 <v-flex xs12>
                   <v-text-field
-                    v-model.acordo="situacao"
+                    v-model="acordo.situacao"
                     disabled
                     label="Situacao"
                     outlined

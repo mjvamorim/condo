@@ -135,6 +135,7 @@
         sort-by="descricao"
         :items-per-page="-1"
         :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, -1] }"
+        @click:row="details"
       >
         <template #item.proprietario_id="{ item }">
           {{ proprietarioNome(item.proprietario_id) }}

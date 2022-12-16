@@ -4,18 +4,14 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 import Dashboard from "./pages/Dashboard";
-import Settings from "./pages/Settings";
 import Users from "./pages/Users";
-import Roles from "./pages/Roles";
-import Permissions from "./pages/Permissions";
-import Activities from "./pages/Activities";
 import Proprietarios from "./pages/Proprietarios";
 import Unidades from "./pages/Unidades";
 import UnidadesDetalhes from "./pages/UnidadeDetalhes/UnidadesDetalhes";
 import Taxas from "./pages/Taxas";
 import Debitos from "./pages/Debitos";
-import Acordos from "./pages/Acordos";
-import AcordoNovo from "./pages/AcordoNovo";
+import Acordos from "./pages/Acordos/Acordos";
+import AcordoNovo from "./pages/Acordos/AcordoNovo";
 import GerarMensalidades from "./pages/GerarMensalidades";
 import GerarRemessa from "./pages/GerarRemessa";
 import EmailsEnviados from "./pages/EmailsEnviados";
@@ -30,22 +26,6 @@ const routes = [
   {
     path: "/admin/users",
     component: Users,
-  },
-  {
-    path: "/admin/roles",
-    component: Roles,
-  },
-  {
-    path: "/admin/permissions",
-    component: Permissions,
-  },
-  {
-    path: "/admin/settings",
-    component: Settings,
-  },
-  {
-    path: "/admin/activities",
-    component: Activities,
   },
   {
     path: "/admin/unidades",

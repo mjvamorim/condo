@@ -272,6 +272,7 @@
 import axios from "axios";
 export default {
   name: "AcordoNovo",
+  // eslint-disable-next-line vue/prop-name-casing
   props: ["unidade_id"],
   data: function () {
     return {

@@ -1,6 +1,10 @@
 <template>
   <v-card elevation="2" outlined shaped>
     <v-card-title> Unidade: {{ unidade.descricao }}</v-card-title>
+
+    <v-container>
+      <v-flex xs12> Nome: {{ nomeProprietario }} </v-flex>
+    </v-container>
     <v-card-text>
       <v-tabs v-model="tab" align-with-title>
         <v-tabs-slider></v-tabs-slider>
@@ -57,6 +61,7 @@ export default {
       envio_boleto: "",
       created_at: "",
     },
+    nomeProprietario: "*** proprietario inválido ***",
   }),
   created() {
     this.unidade_id = this.$route.query.id;
@@ -65,6 +70,12 @@ export default {
       .get("/api/unidades/" + this.unidade_id)
       .then((response) => {
         this.unidade = response.data;
+        axios
+          .get("/api/proprietarios/" + this.unidade.proprietario_id)
+          .then((response) => {
+            this.nomeProprietario = response.data.nome;
+            console.log(response.data);
+          });
       })
       .catch((error) => console.log(error));
   },

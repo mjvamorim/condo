@@ -332,6 +332,7 @@
       class="elevation-1"
       :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
       :items-per-page="30"
+      @click:row="editItem"
     >
       <template #item.unidade_id="{ item }">
         {{ unidadeDescricao(item.unidade_id) }}
@@ -425,7 +426,7 @@ export default {
       { text: "Vl.Pago", value: "valorpago" },
       { text: "Boleto", value: "boleto" },
       { text: "Vl.Devido", value: "valoratual" }, //confirmar se é esse valor msm
-      { text: "", value: "action", sortable: false }
+      { text: "", value: "action", sortable: false },
     ],
     tableData: [],
     editedIndex: -1,
@@ -436,7 +437,7 @@ export default {
     allTiposEnvio: ["Todos", "Impresso", "Email"],
     allTiposRemessa: [
       { id: "S", descricao: "Sim" },
-      { id: "N", descricao: "Não" }
+      { id: "N", descricao: "Não" },
     ],
     allOrdenacao: ["Proprietário", "Unidade", "Pagamento", "Vencimento"],
     allTaxas: [{ id: "", anomes: "" }],
@@ -454,7 +455,7 @@ export default {
       boleto: "",
       acordo_quitacao_id: "",
       valoratual: "",
-      created_at: ""
+      created_at: "",
     },
     defaultItem: {
       unidade_id: "",
@@ -470,7 +471,7 @@ export default {
       boleto: "",
       acordo_quitacao_id: "",
       valoratual: "",
-      created_at: ""
+      created_at: "",
     },
     filtroItem: {
       proprietario_id: "",
@@ -480,11 +481,11 @@ export default {
       dtfim: "",
       condicao: "",
       envio_boleto: "",
-      ordem: ""
+      ordem: "",
     },
     rules: {
-      required: value => !!value || "*Obrigatório"
-    }
+      required: (value) => !!value || "*Obrigatório",
+    },
   }),
 
   computed: {
@@ -492,13 +493,13 @@ export default {
       return this.editedIndex === -1
         ? "Novo Débito"
         : "Alteração/Baixa de Débito";
-    }
+    },
   },
 
   watch: {
     dialog(val) {
       val || this.close();
-    }
+    },
   },
 
   created() {
@@ -513,36 +514,36 @@ export default {
       this.tableData = [];
       axios
         .get("/api/debitos", { params: this.filtroItem })
-        .then(response => {
+        .then((response) => {
           this.tableData = response.data;
         })
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
     },
     initialize() {
       axios
         .get("/api/proprietarios")
-        .then(response => {
+        .then((response) => {
           this.allProprietarios = response.data;
           this.allProprietarios.sort();
           this.allProprietarios.unshift({ id: "00", nome: "Todos" });
         })
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
 
       axios
         .get("/api/unidades")
-        .then(response => {
+        .then((response) => {
           this.allUnidades = response.data;
           this.allUnidades.sort();
           this.allUnidades.unshift({ id: "00", descricao: "Todos" });
         })
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
 
       axios
         .get("/api/taxas")
-        .then(response => {
+        .then((response) => {
           this.allTaxas = response.data;
         })
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
       this.filtroItem.ordem = "Unidade";
       this.filtroItem.condicao = "Abertos";
       this.buscaDebitos();
@@ -559,11 +560,11 @@ export default {
       confirm("Você deseja apagar este item?") &&
         axios
           .delete("/api/debitos/" + item.id)
-          .then(response => {
+          .then((response) => {
             console.log(response.data);
             this.tableData.splice(index, 1);
           })
-          .catch(error => console.log(error));
+          .catch((error) => console.log(error));
     },
 
     close() {
@@ -578,27 +579,27 @@ export default {
       if (this.editedIndex > -1) {
         axios
           .put("/api/debitos/" + this.debito.id, this.debito)
-          .then(response => {
+          .then((response) => {
             console.log(response.data);
             Object.assign(this.tableData[this.editedIndex], this.debito);
             this.close();
           })
-          .catch(error => console.log(error));
+          .catch((error) => console.log(error));
       } else {
         console.log(this.debito);
         axios
           .post("/api/debitos/", this.debito)
-          .then(response => {
+          .then((response) => {
             console.log(response.data);
             this.tableData.push(this.debito);
             this.close();
           })
-          .catch(error => console.log(error));
+          .catch((error) => console.log(error));
       }
     },
     unidadeDescricao(id) {
-      return this.allUnidades.find(x => x.id == id)
-        ? this.allUnidades.find(x => x.id == id).descricao
+      return this.allUnidades.find((x) => x.id == id)
+        ? this.allUnidades.find((x) => x.id == id).descricao
         : "";
     },
     boletosImpressos() {
@@ -614,20 +615,20 @@ export default {
       axios
         .get("/financeiro/emailBoletos", { params: this.filtroItem })
         .then(() => alert("Email enviado com sucesso."))
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
     },
     boletosEmailUnico(item) {
       axios
         .get("/financeiro/emailBoletos?debito_id=" + item.id)
         .then(() => alert("Email enviado com sucesso."))
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
     },
     listagemDebitos() {
       var url = "/financeiro/listagemDebitos";
       url = url + "?" + jQuery.param(this.filtroItem);
       window.open(url, "_blank");
-    }
-  }
+    },
+  },
 };
 </script>
 
