@@ -25,8 +25,4 @@ php artisan queue:work
 
 Ok - Unidades -> click -> UnidadesDetalhes
 
-- UnidadesDetalhes: obs, proprietario e salvar na tela inicial, fechar também
-  Não, apenas agua e luz - Verificar possibilidade de colocar no débito automático os boletos
-
-- Listagem Unidades com (unidade, proprietario, telefone e ramal)
-- Passar para Vite
+Ok - UnidadesDetalhes: obs, proprietario e salvar na tela inicial, fechar também

@@ -1,16 +1,24 @@
 <template>
   <v-card elevation="2" outlined shaped>
-    <v-card-title> Unidade: {{ unidade.descricao }}</v-card-title>
+    <v-card-title>
+      Unidade: {{ unidade.descricao }} <br /><br />
+      Proprietario: {{ nomeProprietario }}<br /><br />
+      <v-flex xs12>
+        <v-textarea
+          v-model="unidade.obs"
+          readonly
+          label="Obs"
+          outlined
+        ></v-textarea>
+      </v-flex>
+    </v-card-title>
 
-    <v-container>
-      <v-flex xs12> Nome: {{ nomeProprietario }} </v-flex>
-    </v-container>
     <v-card-text>
       <v-tabs v-model="tab" align-with-title>
         <v-tabs-slider></v-tabs-slider>
 
         <v-tab> Débitos </v-tab>
-        <v-tab> Dados </v-tab>
+        <v-tab> Alterar Dados </v-tab>
 
         <v-tab> Documentos </v-tab>
       </v-tabs>
@@ -59,25 +67,25 @@ export default {
       proprietario_id: "",
       obs: "",
       envio_boleto: "",
-      created_at: "",
+      created_at: ""
     },
-    nomeProprietario: "*** proprietario inválido ***",
+    nomeProprietario: "*** proprietario inválido ***"
   }),
   created() {
     this.unidade_id = this.$route.query.id;
     // console.log(this.unidade_id);
     axios
       .get("/api/unidades/" + this.unidade_id)
-      .then((response) => {
+      .then(response => {
         this.unidade = response.data;
         axios
           .get("/api/proprietarios/" + this.unidade.proprietario_id)
-          .then((response) => {
+          .then(response => {
             this.nomeProprietario = response.data.nome;
             console.log(response.data);
           });
       })
-      .catch((error) => console.log(error));
+      .catch(error => console.log(error));
   },
   methods: {
     closeForm() {
@@ -87,8 +95,8 @@ export default {
     saveForm() {
       this.tab = 0;
       console.log("Save Form");
-    },
-  },
+    }
+  }
 };
 </script>
 <style scooped></style>
