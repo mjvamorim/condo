@@ -4,6 +4,9 @@ cp .env.localhost .env
 
 # baixar pacotes e executar a api
 
+composer self-update --2
+https://stackoverflow.com/questions/61177995/laravel-packagemanifest-php-undefined-index-name (tutorial para problema de atualizacao composer 1-> 2)
+
 composer clearcache
 composer update
 php artisan config:cache
