@@ -8,6 +8,8 @@ composer clearcache
 composer update
 php artisan config:cache
 php artisan serve
+
+export NODE_OPTIONS=--openssl-legacy-provider
 npm install
 npm run watch
 
