@@ -10,11 +10,11 @@
 
   // The 'service' property is the name of the service for the container that VS Code should
   // use. Update this value and .devcontainer/docker-compose.yml to the real service name.
-  "service": "php-vue",
+  "service": "condo_php",
 
   // The optional 'workspaceFolder' property is the path VS Code should open by default when
   // connected. This is typically a file mount in .devcontainer/docker-compose.yml
-  "workspaceFolder": "/var/www",
+  "workspaceFolder": "/var/www/html",
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
@@ -30,16 +30,20 @@
 
   // Uncomment to connect as a non-root user if you've added one. See https://aka.ms/vscode-remote/containers/non-root.
   // "remoteUser": "vscode"
-  "extensions": [
-    "xdebug.php-debug",
-    "Vue.volar",
-    "ms-vscode.js-debug-nightly",
-    "dariofuzinato.vue-peek",
-    "sdras.vue-vscode-snippets",
-    "dbaeumer.vscode-eslint",
-    "EditorConfig.EditorConfig",
-    "esbenp.prettier-vscode",
-    "bmewburn.vscode-intelephense-client",
-    "junstyle.php-cs-fixer"
-  ]
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "xdebug.php-debug",
+        "Vue.volar",
+        "ms-vscode.js-debug-nightly",
+        "dariofuzinato.vue-peek",
+        "sdras.vue-vscode-snippets",
+        "dbaeumer.vscode-eslint",
+        "EditorConfig.EditorConfig",
+        "esbenp.prettier-vscode",
+        "bmewburn.vscode-intelephense-client",
+        "junstyle.php-cs-fixer"
+      ]
+    }
+  }
 }

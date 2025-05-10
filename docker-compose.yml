@@ -1,7 +1,8 @@
-version: '3'
+networks:
+  condo-net:
 services:
   #PHP Service
-  php-vue:
+  condo_php:
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,22 +11,22 @@ services:
     restart: unless-stopped
     tty: true
     environment:
-      SERVICE_NAME: php-vue
+      SERVICE_NAME: condo_php
       SERVICE_TAGS: dev
       XDEBUG_MODE: debug
       XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003
-    working_dir: /var/www
+    working_dir: /var/www/html
     volumes:
-      - ../:/var/www
-      - ../logs/php.log:/var/log/fpm-php.www.log
-      - ../docker-config/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./:/var/www/html
+      - ./logs/php.log:/var/log/fpm-php.www.log
+      - ./docker-config/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - condo-net
     depends_on:
-      - mariadb
+      - condo_mariadb
 
   #Nginx Service
-  nginx:
+  condo_nginx:
     image: nginx:alpine
     container_name: condo_nginx
     restart: unless-stopped
@@ -34,14 +35,18 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ../:/var/www
-      - ../docker-config/nginx/conf.d/:/etc/nginx/conf.d/
-      - ../logs/nginx:/var/log/nginx/
+      - ./:/var/www/html
+      - ./docker-config/nginx/conf.d/:/etc/nginx/conf.d/
+      - ./logs/nginx:/var/log/nginx/
+    depends_on:
+      - condo_php
+      - condo_mariadb
+
     networks:
       - condo-net
 
   #MySQL Service
-  mariadb:
+  condo_mariadb:
     image: mariadb
     container_name: condo_mariadb
     restart: always
@@ -49,22 +54,19 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: 'condo'
-      MYSQL_USER: 'root'
-      MYSQL_PASSWORD: 'root'
-      MYSQL_ROOT_PASSWORD: 'root'
-      SERVICE_TAGS: 'dev'
-      SERVICE_NAME: mariadb
+      MYSQL_DATABASE: "condo"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "root"
+      MYSQL_ROOT_PASSWORD: "root"
+      SERVICE_TAGS: "dev"
+      SERVICE_NAME: condo_mariadb
     volumes:
-      - ../dbdata:/var/lib/mysql
-      - ../docker-config/mysql/my.cnf:/etc/mysql/my.cnf
+      - ./dbdata:/var/lib/mysql
+      - ./docker-config/mysql/my.cnf:/etc/mysql/my.cnf
     networks:
       - condo-net
 
 #Docker Networks
-networks:
-  condo-net:
-    driver: bridge
 
 #Volumes
 volumes:

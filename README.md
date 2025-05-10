@@ -16,6 +16,11 @@ export NODE_OPTIONS=--openssl-legacy-provider
 npm install
 npm run watch
 
+# Testar conexao com bd
+
+php artisan tinker
+DB::connection()->getPdo()
+
 # restaurar o backup dos banco de dados
 
 pasta backup/\*.sql

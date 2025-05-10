@@ -1,7 +1,7 @@
 FROM php:7.4-fpm
 
 # Set working directory
-WORKDIR /var/www
+WORKDIR /var/www/html
 
 # Install dependencies
 RUN apt update && apt upgrade -y
@@ -21,6 +21,8 @@ RUN apt-get install -y \
     curl \
     zlib1g-dev libicu-dev g++
 
+
+
 # # Clear cache
 RUN apt clean && rm -rf /var/lib/apt/lists/*
 
@@ -39,8 +41,13 @@ RUN docker-php-ext-configure intl
 RUN docker-php-ext-install intl
 
 # Install xdebug
-RUN pecl install xdebug
-RUN docker-php-ext-enable xdebug
+# ARG XDEBUG_VERSION="xdebug-2.9.0"
+# RUN yes | pecl install ${XDEBUG_VERSION} \
+#     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
+#     && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
+#     && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini 
+# RUN  docker-php-ext-enable ${XDEBUG_VERSION}
+
 
 
 # Install composer
@@ -69,14 +76,18 @@ RUN useradd -u 1000 -ms /bin/bash -g www www
 RUN echo "www:www" | chpasswd && adduser www sudo
 RUN  npm install -g npm@9.1.1
 
-# # Copy existing application directory contents
-COPY .. /var/www
-
 # # Copy existing application directory permissions
-COPY --chown=www:www .. /var/www
+COPY --chown=www:www . /var/www/html
 
 # # Change current user to www
 USER www
+
+
+RUN php artisan route:clear
+RUN php artisan config:clear
+RUN php artisan cache:clear
+
+RUN php artisan config:cache
 
 # # Expose port 9000 and start php-fpm server
 EXPOSE 9000
