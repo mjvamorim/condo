@@ -9,6 +9,10 @@ https://stackoverflow.com/questions/61177995/laravel-packagemanifest-php-undefin
 
 composer clearcache
 composer update
+
+php artisan route:clear
+php artisan config:clear
+#php artisan cache:clear
 php artisan config:cache
 php artisan serve
 

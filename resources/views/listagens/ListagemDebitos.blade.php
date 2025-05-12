@@ -45,15 +45,24 @@ function valoratual($debito)
     }
     return $valor_atualizado;
 }
+function money_format($format, $number)
+{
+    if (class_exists('NumberFormatter')) {
+        $fmt = new NumberFormatter('pt_BR', NumberFormatter::CURRENCY);
+        return $fmt->formatCurrency($number, 'BRL');
+    } else {
+        return sprintf($format, $number);
+    }
+}
 function imprime_totais($tot_valor, $tot_valpg, $tot_valat, $titulo)
 {
     echo '<tr>';
     echo '<th colspan=5 align="right" >' . $titulo . ' </th>';
-    echo '<th align="right">' . @money_format('%i', $tot_valor) . '</th>';
+    echo '<th align="right">' . money_format('%i', $tot_valor) . '</th>';
     echo '<th > </th>';
-    echo '<th align="right">' . @money_format('%i', $tot_valpg) . '</th>';
+    echo '<th align="right">' . money_format('%i', $tot_valpg) . '</th>';
     echo '<th align="right"> </th>';
-    echo '<th align="right">' . @money_format('%i', $tot_valat) . '</th>';
+    echo '<th align="right">' . money_format('%i', $tot_valat) . '</th>';
     echo '</tr>';
 
     echo '<tr>';
@@ -153,16 +162,16 @@ function imprime_totais($tot_valor, $tot_valpg, $tot_valat, $titulo)
                             <td align="center">{{ $debito->id }} </td>
                     @endswitch
                     <td align="center">{{ date('d/m/Y', strtotime($debito->dtvencto)) }} </td>
-                    <td align="right">{{ @money_format('%i', $debito->valor) }} </td>
+                    <td align="right">{{ money_format('%i', $debito->valor) }} </td>
                     @if ($debito->dtpagto)
                         <td align="center">{{ date('d/m/Y', strtotime($debito->dtpagto)) }} </td>
-                        <td align="right">{{ @money_format('%i', $debito->valorpago) }} </td>
+                        <td align="right">{{ money_format('%i', $debito->valorpago) }} </td>
                     @else
                         <td></td>
                         <td></td>
                     @endif
                     <td align="right">{{ $debito->acordo_quitacao_id }} </td>
-                    <td align="right">{{ @money_format('%i', valoratual($debito)) }} </td>
+                    <td align="right">{{ money_format('%i', valoratual($debito)) }} </td>
 
                 </tr>
             @endforeach
