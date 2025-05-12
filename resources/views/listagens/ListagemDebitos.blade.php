@@ -45,15 +45,7 @@ function valoratual($debito)
     }
     return $valor_atualizado;
 }
-function money_format($format, $number)
-{
-    if (class_exists('NumberFormatter')) {
-        $fmt = new NumberFormatter('pt_BR', NumberFormatter::CURRENCY);
-        return $fmt->formatCurrency($number, 'BRL');
-    } else {
-        return sprintf($format, $number);
-    }
-}
+
 function imprime_totais($tot_valor, $tot_valpg, $tot_valat, $titulo)
 {
     echo '<tr>';
