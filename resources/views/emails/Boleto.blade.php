@@ -17,7 +17,7 @@
                 <p>Segue em anexo o Boleto Avulso  {{ $id }}
                 @break
         @endswitch
-        com o valor de R$ {{ @money_format('%(#10n',$valor) }} e vencimento em {{ date('d/m/Y',strtotime($dtvencto)) }}. </p>
+        com o valor de R$ {{ money_format('%(#10n',$valor) }} e vencimento em {{ date('d/m/Y',strtotime($dtvencto)) }}. </p>
         <p>Por favor <u> não responda a este email </u>. Certifique o endereço correto para recebimento com a administração do seu condomínio.</p>
 
         <p></p>

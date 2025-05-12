@@ -72,7 +72,7 @@ class FinanceiroController extends Controller
                     } else {
                         $debito->valor = $taxa->valor + $unidade->adicional;
                     }
-                    $debito->obs = 'Adicional de R$ '.@money_format('%i', $debito->valor - $taxa->valor);
+                    $debito->obs = 'Adicional de R$ '.money_format('%i', $debito->valor - $taxa->valor);
                 }
 
                 $debito->dtpagto = null;
@@ -317,7 +317,7 @@ class FinanceiroController extends Controller
                .'  '.$detalhe->ocorrencia
                 .'-'.substr(str_pad($detalhe->ocorrenciaDescricao, 45, ' '), 0, 45);
             if ('06' == $detalhe->ocorrencia) {
-                $saida .= ' Valor: '.@money_format('%(#10n', $detalhe->valorRecebido + $detalhe->valorTarifa)
+                $saida .= ' Valor: '.money_format('%(#10n', $detalhe->valorRecebido + $detalhe->valorTarifa)
                .' Dt.Pagto: '.$detalhe->dataCredito
                .' Baixou: '.$baixou
                .' Unidade: '.$unidade
@@ -377,7 +377,7 @@ class FinanceiroController extends Controller
                    .'  '.$detalhe->ocorrencia
                     .'-'.substr(str_pad($detalhe->ocorrenciaDescricao, 45, ' '), 0, 45);
                 if ('06' == $detalhe->ocorrencia) {
-                    $saida .= ' Valor: '.@money_format('%(#10n', $detalhe->valorRecebido + $detalhe->valorTarifa)
+                    $saida .= ' Valor: '.money_format('%(#10n', $detalhe->valorRecebido + $detalhe->valorTarifa)
                    .' Dt.Pagto: '.$detalhe->dataCredito
                    .' Baixou: '.$baixou
                    .' Unidade: '.$unidade
