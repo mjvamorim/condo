@@ -43,6 +43,15 @@ class DebitoController extends Controller
             }
             $debitos = collect($filtered);
         }
+        if ($request->input('descricao') && $request->input('descricao')!='') {
+            $filtered = [];
+            foreach($debitos as $debito){
+                if(stripos($debito->unidade->descricao, $request->input('descricao')) !== false){
+                    $filtered[] = $debito;
+                }
+            }
+            $debitos = collect($filtered);
+        }
         return $debitos;
     }
 

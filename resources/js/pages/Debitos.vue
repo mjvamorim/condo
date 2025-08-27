@@ -191,6 +191,16 @@
           ></v-select>
         </v-col>
         <v-col>
+          <v-text-field
+            v-model="filtroItem.descricao"
+            label="Descricao da Unidade*"
+            outlined
+            v-bind="attrs"
+            dense
+            v-on="on"
+          ></v-text-field>
+        </v-col>
+        <v-col>
           <v-select
             v-model="filtroItem.unidade_id"
             :items="allUnidades"
@@ -217,6 +227,44 @@
       </v-row>
 
       <v-row>
+        <v-col :cols="2">
+          <v-select
+            v-model="filtroItem.ordem"
+            :items="allOrdenacao"
+            label="Ordenação da Listagem*"
+            item-text="descricao"
+            item-value="id"
+            outlined
+            return-value
+            dense
+          ></v-select>
+        </v-col>
+
+        <v-col :cols="2">
+          <v-select
+            v-model="filtroItem.condicao"
+            :items="allCondicao"
+            label="Condição*"
+            item-text="descricao"
+            item-value="id"
+            outlined
+            return-value
+            dense
+          ></v-select>
+        </v-col>
+        <v-col :cols="2">
+          <v-spacer></v-spacer>
+          <v-select
+            v-model="filtroItem.envio_boleto"
+            :items="allTiposEnvio"
+            label="Tipo de Envio*"
+            item-text="descricao"
+            item-value="id"
+            outlined
+            return-value
+            dense
+          ></v-select>
+        </v-col>
         <v-col :cols="2">
           <v-menu
             v-model="menu3"
@@ -267,43 +315,6 @@
             ></v-date-picker>
           </v-menu>
         </v-col>
-        <v-col :cols="4">
-          <v-select
-            v-model="filtroItem.condicao"
-            :items="allCondicao"
-            label="Condição*"
-            item-text="descricao"
-            item-value="id"
-            outlined
-            return-value
-            dense
-          ></v-select>
-        </v-col>
-        <v-col :cols="2">
-          <v-spacer></v-spacer>
-          <v-select
-            v-model="filtroItem.envio_boleto"
-            :items="allTiposEnvio"
-            label="Tipo de Envio*"
-            item-text="descricao"
-            item-value="id"
-            outlined
-            return-value
-            dense
-          ></v-select>
-        </v-col>
-        <v-col :cols="2">
-          <v-select
-            v-model="filtroItem.ordem"
-            :items="allOrdenacao"
-            label="Ordenação da Listagem*"
-            item-text="descricao"
-            item-value="id"
-            outlined
-            return-value
-            dense
-          ></v-select>
-        </v-col>
       </v-row>
 
       <v-row>
@@ -332,7 +343,6 @@
       class="elevation-1"
       :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
       :items-per-page="30"
-      @click:row="editItem"
     >
       <template #item.unidade_id="{ item }">
         {{ unidadeDescricao(item.unidade_id) }}
@@ -476,6 +486,7 @@ export default {
     filtroItem: {
       proprietario_id: "",
       unidade_id: "",
+      descricao: "",
       tipo_id: "",
       dtini: "",
       dtfim: "",

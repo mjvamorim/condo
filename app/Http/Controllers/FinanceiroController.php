@@ -127,6 +127,15 @@ class FinanceiroController extends Controller
             }
             $debitos = collect($filtered);
         }
+        if ($request->input('descricao') && $request->input('descricao')!='') {
+            $filtered = [];
+            foreach($debitos as $debito){
+                if(stripos($debito->unidade->descricao, $request->input('descricao')) !== false){
+                    $filtered[] = $debito;
+                }
+            }
+            $debitos = collect($filtered);
+        }
 
         if (0 == $debitos->count()) {
             return redirect()->route('home')->withError(['Não existem boletos a serem impressos!']);
@@ -174,6 +183,15 @@ class FinanceiroController extends Controller
             $filtered = [];
             foreach ($debitos as $debito) {
                 if ($debito->unidade->envio_boleto == $request->input('envio_boleto') or 'Ambos' == $debito->unidade->envio_boleto) {
+                    $filtered[] = $debito;
+                }
+            }
+            $debitos = collect($filtered);
+        }
+        if ($request->input('descricao') && $request->input('descricao')!='') {
+            $filtered = [];
+            foreach($debitos as $debito){
+                if(stripos($debito->unidade->descricao, $request->input('descricao')) !== false){
                     $filtered[] = $debito;
                 }
             }
@@ -497,6 +515,9 @@ class FinanceiroController extends Controller
 
         if ($request->input('tipo_id') && 'Todos' != $request->input('tipo_id')) {
             $clausulaWhere[] = ['debitos.tipo', $request->input('tipo_id')];
+        }
+        if ($request->input('descricao') && $request->input('descricao')!='') {
+            $clausulaWhere[] = ['unidades.descricao', 'like', '%'.$request->input('descricao').'%'];
         }
 
         switch ($request->input('condicao')) {
