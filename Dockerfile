@@ -19,7 +19,7 @@ RUN apt-get install -y \
     unzip \
     git \
     curl \
-    zlib1g-dev libicu-dev g++
+    zlib1g-dev libicu-dev libzip-dev g++
 
 
 
@@ -29,6 +29,7 @@ RUN apt clean && rm -rf /var/lib/apt/lists/*
 # # Install extensions
 # RUN docker-php-ext-install mbstring zip exif pcntl
 RUN docker-php-ext-install  exif pcntl
+RUN docker-php-ext-install zip
 
 RUN docker-php-ext-install pdo pdo_mysql
 RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
@@ -82,12 +83,9 @@ COPY --chown=www:www . /var/www/html
 # # Change current user to www
 USER www
 
-
-RUN php artisan route:clear
-RUN php artisan config:clear
-RUN php artisan cache:clear
-
-RUN php artisan config:cache
+# Install the application dependencies during the image build.
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts
+RUN php -r '$path = "vendor/composer/installed.json"; $data = json_decode(file_get_contents($path), true); if (isset($data["packages"])) file_put_contents($path, json_encode($data["packages"], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));'
 
 # # Expose port 9000 and start php-fpm server
 EXPOSE 9000

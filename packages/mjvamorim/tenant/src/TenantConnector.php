@@ -17,7 +17,11 @@ trait TenantConnector {
         DB::purge('tenant');
         
         // Make sure to use the database name we want to establish a connection.
-        Config::set('database.connections.tenant.host', $empresa->db_host);
+        $host = in_array($empresa->db_host, ['127.0.0.1', 'localhost'], true)
+            ? Config::get('database.connections.main.host')
+            : $empresa->db_host;
+
+        Config::set('database.connections.tenant.host', $host);
         Config::set('database.connections.tenant.database', $empresa->db_database);
         Config::set('database.connections.tenant.username', $empresa->db_username);
         Config::set('database.connections.tenant.password', $empresa->db_password);
