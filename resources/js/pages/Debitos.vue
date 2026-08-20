@@ -315,6 +315,19 @@
             ></v-date-picker>
           </v-menu>
         </v-col>
+        <v-col :cols="2">
+          <v-spacer></v-spacer>
+          <v-select
+            v-model="filtroItem.valorOriginal"
+            :items="allValorOriginal"
+            label="Valores Originais"
+            item-text="descricao"
+            item-value="id"
+            outlined
+            return-value
+            dense
+          ></v-select>
+        </v-col>
       </v-row>
 
       <v-row>
@@ -444,6 +457,7 @@ export default {
     allUnidades: [{ id: "00", descricao: "Todos" }],
     allTiposDebitos: ["Todos", "Avulso", "Mensalidade", "Acordo", "Multa"],
     allCondicao: ["Ambos", "Abertos", "Pagos"],
+    allValorOriginal: ["Não", "Sim"],
     allTiposEnvio: ["Todos", "Impresso", "Email"],
     allTiposRemessa: [
       { id: "S", descricao: "Sim" },
@@ -493,6 +507,7 @@ export default {
       condicao: "",
       envio_boleto: "",
       ordem: "",
+      valorOriginal: "Não",
     },
     rules: {
       required: (value) => !!value || "*Obrigatório",
@@ -619,7 +634,11 @@ export default {
       window.open(url, "_blank");
     },
     boletosImpressoUnico(item) {
-      let url = "/financeiro/imprimirBoletos?debito_id=" + item.id;
+      let url =
+        "/financeiro/imprimirBoletos?debito_id=" +
+        item.id +
+        "&valorOriginal=" +
+        this.filtroItem.valorOriginal;
       window.open(url, "_blank");
     },
     boletosEmail() {

@@ -26,6 +26,19 @@ services:
     depends_on:
       - condo_mariadb
 
+  # Frontend watcher for bind-mounted development files
+  condo_frontend:
+    image: condo/php:latest
+    container_name: condo_frontend
+    user: root
+    working_dir: /var/www/html
+    command: sh -c "npm install && npm run watch-poll"
+    volumes:
+      - ./:/var/www/html
+      - /var/www/html/node_modules
+    networks:
+      - condo-net
+
   #Nginx Service
   condo_nginx:
     image: nginx:alpine

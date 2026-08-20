@@ -147,7 +147,7 @@ class FinanceiroController extends Controller
                 $debito->boleto = $debito->id;
                 $debito->save();
             }
-            $boleto = $this->montaBoleto($debito);
+            $boleto = $this->montaBoleto($debito, $request->input('valorOriginal'));
 
             $pdf->addBoleto($boleto);
         }
@@ -215,7 +215,7 @@ class FinanceiroController extends Controller
                     $debito->save();
                 }
 
-                $boleto = $this->montaBoleto($debito);
+                $boleto = $this->montaBoleto($debito, $request->input('valorOriginal'));
                 $pdf->addBoleto($boleto);
                 $file = $this->nomeArquivo($request);
                 $file = substr($file, 0, strlen($file) - 4).'_'.$debito->id.'.pdf';
@@ -613,7 +613,7 @@ class FinanceiroController extends Controller
     }
 
     // -----------------------------MontaBoleto-------------------------------//
-    private function montaBoleto($debito)
+    private function montaBoleto($debito, $valorOriginal = 'Não')
     {
         if ($debito->unidade->proprietario->conjuge_nome) {
             $nome = $debito->unidade->proprietario->nome.' & '.$debito->unidade->proprietario->conjuge_nome.'('.$debito->unidade->proprietario->conjuge_cpf.') - '.$debito->unidade->descricao;
@@ -638,7 +638,7 @@ class FinanceiroController extends Controller
         // Acha maior data
         $hoje = Carbon::now();
         $dtvencto = Carbon::createFromFormat('Y-m-d', $debito->dtvencto);
-        $data = ($dtvencto > $hoje) ? $dtvencto : $hoje;
+        $data = $dtvencto > $hoje ? $dtvencto : ($valorOriginal == 'Sim' ? $dtvencto : $hoje);
 
         $msg1 = $this->msgDebitosAnteriores($debito->temDebitosAnteriores);
         $msg2 = $this->msgTemAcordosVencer($debito->temAcordosVencer);
@@ -648,7 +648,7 @@ class FinanceiroController extends Controller
             [
                 'logo' => public_path().'/img/pegasus.jpg',
                 'dataVencimento' => $data,
-                'valor' => $debito->valorAtual,
+                'valor' => $valorOriginal == 'Sim' ? $debito->valor : $debito->valorAtual,
                 'multa' => 2,
                 'juros' => 1,
                 'numero' => str_pad($debito->boleto, 8, '0', STR_PAD_LEFT), // importante
